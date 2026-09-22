@@ -1,0 +1,296 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Plus Jakarta Sans", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+/* Luxury Industrial / Advanced Tech Foundation */
+body {
+  background-color: #030508;
+  color: #f4f4f6;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* CONTINUOUS, INFINITE HARDWARE-ACCELERATED AMBIENT DYNAMICS */
+@keyframes ambientDriftOne {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.18;
+  }
+  33% {
+    transform: translate3d(80px, -50px, 0) scale(1.15);
+    opacity: 0.28;
+  }
+  66% {
+    transform: translate3d(-60px, 70px, 0) scale(0.92);
+    opacity: 0.20;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.18;
+  }
+}
+
+@keyframes ambientDriftTwo {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.12;
+  }
+  50% {
+    transform: translate3d(-90px, 60px, 0) scale(1.12);
+    opacity: 0.24;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.12;
+  }
+}
+
+@keyframes gridDrift {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: 128px 128px;
+  }
+}
+
+@keyframes radarSweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulseGlowRing {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 0.2;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes gentleBreathing {
+  0%, 100% {
+    opacity: 0.4;
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.25);
+  }
+  50% {
+    opacity: 0.85;
+    box-shadow: 0 0 35px rgba(6, 182, 212, 0.6);
+  }
+}
+
+@keyframes lightStreamH {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(200%);
+    opacity: 0;
+  }
+}
+
+@keyframes infiniteScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-infinite-scroll {
+  display: flex;
+  width: max-content;
+  animation: infiniteScroll 45s linear infinite;
+  will-change: transform;
+}
+
+.animate-infinite-scroll:hover {
+  animation-play-state: paused;
+}
+
+@keyframes boltPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.45));
+    opacity: 0.92;
+  }
+  50% {
+    filter: drop-shadow(0 0 14px rgba(34, 211, 238, 0.9)) drop-shadow(0 0 25px rgba(6, 182, 212, 0.65));
+    opacity: 1;
+  }
+}
+
+.animate-bolt-glow {
+  animation: boltPulse 3.5s ease-in-out infinite;
+}
+
+.animate-ambient-slow {
+  animation: ambientDriftOne 28s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.animate-ambient-reverse {
+  animation: ambientDriftTwo 36s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.animate-radar-sweep {
+  animation: radarSweep 6s linear infinite;
+  transform-origin: center center;
+}
+
+.animate-pulse-ring {
+  animation: pulseGlowRing 3s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+.animate-breathing-cyan {
+  animation: gentleBreathing 4s ease-in-out infinite;
+}
+
+/* Precision Technical Patterns & Grids */
+.tech-grid-matrix {
+  background-image: 
+    linear-gradient(to right, rgba(6, 182, 212, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+  background-size: 64px 64px;
+  animation: gridDrift 60s linear infinite;
+}
+
+.tech-dot-matrix {
+  background-image: radial-gradient(rgba(6, 182, 212, 0.12) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Faint topographic contour simulation */
+.contour-lines {
+  background-image: repeating-radial-gradient(
+    circle at 50% 50%,
+    transparent 0,
+    transparent 40px,
+    rgba(6, 182, 212, 0.02) 41px,
+    transparent 42px
+  );
+}
+
+/* GLASS CHASSIS & DEPTH LAYERING */
+.glass-panel-deep {
+  background: linear-gradient(135deg, rgba(14, 18, 26, 0.85) 0%, rgba(7, 9, 13, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 4px 20px -2px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.glass-panel-interactive {
+  background: linear-gradient(135deg, rgba(16, 21, 31, 0.8) 0%, rgba(9, 12, 18, 0.9) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 10px 30px -5px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel-interactive:hover {
+  border-color: rgba(6, 182, 212, 0.35);
+  box-shadow: 
+    0 15px 40px -10px rgba(0, 0, 0, 0.9),
+    0 0 25px -5px rgba(6, 182, 212, 0.2),
+    inset 0 1px 0 0 rgba(6, 182, 212, 0.25);
+  transform: translateY(-2px);
+}
+
+/* ILLUMINATED SYSTEM CTA BUTTON */
+.btn-cta-illuminated {
+  position: relative;
+  background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);
+  color: #030712;
+  box-shadow: 
+    0 0 25px rgba(6, 182, 212, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-cta-illuminated:hover {
+  background: linear-gradient(180deg, #22d3ee 0%, #06b6d4 100%);
+  box-shadow: 
+    0 0 35px rgba(6, 182, 212, 0.65),
+    0 0 15px rgba(255, 255, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transform: translateY(-1px);
+}
+
+/* Controlled Ambient Cyan Illuminations */
+.glow-cyan-soft {
+  box-shadow: 0 0 35px -5px rgba(6, 182, 212, 0.25);
+}
+
+.glow-cyan-strong {
+  box-shadow: 0 0 50px -5px rgba(6, 182, 212, 0.45);
+}
+
+.border-cyan-illuminated {
+  border: 1px solid rgba(6, 182, 212, 0.35);
+  box-shadow: inset 0 1px 0 0 rgba(6, 182, 212, 0.3), 0 0 20px -3px rgba(6, 182, 212, 0.15);
+}
+
+/* High-contrast smooth focus ring controls */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: rgba(6, 182, 212, 0.6) !important;
+  box-shadow: 0 0 0 1px rgba(6, 182, 212, 0.6), 0 0 25px rgba(6, 182, 212, 0.2) !important;
+}
+
+/* Precision Enterprise scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #030508;
+}
+::-webkit-scrollbar-thumb {
+  background: #151a24;
+  border-radius: 3px;
+  border: 1px solid rgba(6, 182, 212, 0.15);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0891b2;
+}

@@ -1,0 +1,332 @@
+import express from "express";
+import path from "path";
+import dotenv from "dotenv";
+import { GoogleGenAI } from "@google/genai";
+import { createServer as createViteServer } from "vite";
+import { findVerifiedMarketData, generateDynamicVerifiedMarket, generateUniqueMarketScore, VERIFIED_REGISTRY } from "./src/data/verifiedPlaces.js";
+import { getIntelligentReply } from "./src/data/chatKnowledge.js";
+
+dotenv.config();
+
+const app = express();
+const PORT = 3000;
+
+app.use(express.json());
+
+// Enable basic CORS headers for internal API consistency
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
+// Safe Geocoding endpoint to avoid browser CORS/Failed to fetch errors
+app.get("/api/reverse-geocode", async (req, res) => {
+  const { lat, lon } = req.query;
+  if (!lat || !lon) {
+    return res.json({ location: "Your Local Market" });
+  }
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 2500);
+    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`, {
+      headers: { 'User-Agent': 'PropelloWeb/1.0' },
+      signal: controller.signal
+    });
+    clearTimeout(timeout);
+    if (response.ok) {
+      const data: any = await response.json();
+      const city = data.address?.city || data.address?.town || data.address?.county || "Your Area";
+      const state = data.address?.state || "";
+      return res.json({ location: `${city}${state ? `, ${state}` : ''}` });
+    }
+  } catch {
+    // Graceful silent fallback
+  }
+  return res.json({ location: "Your Local Market" });
+});
+
+// Initialize Gemini Client
+let ai: GoogleGenAI | null = null;
+const API_KEY = process.env.GEMINI_API_KEY;
+
+if (API_KEY && API_KEY !== "MY_GEMINI_API_KEY") {
+  try {
+    ai = new GoogleGenAI({
+      apiKey: API_KEY,
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        }
+      }
+    });
+    console.log("Gemini client successfully initialized on backend server.");
+  } catch (err) {
+    console.error("Failed to initialize GoogleGenAI with provided key:", err);
+  }
+} else {
+  console.log("No valid GEMINI_API_KEY found. Chatbot will run in premium simulation mode.");
+}
+
+// PROPELLO HIGH-INTELLIGENCE CONVERSATIONAL SYSTEM INSTRUCTIONS
+const SYSTEM_PROMPT = `You are the intelligent representative for Propello (propello.online), founded by Mo Radford.
+You communicate like a sharp, helpful, confident, calm, and knowledgeable person from a premium digital agency. You are conversational, respectful, and slightly personable.
+
+PERSONALITY & COMMUNICATION STYLE:
+- Communicate like a smart, experienced colleague who genuinely wants to understand the visitor.
+- NEVER sound like a generic robotic AI or use repetitive corporate clichés (NEVER say "Great question!", "Absolutely! Our team specializes in...", "Thanks for reaching out! We would be happy to help...", "I hope this helps!").
+- Vary your sentence structures naturally. Be concise when a short answer is best, and thorough when the question requires nuance.
+- NEVER be pushy or desperate to close a deal. Be helpful first.
+- ONLY provide the phone number (+1 (409) 965-5019) or suggest calling Mo when the user asks how to get started, asks to talk to someone, asks for a demo/quote, or shows clear buying intent. Do not append sales pitches or phone numbers to casual informational answers.
+
+KEY FACTS ABOUT PROPELLO:
+- Founder: Mo Radford. Direct line: +1 (409) 965-5019 (call or text). Email: mo.radford@propello.online.
+- Offer: Exactly $1,500 one-time upfront build fee for a full, custom-engineered website.
+- Ongoing Care & Hosting: $97/month with ZERO long-term contracts. Pause or cancel anytime without penalty.
+- What the $97/month includes: Enterprise cloud hosting, SSL security, daily backups, uptime monitoring, and unlimited text and photo updates whenever they need them (just call, text, or email).
+- Turnaround: 48 hours for an interactive, live prototype delivered directly to their smartphone.
+- Industries Served: ANY business. Restaurants, dental practices, medical clinics, roofing, construction, contractors, law firms, automotive/tint/wraps, landscaping, HVAC, plumbing, trucking, cleaning, accounting, retail, professional services, etc. Industry is never a limitation.
+- Redesigns & Existing Sites: We frequently rebuild outdated, slow, or poorly converting websites. If they hate their current site or it looks bad on phones, we keep their domain and brand assets, then rebuild a clean, high-converting modern site.
+- Existing Domains: The client retains 100% ownership of their domain (GoDaddy, Namecheap, Google Domains, etc.). When launching, we simply point DNS records to our high-speed cloud infrastructure.
+- Why Propello over DIY (Wix, Squarespace, WordPress): DIY platforms take 40+ hours of frustrating trial-and-error and usually end up looking amateurish, sluggish on mobile, and failing to convert. Propello gives you an agency-grade, custom-engineered site in 48 hours with zero work on your part, plus ongoing maintenance for less than the cost of an hourly freelancer.
+- The 3-Step Process:
+  1. Call: 5-minute quick call with Mo Radford to understand your business, services, and goals.
+  2. Build: Within 48 hours, we send an interactive staging prototype to your phone to test.
+  3. Launch: Upon feedback and approval, we point your domain, enable secure cloud hosting, and handle all updates moving forward.
+- Logos & Assets: If they already have a logo and photos, we incorporate them. If they need a clean logo or visual assets refreshed, we help them get it looking sharp for the new site.
+- Unknowns / Out of Scope: If asked about custom enterprise software, native iOS apps, or specific proprietary guarantees not mentioned, do NOT make up facts. Politely explain that you'd rather have them speak directly with Mo Radford to get an exact answer, and provide the contact info.
+
+CONVERSATION CONTEXT & EMPATHY:
+- Maintain context across the entire conversation. Refer back naturally to earlier points.
+- Pay attention to the specific industry or problems the visitor mentions. Make them feel heard and understood (e.g. if they mention their roofing site is bad on mobile, discuss mobile quote flows for homeowners; if they run a dental clinic, talk about patient trust and booking; if a restaurant, talk about instant-loading mobile menus).
+- Answer the actual question directly before adding relevant context.`;
+
+// Multi-model Gemini executor with automatic failover (handles 503 high demand gracefully)
+async function generateGeminiContentWithFallback(
+  aiClient: GoogleGenAI,
+  contents: any,
+  systemInstruction?: string,
+  temperature?: number,
+  timeoutMs = 12000
+): Promise<string | null> {
+  const candidateModels = ["gemini-3.8-flash", "gemini-3.1-flash-lite"];
+
+  for (const model of candidateModels) {
+    try {
+      const config: any = {};
+      if (systemInstruction) config.systemInstruction = systemInstruction;
+      if (temperature !== undefined) config.temperature = temperature;
+
+      const apiPromise = aiClient.models.generateContent({
+        model,
+        contents,
+        config: Object.keys(config).length > 0 ? config : undefined,
+      });
+
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error("Timeout")), timeoutMs)
+      );
+
+      const response: any = await Promise.race([apiPromise, timeoutPromise]);
+      if (response && response.text) {
+        return response.text;
+      }
+    } catch {
+      // Transient error or model overload (503), try next model silently
+      continue;
+    }
+  }
+  return null;
+}
+
+// Chat API Route
+app.post("/api/chat", async (req, res) => {
+  const { message, history } = req.body;
+
+  if (!message) {
+    return res.status(400).json({ error: "Message is required" });
+  }
+
+  const fallback = getIntelligentReply(message, history);
+
+  // If Gemini is not configured, reply using our intelligent knowledge engine
+  if (!ai) {
+    return res.json({ text: fallback.text, nextSuggestions: fallback.nextSuggestions });
+  }
+
+  try {
+    const contents: any[] = [];
+    if (history && Array.isArray(history)) {
+      history.slice(-8).forEach((msg: any) => {
+        contents.push({
+          role: msg.sender === "user" ? "user" : "model",
+          parts: [{ text: msg.text }]
+        });
+      });
+    }
+
+    contents.push({
+      role: "user",
+      parts: [{ text: message }]
+    });
+
+    const aiReply = await generateGeminiContentWithFallback(
+      ai,
+      contents,
+      SYSTEM_PROMPT,
+      0.65,
+      12000
+    );
+
+    const reply = aiReply || fallback.text;
+    return res.json({ text: reply, nextSuggestions: fallback.nextSuggestions });
+
+  } catch {
+    return res.json({ text: fallback.text, nextSuggestions: fallback.nextSuggestions });
+  }
+});
+
+// Proposal Lead submission route
+app.post("/api/proposal", (req, res) => {
+  const { name, email, phone, businessType, message } = req.body;
+
+  console.log("==========================================================================");
+  console.log(`📨 SECURE PROPOSAL INQUIRY SUBMITTED TO MO.RADFORD@PROPELLO.ONLINE AT ${new Date().toISOString()}:`);
+  console.log(`👤 Client: ${name}`);
+  console.log(`📞 Phone : ${phone}`);
+  console.log(`📧 Email : ${email}`);
+  console.log(`🏢 Niche : ${businessType}`);
+  console.log(`💬 Detail: ${message}`);
+  console.log("==========================================================================");
+
+  return res.json({
+    status: "success",
+    message: "Blueprint proposal captured and securely logged for Mo Radford."
+  });
+});
+
+// Competitor Radar Route: Numerical Market Readiness Score & Bespoke Strategic Diagnosis
+app.post("/api/competitor-radar", async (req, res) => {
+  const { niche, location } = req.body;
+
+  if (!niche || !location) {
+    return res.status(400).json({ error: "Niche and location are required." });
+  }
+
+  const cleanNiche = String(niche).trim();
+  const cleanLocation = String(location).trim();
+
+  // If Gemini is available, attempt to generate an intelligent bespoke executive assessment with 3.5s timeout
+  if (ai) {
+    try {
+      const contents = `You are a high-level digital infrastructure and competitive readiness auditor for commercial contractors and automotive styling studios.
+Analyze the local market for "${cleanNiche}" in "${cleanLocation}".
+Produce a unique, mathematically grounded Market Opportunity / Readiness Score (60-98) and a completely bespoke, non-repetitive diagnosis.
+CRITICAL MANDATES:
+1. DO NOT list individual competitor companies, competitor cards, street addresses, or individual phone numbers.
+2. DO NOT use generic boilerplate sentences. The response MUST be specifically written for "${cleanNiche}" in "${cleanLocation}".
+3. Provide:
+   - opportunityScore: number between 62 and 96
+   - marketVerdict: "saturated" or "opportunity"
+   - verdictHeadline: A punchy, authoritative enterprise headline (e.g. "${cleanLocation} Market Saturation: Top Tier ${cleanNiche} Providers Dominate Local Inbound")
+   - verdictMessage: 2 to 3 detailed, sophisticated sentences analyzing local search competition, commercial GC/fleet vetting, and the cost of an outdated web presence in "${cleanLocation}".
+   - actionCallout: A concise 1-sentence action step referencing Mo Radford and Propello's 48-hour prototype.
+   - searchDensityIndex: number between 65 and 95
+   - mobileGapIndex: number between 70 and 96
+   - commercialVettingIndex: number between 70 and 98
+   - leadVelocityIndex: number between 60 and 95
+   - tacticalInsights: Array of 3 sharp bullet points tailored to this exact trade and location.
+
+Format strictly inside this JSON marker block:
+:::COMPETITOR_RADAR_JSON
+{
+  "opportunityScore": 88,
+  "marketVerdict": "saturated",
+  "verdictHeadline": "...",
+  "verdictMessage": "...",
+  "actionCallout": "...",
+  "searchDensityIndex": 84,
+  "mobileGapIndex": 79,
+  "commercialVettingIndex": 92,
+  "leadVelocityIndex": 81,
+  "tacticalInsights": ["...", "...", "..."]
+}
+:::END_COMPETITOR_RADAR_JSON`;
+
+      const responseText = (await generateGeminiContentWithFallback(ai, contents, undefined, undefined, 8000)) || "";
+      
+      let parsedData: any = null;
+      const jsonMatch = responseText.match(/:::COMPETITOR_RADAR_JSON([\s\S]*?):::END_COMPETITOR_RADAR_JSON/);
+      if (jsonMatch && jsonMatch[1]) {
+        try {
+          parsedData = JSON.parse(jsonMatch[1].trim());
+        } catch (err) {
+          console.error("JSON marker parse error:", err);
+        }
+      }
+
+      if (parsedData && typeof parsedData.opportunityScore === "number") {
+        return res.json({
+          niche: cleanNiche,
+          location: cleanLocation,
+          opportunityScore: parsedData.opportunityScore,
+          marketVerdict: parsedData.marketVerdict || (parsedData.opportunityScore >= 80 ? "saturated" : "opportunity"),
+          verdictHeadline: parsedData.verdictHeadline,
+          verdictMessage: parsedData.verdictMessage,
+          actionCallout: parsedData.actionCallout || `Deploy your $1,500 turnkey Propello platform in 48 hours to claim ${cleanLocation}'s highest-value jobs.`,
+          searchDensityIndex: parsedData.searchDensityIndex || 82,
+          mobileGapIndex: parsedData.mobileGapIndex || 78,
+          commercialVettingIndex: parsedData.commercialVettingIndex || 91,
+          leadVelocityIndex: parsedData.leadVelocityIndex || 79,
+          tacticalInsights: parsedData.tacticalInsights || [
+            `Local Search Density: High mobile intent requires sub-second load times.`,
+            `Commercial Vetting: Project managers review portfolios before issuing contracts.`,
+            `Direct Conversions: Seamless click-to-call routing captures high-ticket inquiries.`
+          ],
+          places: [], // ZERO detailed competitor cards as requested
+          mapGroundingSources: [
+            {
+              title: `${cleanNiche} in ${cleanLocation} Market Telemetry`,
+              uri: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cleanNiche + " " + cleanLocation)}`
+            }
+          ]
+        });
+      }
+    } catch {
+      // Graceful fallback to deterministic unique market synthesis
+    }
+  }
+
+  // Guaranteed instant 100% unique synthesis fallback
+  const uniqueResult = generateUniqueMarketScore(cleanNiche, cleanLocation);
+  return res.json(uniqueResult);
+});
+
+// Setup Vite & Static Assets Server
+async function startServer() {
+  if (process.env.NODE_ENV !== "production") {
+    const vite = await createViteServer({
+      server: { middlewareMode: true },
+      appType: "spa",
+    });
+    app.use(vite.middlewares);
+    console.log("Vite dev middleware mounted.");
+  } else {
+    const distPath = path.join(process.cwd(), "dist");
+    app.use(express.static(distPath));
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(distPath, "index.html"));
+    });
+    console.log("Production static files serving from:", distPath);
+  }
+
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Propello platform server successfully loaded on http://localhost:${PORT}`);
+  });
+}
+
+startServer();

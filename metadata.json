@@ -1,0 +1,10 @@
+{
+  "name": "Propello",
+  "description": "High-quality websites built for businesses of all kinds. 48-hour live mobile prototype, transparent $1,500 build with zero agency lock-in contracts.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
