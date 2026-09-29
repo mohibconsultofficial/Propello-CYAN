@@ -3,9 +3,10 @@ import PropelloLogo from './PropelloLogo';
 
 interface FooterProps {
   onScrollToSection: (id: string) => void;
+  onNavigateToPayment?: () => void;
 }
 
-export default function Footer({ onScrollToSection }: FooterProps) {
+export default function Footer({ onScrollToSection, onNavigateToPayment }: FooterProps) {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -68,6 +69,17 @@ export default function Footer({ onScrollToSection }: FooterProps) {
                   className="hover:text-cyan-300 transition-colors cursor-pointer"
                 >
                   About Propello
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    if (onNavigateToPayment) onNavigateToPayment();
+                    else window.location.href = '/payment-details';
+                  }}
+                  className="text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer"
+                >
+                  Payment Details
                 </button>
               </li>
             </ul>

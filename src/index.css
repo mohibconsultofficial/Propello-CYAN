@@ -294,3 +294,60 @@ input:focus, textarea:focus, select:focus {
 ::-webkit-scrollbar-thumb:hover {
   background: #0891b2;
 }
+
+/* =========================================================================
+   LUXURY FINTECH & PAYMENT DETAILS ENGINE STYLING
+   ========================================================================= */
+
+@keyframes pulseRedBeacon {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.75);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 7px rgba(239, 68, 68, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.animate-pulse-red-beacon {
+  animation: pulseRedBeacon 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulseCrimsonGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px -2px rgba(239, 68, 68, 0.22);
+    border-color: rgba(239, 68, 68, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 32px -2px rgba(239, 68, 68, 0.38);
+    border-color: rgba(239, 68, 68, 0.55);
+  }
+}
+
+.animate-pulse-crimson-glow {
+  animation: pulseCrimsonGlow 3.5s ease-in-out infinite;
+}
+
+@keyframes bankCardEntrance {
+  0% {
+    transform: translateY(14px) scaleY(0.97);
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(0) scaleY(1);
+    opacity: 1;
+  }
+}
+
+.animate-bank-card-entrance {
+  animation: bankCardEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.tabular-nums-fintech {
+  font-variant-numeric: tabular-nums;
+}

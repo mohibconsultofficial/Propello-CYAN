@@ -98,6 +98,15 @@ KEY FACTS ABOUT PROPELLO:
   2. Build: Within 48 hours, we send an interactive staging prototype to your phone to test.
   3. Launch: Upon feedback and approval, we point your domain, enable secure cloud hosting, and handle all updates moving forward.
 - Logos & Assets: If they already have a logo and photos, we incorporate them. If they need a clean logo or visual assets refreshed, we help them get it looking sharp for the new site.
+- Official Payment & Bank Transfer Details:
+  * Beneficiary Name: Propello
+  * Account Type: CHECKING
+  * Bank Name: Citibank
+  * Routing Number: 031100209
+  * Account Number: 70588200002651459
+  * Bank Address: 111 Wall Street New York, NY 10043 USA
+  * SWIFT Code: CITIUS33
+  * Compliance Rules: Business bank accounts ONLY (personal bank accounts are not accepted). Supported methods are ACH and domestic U.S. wire (Fedwire) only. Both ACH and Wire are equally supported. Domestic wire typically settles same-day; ACH typically takes 1-3 business days. For wire verification or questions, clients can call Mo Radford directly at +1 (409) 965-5019 or email mo.radford@propello.online.
 - Unknowns / Out of Scope: If asked about custom enterprise software, native iOS apps, or specific proprietary guarantees not mentioned, do NOT make up facts. Politely explain that you'd rather have them speak directly with Mo Radford to get an exact answer, and provide the contact info.
 
 CONVERSATION CONTEXT & EMPATHY:

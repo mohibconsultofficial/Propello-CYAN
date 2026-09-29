@@ -19,6 +19,35 @@ export function getIntelligentReply(query: string, history: ChatHistoryItem[] = 
 
   // 1. BUYING INTENT / CONTACT / SPEAK TO SOMEONE
   if (
+    q.includes("bank") ||
+    q.includes("wire") ||
+    q.includes("citibank") ||
+    q.includes("routing") ||
+    q.includes("swift") ||
+    q.includes("account number") ||
+    q.includes("ach") ||
+    q.includes("payment detail") ||
+    q.includes("transfer")
+  ) {
+    if (q.includes("ach") && q.includes("wire")) {
+      return {
+        text: "Both ACH and domestic U.S. wire (Fedwire) transfers are fully supported for Propello payments. Domestic wire transfers typically settle the same business day within hours, while ACH transfers typically settle within 1 to 3 business days. Note that payments must be sent from a business bank account (personal accounts cannot be accepted).",
+        nextSuggestions: ["What is the routing number?", "Can I verify with Mo Radford?", "View full payment details"]
+      };
+    }
+    if (q.includes("personal") || q.includes("business account")) {
+      return {
+        text: "Transfers can only be received from business bank accounts. Due to banking and accounting compliance, personal bank accounts are not accepted.",
+        nextSuggestions: ["What methods are supported?", "How fast does domestic wire settle?", "Call Mo Radford"]
+      };
+    }
+    return {
+      text: "Propello receives client payments via Citibank through ACH or domestic U.S. wire (Fedwire) exclusively from business accounts. The beneficiary name is Propello (Checking Account), Bank: Citibank, Routing Number: 031100209, Account Number: 70588200002651459, SWIFT: CITIUS33, Bank Address: 111 Wall Street New York, NY 10043 USA.\n\nYou can access our dedicated Payment Details page or call founder Mo Radford directly at +1 (409) 965-5019 if you'd like verbal verification.",
+      nextSuggestions: ["How long does a wire take?", "Are personal accounts accepted?", "Call Mo Radford"]
+    };
+  }
+
+  if (
     q.includes("talk to someone") || 
     q.includes("speak with someone") || 
     q.includes("call someone") || 

@@ -1,5 +1,5 @@
 import { Phone, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AmbientBackground from './components/AmbientBackground';
 import PropelloLogo from './components/PropelloLogo';
 import Hero from './components/Hero';
@@ -10,17 +10,74 @@ import About from './components/About';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import AIChatbot from './components/AIChatbot';
+import PaymentDetails from './components/PaymentDetails';
 
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const getInitialRoute = () => {
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname.toLowerCase();
+      if (path === '/payment-details' || path === '/payment' || path.startsWith('/payment-details') || path.startsWith('/payment')) {
+        return '/payment-details';
+      }
+    }
+    return '/';
+  };
+
+  const [currentRoute, setCurrentRoute] = useState<string>(getInitialRoute);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname.toLowerCase();
+      if (path === '/payment-details' || path === '/payment' || path.startsWith('/payment-details') || path.startsWith('/payment')) {
+        setCurrentRoute('/payment-details');
+      } else {
+        setCurrentRoute('/');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const navigateTo = (path: string) => {
+    setMobileMenuOpen(false);
+    if (path === '/payment-details' || path === '/payment') {
+      window.history.pushState({}, '', '/payment-details');
+      setCurrentRoute('/payment-details');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      window.history.pushState({}, '', '/');
+      setCurrentRoute('/');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   const handleScrollTo = (id: string) => {
     setMobileMenuOpen(false);
+    if (currentRoute !== '/') {
+      window.history.pushState({}, '', '/');
+      setCurrentRoute('/');
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 50);
+      return;
+    }
+
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  // Dedicated standalone page route for /payment-details (or /payment)
+  if (currentRoute === '/payment-details') {
+    return <PaymentDetails onNavigateHome={() => navigateTo('/')} />;
+  }
 
   return (
     <div className="min-h-screen bg-[#030508] text-zinc-100 relative font-sans selection:bg-cyan-500 selection:text-slate-950">
@@ -66,6 +123,12 @@ export default function App() {
                 className="hover:text-white transition-colors cursor-pointer"
               >
                 About
+              </button>
+              <button
+                onClick={() => navigateTo('/payment-details')}
+                className="text-cyan-400 hover:text-cyan-300 font-medium transition-colors cursor-pointer"
+              >
+                Payment Details
               </button>
             </nav>
 
@@ -129,6 +192,12 @@ export default function App() {
             >
               About
             </button>
+            <button
+              onClick={() => navigateTo('/payment-details')}
+              className="block w-full text-left py-2 text-cyan-400 hover:text-cyan-300 font-medium"
+            >
+              Payment Details
+            </button>
             <div className="pt-3 border-t border-white/[0.08]">
               <a
                 href="tel:+14099655019"
@@ -164,7 +233,10 @@ export default function App() {
       </main>
 
       {/* 7. FOOTER */}
-      <Footer onScrollToSection={handleScrollTo} />
+      <Footer 
+        onScrollToSection={handleScrollTo} 
+        onNavigateToPayment={() => navigateTo('/payment-details')}
+      />
 
       {/* Interactive Ambient AI Assistant */}
       <AIChatbot />
