@@ -19,7 +19,7 @@ export default function Hero({ onScrollToOffer }: HeroProps) {
         <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 relative border-x border-white/[0.04]">
           <div className="absolute top-8 left-4 text-[9px] font-mono text-cyan-400/40 uppercase tracking-widest hidden sm:flex items-center gap-1.5">
             <span className="w-1 h-1 rounded-full bg-cyan-400 animate-ping" />
-            PROPELLO DIGITAL
+            PROPELLO.ONLINE
           </div>
           <div className="absolute top-8 right-4 text-[9px] font-mono text-zinc-500 uppercase tracking-widest hidden sm:block">
             DIRECT FOUNDER DEPLOYMENT

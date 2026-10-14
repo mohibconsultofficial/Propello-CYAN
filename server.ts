@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import dotenv from "dotenv";
 import { GoogleGenAI } from "@google/genai";
 import { createServer as createViteServer } from "vite";
@@ -22,6 +23,97 @@ app.use((req, res, next) => {
     return res.sendStatus(200);
   }
   next();
+});
+
+// Profile Persistence Store
+const PROFILE_FILE_PATH = path.resolve(process.cwd(), "data", "profile.json");
+
+const DEFAULT_PROFILE = {
+  fullName: "Auisha Jubeen",
+  email: "payments@propellonline.com",
+  industry: "IT services / Software, platform, and app development",
+  phone: "+92 3014286334",
+  businessName: "Propello",
+  website: "https://propello.online",
+  accountHolder: "Auisha Jubeen",
+  updatedAt: new Date().toISOString()
+};
+
+function readProfileFromDisk() {
+  try {
+    if (fs.existsSync(PROFILE_FILE_PATH)) {
+      const data = fs.readFileSync(PROFILE_FILE_PATH, "utf-8");
+      return JSON.parse(data);
+    }
+  } catch (err) {
+    console.warn("Failed to read profile from disk, returning default:", err);
+  }
+  return DEFAULT_PROFILE;
+}
+
+function writeProfileToDisk(profile: any) {
+  try {
+    const dir = path.dirname(PROFILE_FILE_PATH);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    fs.writeFileSync(PROFILE_FILE_PATH, JSON.stringify(profile, null, 2), "utf-8");
+    return true;
+  } catch (err) {
+    console.error("Failed to write profile to disk:", err);
+    return false;
+  }
+}
+
+// Profile API: GET current profile
+app.get("/api/profile", (req, res) => {
+  const profile = readProfileFromDisk();
+  return res.json({ success: true, profile, source: "server" });
+});
+
+// Profile API: PUT update profile
+app.put("/api/profile", (req, res) => {
+  const incoming = req.body;
+  if (!incoming || typeof incoming !== "object") {
+    return res.status(400).json({ success: false, error: "Invalid profile data format" });
+  }
+
+  // Validate required fields
+  const fullName = String(incoming.fullName || "").trim();
+  const email = String(incoming.email || "").trim();
+  const phone = String(incoming.phone || "").trim();
+  const industry = String(incoming.industry || "").trim();
+  const businessName = String(incoming.businessName || "").trim();
+  const website = String(incoming.website || "").trim();
+
+  if (!fullName || !email || !phone || !industry) {
+    return res.status(400).json({ success: false, error: "Full name, email, phone, and industry are required." });
+  }
+
+  // Basic email validation regex
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ success: false, error: "Please provide a valid email address." });
+  }
+
+  const updatedProfile = {
+    fullName,
+    email,
+    phone,
+    industry,
+    businessName: businessName || "Propello",
+    website: website || "https://propello.online",
+    accountHolder: fullName,
+    updatedAt: new Date().toISOString()
+  };
+
+  const written = writeProfileToDisk(updatedProfile);
+  return res.json({ 
+    success: true, 
+    profile: updatedProfile, 
+    persisted: written,
+    message: "Profile updated successfully on Propello server." 
+  });
 });
 
 // Safe Geocoding endpoint to avoid browser CORS/Failed to fetch errors
@@ -72,7 +164,7 @@ if (API_KEY && API_KEY !== "MY_GEMINI_API_KEY") {
   console.log("No valid GEMINI_API_KEY found. Chatbot will run in premium simulation mode.");
 }
 
-// PROPELLO HIGH-INTELLIGENCE CONVERSATIONAL SYSTEM INSTRUCTIONS
+// PROPELLO.ONLINE HIGH-INTELLIGENCE CONVERSATIONAL SYSTEM INSTRUCTIONS
 const SYSTEM_PROMPT = `You are the intelligent representative for Propello (propello.online), founded by Mo Radford.
 You communicate like a sharp, helpful, confident, calm, and knowledgeable person from a premium digital agency. You are conversational, respectful, and slightly personable.
 
@@ -83,8 +175,8 @@ PERSONALITY & COMMUNICATION STYLE:
 - NEVER be pushy or desperate to close a deal. Be helpful first.
 - ONLY provide the phone number (+1 (409) 965-5019) or suggest calling Mo when the user asks how to get started, asks to talk to someone, asks for a demo/quote, or shows clear buying intent. Do not append sales pitches or phone numbers to casual informational answers.
 
-KEY FACTS ABOUT PROPELLO:
-- Founder: Mo Radford. Direct line: +1 (409) 965-5019 (call or text). Email: mo.radford@propello.online.
+KEY FACTS ABOUT PROPELLO.ONLINE:
+- Founder: Mo Radford. Direct line: +1 (409) 965-5019 (call or text). Email: mo.radford@propellonline.com.
 - Offer: Exactly $1,500 one-time upfront build fee for a full, custom-engineered website.
 - Ongoing Care & Hosting: $97/month with ZERO long-term contracts. Pause or cancel anytime without penalty.
 - What the $97/month includes: Enterprise cloud hosting, SSL security, daily backups, uptime monitoring, and unlimited text and photo updates whenever they need them (just call, text, or email).
@@ -99,14 +191,14 @@ KEY FACTS ABOUT PROPELLO:
   3. Launch: Upon feedback and approval, we point your domain, enable secure cloud hosting, and handle all updates moving forward.
 - Logos & Assets: If they already have a logo and photos, we incorporate them. If they need a clean logo or visual assets refreshed, we help them get it looking sharp for the new site.
 - Official Payment & Bank Transfer Details:
-  * Beneficiary Name: Propello
+  * Beneficiary Name: Auisha Jubeen
   * Account Type: CHECKING
   * Bank Name: Citibank
   * Routing Number: 031100209
-  * Account Number: 70588200002651459
-  * Bank Address: 111 Wall Street New York, NY 10043 USA
+  * Account Number: 70580410002685339
+  * Bank Address: 111 Wall Street, New York, NY 10043, USA
   * SWIFT Code: CITIUS33
-  * Compliance Rules: Business bank accounts ONLY (personal bank accounts are not accepted). Supported methods are ACH and domestic U.S. wire (Fedwire) only. Both ACH and Wire are equally supported. Domestic wire typically settles same-day; ACH typically takes 1-3 business days. For wire verification or questions, clients can call Mo Radford directly at +1 (409) 965-5019 or email mo.radford@propello.online.
+  * Compliance Rules: Business bank accounts ONLY (personal bank accounts are not accepted). Supported methods are ACH and domestic U.S. wire (Fedwire) only. Both ACH and Wire are equally supported. Domestic wire typically settles same-day; ACH typically takes 1-3 business days. For wire verification or questions, clients can call Mo Radford directly at +1 (409) 965-5019 or email mo.radford@propellonline.com.
 - Unknowns / Out of Scope: If asked about custom enterprise software, native iOS apps, or specific proprietary guarantees not mentioned, do NOT make up facts. Politely explain that you'd rather have them speak directly with Mo Radford to get an exact answer, and provide the contact info.
 
 CONVERSATION CONTEXT & EMPATHY:
@@ -323,6 +415,22 @@ async function startServer() {
       appType: "spa",
     });
     app.use(vite.middlewares);
+
+    // Guaranteed SPA fallback in development mode for direct refresh on routes like /payment-details
+    app.use("*", async (req, res, next) => {
+      if (req.originalUrl.startsWith("/api")) {
+        return next();
+      }
+      try {
+        const url = req.originalUrl;
+        let template = fs.readFileSync(path.resolve(process.cwd(), "index.html"), "utf-8");
+        template = await vite.transformIndexHtml(url, template);
+        res.status(200).set({ "Content-Type": "text/html" }).end(template);
+      } catch (e) {
+        next(e);
+      }
+    });
+
     console.log("Vite dev middleware mounted.");
   } else {
     const distPath = path.join(process.cwd(), "dist");

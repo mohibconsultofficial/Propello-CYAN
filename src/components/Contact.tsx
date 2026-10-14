@@ -92,10 +92,10 @@ export default function Contact() {
           <p className="text-xs text-zinc-400 font-mono">
             Prefer to write first? Email us at{' '}
             <a
-              href="mailto:mo.radford@propello.online"
+              href="mailto:mo.radford@propellonline.com"
               className="text-zinc-300 hover:text-cyan-300 underline underline-offset-4 transition-colors"
             >
-              mo.radford@propello.online
+              mo.radford@propellonline.com
             </a>
           </p>
         </div>

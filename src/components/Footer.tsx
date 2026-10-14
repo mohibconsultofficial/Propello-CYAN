@@ -4,9 +4,10 @@ import PropelloLogo from './PropelloLogo';
 interface FooterProps {
   onScrollToSection: (id: string) => void;
   onNavigateToPayment?: () => void;
+  onNavigateToProfile?: () => void;
 }
 
-export default function Footer({ onScrollToSection, onNavigateToPayment }: FooterProps) {
+export default function Footer({ onScrollToSection, onNavigateToPayment, onNavigateToProfile }: FooterProps) {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -68,7 +69,7 @@ export default function Footer({ onScrollToSection, onNavigateToPayment }: Foote
                   onClick={() => onScrollToSection('about')}
                   className="hover:text-cyan-300 transition-colors cursor-pointer"
                 >
-                  About Propello
+                  About Propello.online
                 </button>
               </li>
               <li>
@@ -99,11 +100,11 @@ export default function Footer({ onScrollToSection, onNavigateToPayment }: Foote
                 <span className="font-mono">+1 (409) 965-5019</span>
               </a>
               <a 
-                href="mailto:mo.radford@propello.online" 
+                href="mailto:mo.radford@propellonline.com" 
                 className="flex items-center gap-2 hover:text-white transition-colors"
               >
                 <Mail className="w-3.5 h-3.5 text-zinc-400" />
-                <span>mo.radford@propello.online</span>
+                <span>mo.radford@propellonline.com</span>
               </a>
               <div className="pt-2 text-[11px] font-mono text-zinc-400">
                 48-Hour Live Mobile Delivery
@@ -113,10 +114,24 @@ export default function Footer({ onScrollToSection, onNavigateToPayment }: Foote
 
         </div>
 
+        {/* Barely visible small text heading for Account Profile */}
+        <div className="pt-6 pb-2 border-t border-white/[0.03]">
+          <h5
+            onClick={() => {
+              if (onNavigateToProfile) onNavigateToProfile();
+              else window.location.href = '/account/profile';
+            }}
+            className="text-[9px] font-mono uppercase tracking-widest text-zinc-800/60 hover:text-zinc-600 transition-colors cursor-pointer inline-block select-none"
+            title="Account Profile"
+          >
+            Account Profile
+          </h5>
+        </div>
+
         {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-zinc-400">
+        <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-zinc-400">
           <div>
-            © {new Date().getFullYear()} Propello. All rights reserved.
+            © {new Date().getFullYear()} Propello.online. All rights reserved.
           </div>
           <button
             onClick={scrollToTop}

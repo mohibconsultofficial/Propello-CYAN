@@ -12,7 +12,8 @@ import {
   Sparkles,
   ArrowLeft,
   Lock,
-  Landmark
+  Landmark,
+  UserCheck
 } from 'lucide-react';
 import PropelloLogo from './PropelloLogo';
 import { getIntelligentReply } from '../data/chatKnowledge';
@@ -23,29 +24,40 @@ interface BankField {
   value: string;
 }
 
-const BANK_FIELDS: BankField[] = [
-  { id: 'beneficiary', label: 'Beneficiary Name', value: 'Propello' },
-  { id: 'account_type', label: 'Account Type', value: 'CHECKING' },
-  { id: 'bank_name', label: 'Bank Name', value: 'Citibank' },
-  { id: 'routing', label: 'Routing Number', value: '031100209' },
-  { id: 'account_number', label: 'Account Number', value: '70588200002651459' },
-  { id: 'bank_address', label: 'Bank Address', value: '111 Wall Street New York, NY 10043 USA' },
-  { id: 'swift', label: 'SWIFT Code', value: 'CITIUS33' }
+const BANK_INFO_FIELDS: BankField[] = [
+  { id: 'bank_name', label: 'Bank name', value: 'Citibank' },
+  { id: 'bank_address', label: 'Bank address', value: '111 Wall Street, New York, NY 10043, USA' },
+  { id: 'routing', label: 'Routing (ABA)', value: '031100209' },
+  { id: 'swift', label: 'SWIFT code', value: 'CITIUS33' },
+  { id: 'account_type', label: 'Account type', value: 'CHECKING' }
 ];
 
-const FULL_COPY_BLOCK = `Beneficiary Name: Propello
-Account Type: CHECKING
-Bank Name: Citibank
-Bank Address: 111 Wall Street New York, NY 10043 USA
-Routing Number: 031100209
-Account Number: 70588200002651459
-SWIFT Code: CITIUS33`;
+const BENEFICIARY_INFO_FIELDS: BankField[] = [
+  { id: 'beneficiary', label: 'Beneficiary name', value: 'Auisha Jubeen' },
+  { id: 'account_number', label: 'Account number', value: '70580410002685339' }
+];
+
+const ALL_FIELDS = [...BANK_INFO_FIELDS, ...BENEFICIARY_INFO_FIELDS];
+
+const FULL_COPY_BLOCK = `Payment Details
+
+Bank Information
+- Bank name: Citibank
+- Bank address: 111 Wall Street, New York, NY 10043, USA
+- Routing (ABA): 031100209
+- SWIFT code: CITIUS33
+- Account type: CHECKING
+
+Beneficiary Information
+- Beneficiary name: Auisha Jubeen
+- Account number: 70580410002685339`;
 
 interface PaymentDetailsProps {
   onNavigateHome?: () => void;
+  onNavigateToProfile?: () => void;
 }
 
-export default function PaymentDetails({ onNavigateHome }: PaymentDetailsProps) {
+export default function PaymentDetails({ onNavigateHome, onNavigateToProfile }: PaymentDetailsProps) {
   // Track copied fields permanently (once copied, stays green forever)
   const [copiedMap, setCopiedMap] = useState<Record<string, boolean>>({});
   const [allCopied, setAllCopied] = useState(false);
@@ -108,7 +120,7 @@ export default function PaymentDetails({ onNavigateHome }: PaymentDetailsProps) 
     setAllCopied(true);
     // Mark ALL individual rows as copied so they stay permanently emerald green
     const newMap: Record<string, boolean> = {};
-    BANK_FIELDS.forEach((f) => {
+    ALL_FIELDS.forEach((f) => {
       newMap[f.id] = true;
     });
     setCopiedMap(newMap);
@@ -201,7 +213,7 @@ export default function PaymentDetails({ onNavigateHome }: PaymentDetailsProps) 
             </div>
 
             {/* Right: Action Group (Visit Main Website & Call Propello) */}
-            <div className="flex items-center gap-3 sm:gap-4">
+            <div className="flex items-center gap-2.5 sm:gap-4">
               <a
                 href="https://propello.online/"
                 target="_blank"
@@ -328,9 +340,16 @@ export default function PaymentDetails({ onNavigateHome }: PaymentDetailsProps) 
             </span>
           </div>
 
-          {/* Fields List */}
+          {/* ==================== SUBSECTION 1: BANK INFORMATION ==================== */}
+          <div className="bg-white/[0.02] px-6 py-3.5 border-b border-white/[0.07] flex items-center gap-2">
+            <Landmark className="w-4 h-4 text-cyan-400" />
+            <h3 className="text-xs font-mono uppercase tracking-wider text-zinc-200 font-semibold">
+              Bank Information
+            </h3>
+          </div>
+
           <div className="divide-y divide-white/[0.05]">
-            {BANK_FIELDS.map((field) => {
+            {BANK_INFO_FIELDS.map((field) => {
               const isCopied = !!copiedMap[field.id];
               return (
                 <div 
@@ -348,6 +367,66 @@ export default function PaymentDetails({ onNavigateHome }: PaymentDetailsProps) 
                   <div className="sm:w-2/3 flex items-center justify-between sm:justify-end gap-4">
                     <span 
                       className={`text-sm sm:text-base font-semibold [font-variant-numeric:tabular-nums] tracking-wide transition-colors ${
+                        isCopied ? 'text-[#10B981]' : 'text-white'
+                      }`}
+                    >
+                      {field.value}
+                    </span>
+
+                    <button
+                      onClick={() => handleCopySingle(field)}
+                      aria-label={`Copy ${field.label}`}
+                      className={`cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all duration-200 select-none ${
+                        isCopied 
+                          ? 'bg-[#10B981]/20 text-[#10B981] border border-[#10B981]/40 shadow-[0_0_12px_rgba(16,185,129,0.25)]' 
+                          : 'bg-white/[0.04] text-zinc-300 hover:text-white hover:bg-white/[0.08] border border-white/[0.08]'
+                      }`}
+                    >
+                      {isCopied ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-[#10B981]" />
+                          <span>Copied</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5 text-zinc-400" />
+                          <span>Copy</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* ==================== SUBSECTION 2: BENEFICIARY INFORMATION ==================== */}
+          <div className="bg-white/[0.02] px-6 py-3.5 border-t border-b border-white/[0.07] flex items-center gap-2">
+            <UserCheck className="w-4 h-4 text-cyan-400" />
+            <h3 className="text-xs font-mono uppercase tracking-wider text-zinc-200 font-semibold">
+              Beneficiary Information
+            </h3>
+          </div>
+
+          <div className="divide-y divide-white/[0.05]">
+            {BENEFICIARY_INFO_FIELDS.map((field) => {
+              const isCopied = !!copiedMap[field.id];
+              return (
+                <div 
+                  key={field.id}
+                  className="px-6 py-4 sm:py-4.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-white/[0.02] transition-colors"
+                >
+                  {/* Field Label */}
+                  <div className="sm:w-1/3">
+                    <span className="text-xs font-mono tracking-wide uppercase text-zinc-400">
+                      {field.label}
+                    </span>
+                  </div>
+
+                  {/* Value and Copy Button */}
+                  <div className="sm:w-2/3 flex items-center justify-between sm:justify-end gap-4">
+                    <span 
+                      className={`text-sm sm:text-base font-semibold font-mono tracking-wider break-all sm:break-normal [font-variant-numeric:tabular-nums] transition-colors ${
                         isCopied ? 'text-[#10B981]' : 'text-white'
                       }`}
                     >
@@ -461,10 +540,10 @@ export default function PaymentDetails({ onNavigateHome }: PaymentDetailsProps) 
 
           <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-zinc-400">
             <a 
-              href="mailto:mo.radford@propello.online" 
+              href="mailto:payments@propellonline.com" 
               className="hover:text-cyan-400 transition-colors"
             >
-              mo.radford@propello.online
+              payments@propellonline.com
             </a>
             <span className="text-zinc-700">•</span>
             <a 
@@ -476,6 +555,19 @@ export default function PaymentDetails({ onNavigateHome }: PaymentDetailsProps) 
           </div>
 
         </div>
+
+        {/* Barely visible small text heading for Account Profile */}
+        {onNavigateToProfile && (
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 text-center sm:text-left">
+            <h4
+              onClick={onNavigateToProfile}
+              className="text-[9px] font-mono uppercase tracking-widest text-zinc-800/60 hover:text-zinc-600 transition-colors cursor-pointer inline-block select-none"
+              title="Account Profile"
+            >
+              Account Profile
+            </h4>
+          </div>
+        )}
       </footer>
 
       {/* =========================================================================

@@ -68,8 +68,8 @@ export default function PropelloLogo({
       </div>
 
       {showWordmark && (
-        <span className={`font-display font-bold tracking-wider text-white ${textSizes[size]}`}>
-          PROPELLO
+        <span className={`font-display font-bold tracking-wider text-white whitespace-nowrap ${textSizes[size]}`}>
+          PROPELLO.ONLINE
         </span>
       )}
     </div>

@@ -11,44 +11,110 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import AIChatbot from './components/AIChatbot';
 import PaymentDetails from './components/PaymentDetails';
+import AccountProfile from './components/AccountProfile';
 
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const getInitialRoute = () => {
-    if (typeof window !== 'undefined') {
-      const path = window.location.pathname.toLowerCase();
-      if (path === '/payment-details' || path === '/payment' || path.startsWith('/payment-details') || path.startsWith('/payment')) {
-        return '/payment-details';
-      }
-    }
-    return '/';
+  const checkIsPaymentRoute = () => {
+    if (typeof window === 'undefined') return false;
+    const path = window.location.pathname.toLowerCase();
+    const hash = window.location.hash.toLowerCase();
+    const search = window.location.search.toLowerCase();
+
+    return (
+      path === '/payment-details' ||
+      path === '/payment-details/' ||
+      path === '/payment' ||
+      path === '/payment/' ||
+      path.endsWith('/payment-details') ||
+      path.endsWith('/payment-details/') ||
+      path.endsWith('/payment') ||
+      path.endsWith('/payment/') ||
+      hash === '#/payment-details' ||
+      hash === '#payment-details' ||
+      hash === '#/payment' ||
+      hash === '#payment' ||
+      search.includes('page=payment-details') ||
+      search.includes('page=payment')
+    );
   };
 
-  const [currentRoute, setCurrentRoute] = useState<string>(getInitialRoute);
+  const checkIsAccountRoute = () => {
+    if (typeof window === 'undefined') return false;
+    const path = window.location.pathname.toLowerCase();
+    const hash = window.location.hash.toLowerCase();
+    const search = window.location.search.toLowerCase();
+
+    return (
+      path === '/account/profile' ||
+      path === '/account/profile/' ||
+      path === '/account' ||
+      path === '/account/' ||
+      path === '/profile' ||
+      path === '/profile/' ||
+      path.endsWith('/account/profile') ||
+      path.endsWith('/account/profile/') ||
+      path.endsWith('/profile') ||
+      path.endsWith('/profile/') ||
+      hash === '#/account/profile' ||
+      hash === '#account/profile' ||
+      hash === '#/profile' ||
+      hash === '#profile' ||
+      search.includes('page=account-profile') ||
+      search.includes('page=profile')
+    );
+  };
+
+  const [currentRoute, setCurrentRoute] = useState<string>(() => {
+    if (checkIsAccountRoute()) return '/account/profile';
+    if (checkIsPaymentRoute()) return '/payment-details';
+    return '/';
+  });
 
   useEffect(() => {
-    const handlePopState = () => {
-      const path = window.location.pathname.toLowerCase();
-      if (path === '/payment-details' || path === '/payment' || path.startsWith('/payment-details') || path.startsWith('/payment')) {
+    const handleUrlChange = () => {
+      if (checkIsAccountRoute()) {
+        setCurrentRoute('/account/profile');
+      } else if (checkIsPaymentRoute()) {
         setCurrentRoute('/payment-details');
       } else {
         setCurrentRoute('/');
       }
     };
 
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    window.addEventListener('popstate', handleUrlChange);
+    window.addEventListener('hashchange', handleUrlChange);
+    return () => {
+      window.removeEventListener('popstate', handleUrlChange);
+      window.removeEventListener('hashchange', handleUrlChange);
+    };
   }, []);
 
   const navigateTo = (path: string) => {
     setMobileMenuOpen(false);
-    if (path === '/payment-details' || path === '/payment') {
-      window.history.pushState({}, '', '/payment-details');
+    if (path === '/account/profile' || path === '/profile' || path === '/account') {
+      try {
+        window.history.pushState({}, '', '/account/profile');
+      } catch {
+        window.location.hash = '/account/profile';
+      }
+      setCurrentRoute('/account/profile');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (path === '/payment-details' || path === '/payment') {
+      try {
+        window.history.pushState({}, '', '/payment-details');
+      } catch {
+        window.location.hash = '/payment-details';
+      }
       setCurrentRoute('/payment-details');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      window.history.pushState({}, '', '/');
+      try {
+        window.history.pushState({}, '', '/');
+      } catch {
+        window.location.hash = '';
+      }
       setCurrentRoute('/');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -74,9 +140,24 @@ export default function App() {
     }
   };
 
+  // Dedicated standalone page route for /account/profile
+  if (currentRoute === '/account/profile') {
+    return (
+      <AccountProfile 
+        onNavigateHome={() => navigateTo('/')} 
+        onNavigateToPayment={() => navigateTo('/payment-details')}
+      />
+    );
+  }
+
   // Dedicated standalone page route for /payment-details (or /payment)
   if (currentRoute === '/payment-details') {
-    return <PaymentDetails onNavigateHome={() => navigateTo('/')} />;
+    return (
+      <PaymentDetails 
+        onNavigateHome={() => navigateTo('/')} 
+        onNavigateToProfile={() => navigateTo('/account/profile')}
+      />
+    );
   }
 
   return (
@@ -225,7 +306,7 @@ export default function App() {
         {/* 4. TESTIMONIALS / PROOF */}
         <ReviewsWidget />
 
-        {/* 5. ABOUT PROPELLO */}
+        {/* 5. ABOUT PROPELLO.ONLINE */}
         <About />
 
         {/* 6. CONTACT / CALL CTA */}
@@ -236,6 +317,7 @@ export default function App() {
       <Footer 
         onScrollToSection={handleScrollTo} 
         onNavigateToPayment={() => navigateTo('/payment-details')}
+        onNavigateToProfile={() => navigateTo('/account/profile')}
       />
 
       {/* Interactive Ambient AI Assistant */}

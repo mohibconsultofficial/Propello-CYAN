@@ -15,7 +15,7 @@ export default function About() {
         <div className="max-w-3xl mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-950/40 text-cyan-300 text-xs font-mono tracking-wider uppercase mb-3 shadow-[0_0_15px_rgba(6,182,212,0.12)]">
             <UserCheck className="w-3.5 h-3.5 text-cyan-400" />
-            <span>ABOUT PROPELLO</span>
+            <span>ABOUT PROPELLO.ONLINE</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-display font-semibold text-white tracking-tight leading-tight">
             Websites built for businesses. Not agency committees.
@@ -75,11 +75,11 @@ export default function About() {
                 </a>
 
                 <a
-                  href="mailto:mo.radford@propello.online"
+                  href="mailto:mo.radford@propellonline.com"
                   className="w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 text-zinc-400 hover:text-white border border-white/[0.08] hover:border-white/[0.2] transition-colors text-xs font-mono"
                 >
                   <Mail className="w-3.5 h-3.5 text-zinc-400" />
-                  <span>mo.radford@propello.online</span>
+                  <span>mo.radford@propellonline.com</span>
                 </a>
               </div>
             </div>
