@@ -108,9 +108,9 @@ export default function HowItWorks() {
             href="tel:+14099655019"
             target="_top"
             rel="noopener noreferrer"
-            className="btn-cta-illuminated font-display font-semibold text-xs sm:text-sm rounded-lg px-7 py-3.5 flex items-center gap-2 shrink-0 cursor-pointer shadow-[0_0_20px_rgba(6,182,212,0.3)]"
+            className="btn-call-glowing font-display font-bold text-xs sm:text-sm rounded-xl px-7 py-3.5 flex items-center gap-2.5 shrink-0 cursor-pointer shadow-[0_0_30px_rgba(6,182,212,0.6)] group"
           >
-            <Phone className="w-4 h-4 fill-slate-950" />
+            <Phone className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:rotate-12 transition-transform" />
             <span>Call Now: +1 (409) 965-5019</span>
           </a>
         </div>

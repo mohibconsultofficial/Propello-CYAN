@@ -83,9 +83,11 @@ export default function Hero({ onScrollToOffer }: HeroProps) {
               target="_top"
               rel="noopener noreferrer"
               id="hero-call-cta"
-              className="btn-cta-illuminated font-display font-semibold text-sm rounded-lg px-8 py-4 flex items-center justify-center gap-2.5 cursor-pointer shadow-[0_0_25px_rgba(6,182,212,0.4)]"
+              className="btn-call-glowing font-display font-bold text-sm sm:text-base rounded-xl px-8 py-4 flex items-center justify-center gap-3 cursor-pointer shadow-[0_0_35px_rgba(6,182,212,0.65)] group"
             >
-              <Phone className="w-4 h-4 fill-slate-950" />
+              <div className="w-6 h-6 rounded-full bg-slate-950/20 flex items-center justify-center">
+                <Phone className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:rotate-12 transition-transform" />
+              </div>
               <span>Call Propello: +1 (409) 965-5019</span>
             </a>
 

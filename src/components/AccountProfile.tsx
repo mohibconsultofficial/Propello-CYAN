@@ -134,10 +134,19 @@ export default function AccountProfile({ onNavigateHome, onNavigateToPayment }: 
                 href="https://propello.online/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-400 hover:text-cyan-300 transition-colors py-2 px-3 rounded-lg border border-transparent hover:border-white/[0.08]"
+                className="hidden md:inline-flex items-center gap-1.5 text-xs font-mono text-zinc-400 hover:text-cyan-300 transition-colors py-2 px-3 rounded-lg border border-transparent hover:border-white/[0.08]"
               >
                 <span>Visit Main Website</span>
                 <ExternalLink className="w-3.5 h-3.5 text-zinc-500" />
+              </a>
+
+              <a
+                href="tel:+14099655019"
+                className="btn-call-glowing text-xs font-display font-bold px-3.5 py-2 rounded-lg flex items-center gap-1.5 cursor-pointer shadow-[0_0_20px_rgba(6,182,212,0.6)]"
+              >
+                <Phone className="w-3.5 h-3.5 fill-slate-950 text-slate-950" />
+                <span className="hidden sm:inline">Call:</span>
+                <span>+1 (409) 965-5019</span>
               </a>
             </div>
 

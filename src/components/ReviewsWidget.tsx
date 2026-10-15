@@ -138,9 +138,9 @@ export default function ReviewsWidget() {
             href="tel:+14099655019"
             target="_top"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-lg border border-white/[0.12] hover:border-cyan-400/50 bg-zinc-950/80 hover:bg-zinc-900 text-zinc-200 hover:text-white transition-all text-xs font-mono group cursor-pointer shadow-sm"
+            className="btn-call-glowing inline-flex items-center gap-2.5 px-8 py-3.5 rounded-xl text-xs sm:text-sm font-display font-bold text-slate-950 transition-all cursor-pointer shadow-[0_0_35px_rgba(6,182,212,0.65)] group"
           >
-            <Phone className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
+            <Phone className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:rotate-12 transition-transform" />
             <span>Speak with Founder Mo Radford: +1 (409) 965-5019</span>
           </a>
         </div>

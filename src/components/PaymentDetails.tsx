@@ -6,17 +6,13 @@ import {
   ShieldCheck, 
   Building2, 
   ExternalLink, 
-  MessageSquare, 
   X, 
-  Send, 
-  Sparkles,
   ArrowLeft,
   Lock,
   Landmark,
   UserCheck
 } from 'lucide-react';
 import PropelloLogo from './PropelloLogo';
-import { getIntelligentReply } from '../data/chatKnowledge';
 
 interface BankField {
   id: string;
@@ -62,23 +58,6 @@ export default function PaymentDetails({ onNavigateHome, onNavigateToProfile }: 
   const [copiedMap, setCopiedMap] = useState<Record<string, boolean>>({});
   const [allCopied, setAllCopied] = useState(false);
 
-  // Floating AI Concierge state
-  const [isConciergeOpen, setIsConciergeOpen] = useState(false);
-  const [conciergeInput, setConciergeInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const [conciergeMessages, setConciergeMessages] = useState<Array<{ sender: 'bot' | 'user'; text: string }>>([
-    {
-      sender: 'bot',
-      text: "Hello! I’m the Propello Transfer Concierge. I can help answer questions regarding our Citibank routing, ACH vs. Fedwire settlement times, or connect you directly with founder Mo Radford for wire verification."
-    }
-  ]);
-
-  const conciergeSuggestions = [
-    "What is the difference between ACH and Wire?",
-    "How long does domestic wire transfer take?",
-    "Can I pay from a personal bank account?",
-    "How do I verify these wire instructions with Mo Radford?"
-  ];
 
   const safeCopyToClipboard = async (text: string) => {
     try {
@@ -126,48 +105,6 @@ export default function PaymentDetails({ onNavigateHome, onNavigateToProfile }: 
     setCopiedMap(newMap);
   };
 
-  const handleSendConcierge = async (textToSend: string) => {
-    const trimmed = textToSend.trim();
-    if (!trimmed) return;
-
-    const userMsg = { sender: 'user' as const, text: trimmed };
-    const nextHistory = [...conciergeMessages, userMsg];
-    setConciergeMessages(nextHistory);
-    setConciergeInput('');
-    setIsTyping(true);
-
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 12000);
-
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: trimmed,
-          history: nextHistory.map((m) => ({ sender: m.sender, text: m.text }))
-        }),
-        signal: controller.signal
-      });
-      clearTimeout(timeoutId);
-
-      if (response.ok) {
-        const data = await response.json();
-        setIsTyping(false);
-        setConciergeMessages((prev) => [
-          ...prev,
-          { sender: 'bot', text: data.text || "For direct wire verification, please contact Mo Radford at +1 (409) 965-5019." }
-        ]);
-        return;
-      }
-    } catch {
-      // Fallback
-    }
-
-    setIsTyping(false);
-    const fallback = getIntelligentReply(trimmed, nextHistory);
-    setConciergeMessages((prev) => [...prev, { sender: 'bot', text: fallback.text }]);
-  };
 
   return (
     <div className="min-h-screen bg-[#080B10] text-zinc-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden">
@@ -226,9 +163,9 @@ export default function PaymentDetails({ onNavigateHome, onNavigateToProfile }: 
 
               <a
                 href="tel:+14099655019"
-                className="btn-cta-illuminated text-xs font-display font-semibold px-4 py-2.5 rounded-lg flex items-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(0,240,255,0.25)]"
+                className="btn-call-glowing text-xs font-display font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 cursor-pointer shadow-[0_0_25px_rgba(6,182,212,0.6)]"
               >
-                <Phone className="w-3.5 h-3.5 fill-slate-950" />
+                <Phone className="w-3.5 h-3.5 fill-slate-950 text-slate-950" />
                 <span className="hidden sm:inline">Call Propello:</span>
                 <span>+1 (409) 965-5019</span>
               </a>
@@ -504,9 +441,9 @@ export default function PaymentDetails({ onNavigateHome, onNavigateToProfile }: 
             <div className="mt-5">
               <a
                 href="tel:+14099655019"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-cyan-500/40 bg-cyan-950/40 text-cyan-300 hover:text-white hover:bg-cyan-900/50 hover:border-cyan-400 text-xs font-display font-semibold transition-all shadow-[0_0_15px_rgba(0,240,255,0.15)]"
+                className="btn-call-glowing inline-flex items-center gap-2.5 px-6 py-3 rounded-xl text-slate-950 font-display font-bold text-xs sm:text-sm transition-all shadow-[0_0_30px_rgba(6,182,212,0.6)] cursor-pointer group"
               >
-                <Phone className="w-3.5 h-3.5 fill-cyan-400" />
+                <Phone className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:rotate-12 transition-transform" />
                 <span>Call Propello: +1 (409) 965-5019</span>
               </a>
             </div>
@@ -569,139 +506,6 @@ export default function PaymentDetails({ onNavigateHome, onNavigateToProfile }: 
           </div>
         )}
       </footer>
-
-      {/* =========================================================================
-          H. FLOATING AI CONCIERGE (BOTTOM RIGHT)
-          Pre-loaded with Citibank transfer routing, ACH vs wire settlement, and Mo Radford contact info
-          ========================================================================= */}
-      <div className="fixed bottom-6 right-6 z-50">
-        {!isConciergeOpen ? (
-          <button
-            onClick={() => setIsConciergeOpen(true)}
-            aria-label="Open AI Payment Assistant"
-            className="flex items-center gap-2.5 px-4 py-3 rounded-full bg-[#0A0E15] border border-cyan-500/40 text-cyan-300 hover:text-white hover:border-cyan-400 shadow-[0_0_25px_rgba(0,240,255,0.3)] transition-all transform hover:scale-105 cursor-pointer font-display text-xs font-semibold group"
-          >
-            <div className="relative">
-              <Sparkles className="w-4 h-4 text-cyan-400 group-hover:rotate-12 transition-transform" />
-              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-            </div>
-            <span>Payment Assistance Concierge</span>
-          </button>
-        ) : (
-          <div className="w-[92vw] sm:w-[380px] h-[520px] rounded-2xl bg-[#0A0E15] border border-cyan-500/35 shadow-[0_20px_60px_rgba(0,0,0,0.85)] flex flex-col overflow-hidden animate-bank-card-entrance">
-            
-            {/* Concierge Header */}
-            <div className="px-5 py-4 bg-zinc-950 border-b border-white/[0.08] flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-cyan-950/80 border border-cyan-500/30 flex items-center justify-center">
-                  <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                </div>
-                <div>
-                  <div className="text-xs font-display font-bold text-white">Payment Concierge</div>
-                  <div className="text-[10px] font-mono text-cyan-400/90 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block animate-pulse" />
-                    Citibank Routing Specialist
-                  </div>
-                </div>
-              </div>
-
-              <button
-                onClick={() => setIsConciergeOpen(false)}
-                className="p-1.5 text-zinc-400 hover:text-white rounded-lg hover:bg-white/[0.05] transition-colors"
-                aria-label="Close Concierge"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Concierge Messages Scroll Area */}
-            <div className="flex-1 p-4 overflow-y-auto space-y-3.5 text-xs font-sans">
-              {conciergeMessages.map((msg, idx) => (
-                <div 
-                  key={idx}
-                  className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div 
-                    className={`max-w-[85%] rounded-xl px-3.5 py-2.5 leading-relaxed ${
-                      msg.sender === 'user'
-                        ? 'bg-cyan-500 text-slate-950 font-medium'
-                        : 'bg-white/[0.04] text-zinc-200 border border-white/[0.06]'
-                    }`}
-                  >
-                    {msg.text}
-                  </div>
-                </div>
-              ))}
-
-              {isTyping && (
-                <div className="flex justify-start">
-                  <div className="bg-white/[0.04] rounded-xl px-3.5 py-2.5 text-zinc-400 flex items-center gap-1.5 border border-white/[0.06]">
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce [animation-delay:0.2s]" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce [animation-delay:0.4s]" />
-                  </div>
-                </div>
-              )}
-
-              {/* Preloaded suggestion pills */}
-              <div className="pt-2">
-                <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 mb-2">
-                  Common Transfer Questions:
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  {conciergeSuggestions.map((sug, i) => (
-                    <button
-                      key={i}
-                      onClick={() => handleSendConcierge(sug)}
-                      className="text-left px-2.5 py-1.5 rounded-lg bg-white/[0.02] hover:bg-cyan-950/40 border border-white/[0.06] hover:border-cyan-500/30 text-zinc-300 hover:text-cyan-300 text-[11px] transition-colors cursor-pointer"
-                    >
-                      {sug}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Direct Verification Call Strip */}
-            <div className="px-4 py-2 bg-cyan-950/30 border-t border-cyan-500/20 flex items-center justify-between text-[11px]">
-              <span className="text-zinc-400">Direct wire verification:</span>
-              <a 
-                href="tel:+14099655019" 
-                className="text-cyan-300 hover:text-cyan-200 font-semibold flex items-center gap-1"
-              >
-                <Phone className="w-3 h-3" />
-                <span>+1 (409) 965-5019</span>
-              </a>
-            </div>
-
-            {/* Input area */}
-            <form 
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSendConcierge(conciergeInput);
-              }}
-              className="p-3 bg-zinc-950 border-t border-white/[0.08] flex items-center gap-2"
-            >
-              <input
-                type="text"
-                value={conciergeInput}
-                onChange={(e) => setConciergeInput(e.target.value)}
-                placeholder="Ask about routing, wire timelines..."
-                className="flex-1 bg-white/[0.03] border border-white/[0.1] rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-cyan-400"
-              />
-              <button
-                type="submit"
-                disabled={!conciergeInput.trim()}
-                className="p-2 rounded-xl bg-cyan-500 text-slate-950 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-cyan-400 transition-colors"
-                aria-label="Send message"
-              >
-                <Send className="w-3.5 h-3.5" />
-              </button>
-            </form>
-
-          </div>
-        )}
-      </div>
 
     </div>
   );

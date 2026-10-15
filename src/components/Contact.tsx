@@ -62,10 +62,12 @@ export default function Contact() {
               href="tel:+14099655019"
               target="_top"
               rel="noopener noreferrer"
-              className="btn-cta-illuminated w-full sm:w-auto font-display font-semibold text-base sm:text-lg rounded-xl px-10 py-5 flex items-center justify-center gap-3 cursor-pointer shadow-[0_0_35px_rgba(6,182,212,0.5)] mb-8"
+              className="btn-call-glowing w-full sm:w-auto font-display font-bold text-base sm:text-xl rounded-2xl px-12 py-5 flex items-center justify-center gap-3.5 cursor-pointer shadow-[0_0_50px_rgba(6,182,212,0.75)] mb-8 group"
             >
-              <Phone className="w-5 h-5 fill-slate-950" />
-              <span>Call Propello Now</span>
+              <div className="w-8 h-8 rounded-full bg-slate-950/20 flex items-center justify-center">
+                <Phone className="w-5 h-5 fill-slate-950 text-slate-950 group-hover:rotate-12 transition-transform" />
+              </div>
+              <span>Call Propello Now: +1 (409) 965-5019</span>
             </a>
 
             {/* Key Reassurance Points */}

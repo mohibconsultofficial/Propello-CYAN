@@ -9,7 +9,6 @@ import ReviewsWidget from './components/ReviewsWidget';
 import About from './components/About';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import AIChatbot from './components/AIChatbot';
 import PaymentDetails from './components/PaymentDetails';
 import AccountProfile from './components/AccountProfile';
 
@@ -213,15 +212,19 @@ export default function App() {
               </button>
             </nav>
 
-            {/* Prominent Call Action */}
+            {/* Prominent Glowing Call Action */}
             <div className="hidden sm:flex items-center gap-3">
               <a
                 href="tel:+14099655019"
                 target="_top"
                 rel="noopener noreferrer"
-                className="btn-cta-illuminated text-xs font-display font-semibold px-4 py-2.5 rounded-lg flex items-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(6,182,212,0.3)]"
+                className="btn-call-glowing text-xs font-display font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 cursor-pointer shadow-[0_0_25px_rgba(6,182,212,0.6)]"
               >
-                <Phone className="w-3.5 h-3.5 fill-slate-950" />
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-950 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-slate-950"></span>
+                </span>
+                <Phone className="w-3.5 h-3.5 fill-slate-950 text-slate-950" />
                 <span>Call: +1 (409) 965-5019</span>
               </a>
             </div>
@@ -230,9 +233,10 @@ export default function App() {
             <div className="flex md:hidden items-center gap-2">
               <a
                 href="tel:+14099655019"
-                className="p-2.5 rounded-lg border border-cyan-500/30 text-cyan-400 bg-cyan-950/40"
+                className="p-2.5 rounded-lg btn-call-glowing text-slate-950 shadow-[0_0_20px_rgba(6,182,212,0.6)] flex items-center justify-center"
+                aria-label="Call Propello"
               >
-                <Phone className="w-4 h-4" />
+                <Phone className="w-4 h-4 fill-slate-950 text-slate-950" />
               </a>
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -282,9 +286,9 @@ export default function App() {
             <div className="pt-3 border-t border-white/[0.08]">
               <a
                 href="tel:+14099655019"
-                className="btn-cta-illuminated w-full py-3 rounded-lg font-display font-semibold text-center flex items-center justify-center gap-2"
+                className="btn-call-glowing w-full py-3.5 rounded-lg font-display font-bold text-center flex items-center justify-center gap-2.5 shadow-[0_0_30px_rgba(6,182,212,0.6)] text-sm"
               >
-                <Phone className="w-4 h-4 fill-slate-950" />
+                <Phone className="w-4 h-4 fill-slate-950 text-slate-950" />
                 <span>Call +1 (409) 965-5019</span>
               </a>
             </div>
@@ -319,9 +323,6 @@ export default function App() {
         onNavigateToPayment={() => navigateTo('/payment-details')}
         onNavigateToProfile={() => navigateTo('/account/profile')}
       />
-
-      {/* Interactive Ambient AI Assistant */}
-      <AIChatbot />
 
     </div>
   );
