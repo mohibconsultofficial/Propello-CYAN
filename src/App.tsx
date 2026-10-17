@@ -1,6 +1,8 @@
 import { Phone, Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import AmbientBackground from './components/AmbientBackground';
+import CustomCursor from './components/CustomCursor';
+import ScrollRevealProvider from './components/ScrollRevealProvider';
 import PropelloLogo from './components/PropelloLogo';
 import Hero from './components/Hero';
 import Offer from './components/Offer';
@@ -164,6 +166,8 @@ export default function App() {
       
       {/* Continuous Atmospheric Background (Hardware-accelerated cyan lighting & depth) */}
       <AmbientBackground />
+      <CustomCursor />
+      <ScrollRevealProvider />
 
       {/* Simplified High-End Navigation */}
       <header className="fixed top-0 left-0 right-0 z-40 border-b border-white/[0.08] bg-[#030508]/85 backdrop-blur-md">
@@ -299,30 +303,32 @@ export default function App() {
       {/* Clean 7-Section Architecture */}
       <main className="relative z-10">
         {/* 1. HERO (with Infinite Niche Scroller) */}
-        <Hero onScrollToOffer={() => handleScrollTo('offer')} />
+        <div className="scroll-reveal"><Hero onScrollToOffer={() => handleScrollTo('offer')} /></div>
 
         {/* 2. WHAT WE OFFER */}
-        <Offer />
+        <div className="scroll-reveal"><Offer /></div>
 
         {/* 3. HOW IT WORKS */}
-        <HowItWorks />
+        <div className="scroll-reveal"><HowItWorks /></div>
 
         {/* 4. TESTIMONIALS / PROOF */}
-        <ReviewsWidget />
+        <div className="scroll-reveal"><ReviewsWidget /></div>
 
         {/* 5. ABOUT PROPELLO.ONLINE */}
-        <About />
+        <div className="scroll-reveal"><About /></div>
 
         {/* 6. CONTACT / CALL CTA */}
-        <Contact />
+        <div className="scroll-reveal"><Contact /></div>
       </main>
 
       {/* 7. FOOTER */}
-      <Footer 
-        onScrollToSection={handleScrollTo} 
-        onNavigateToPayment={() => navigateTo('/payment-details')}
-        onNavigateToProfile={() => navigateTo('/account/profile')}
-      />
+      <div className="scroll-reveal">
+        <Footer 
+          onScrollToSection={handleScrollTo} 
+          onNavigateToPayment={() => navigateTo('/payment-details')}
+          onNavigateToProfile={() => navigateTo('/account/profile')}
+        />
+      </div>
 
     </div>
   );

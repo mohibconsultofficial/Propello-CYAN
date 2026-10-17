@@ -2,11 +2,11 @@ import { useEffect, useRef } from 'react';
 
 /**
  * Living Digital Infrastructure Ambient Background
- * Multi-layer continuous depth environment:
+ * Multi-layer continuous depth environment with global cursor responsiveness:
  * - Architectural technical grid matrix with slow continuous drift
- * - Soft cyan luxury showroom lighting fields with multi-cycle orbits
- * - Dynamic HTML5 canvas micro-constellation & subtle data-stream telemetry
- * - Faint topographical contour patterns
+ * - Soft cyan luxury showroom lighting fields reacting gently to cursor movement
+ * - Dynamic HTML5 canvas micro-constellation & interactive data-stream telemetry reacting to cursor
+ * - Click ripple disturbance effect
  * Infinite, seamless, hardware-accelerated.
  */
 export default function AmbientBackground() {
@@ -18,6 +18,8 @@ export default function AmbientBackground() {
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let animationFrameId: number;
     let width = (canvas.width = window.innerWidth);
@@ -31,8 +33,56 @@ export default function AmbientBackground() {
 
     window.addEventListener('resize', handleResize);
 
+    // Mouse tracking state
+    const mouse = {
+      x: -1000,
+      y: -1000,
+      targetX: -1000,
+      targetY: -1000,
+      active: false,
+      lastMoveTime: 0
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      mouse.targetX = e.clientX;
+      mouse.targetY = e.clientY;
+      mouse.active = true;
+      mouse.lastMoveTime = Date.now();
+    };
+
+    const handleMouseLeave = () => {
+      mouse.targetX = -1000;
+      mouse.targetY = -1000;
+      mouse.active = false;
+    };
+
+    interface Ripple {
+      x: number;
+      y: number;
+      radius: number;
+      maxRadius: number;
+      alpha: number;
+    }
+
+    const ripples: Ripple[] = [];
+
+    const handleClick = (e: MouseEvent) => {
+      if (prefersReducedMotion) return;
+      ripples.push({
+        x: e.clientX,
+        y: e.clientY,
+        radius: 5,
+        maxRadius: 180,
+        alpha: 0.35
+      });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('click', handleClick, { passive: true });
+
     // Micro-nodes constellation & subtle technical data streaks
-    const NODE_COUNT = Math.min(38, Math.floor(width / 40));
+    const NODE_COUNT = Math.min(42, Math.floor(width / 35));
     interface Node {
       x: number;
       y: number;
@@ -42,15 +92,21 @@ export default function AmbientBackground() {
       baseAlpha: number;
       pulseSpeed: number;
       pulseOffset: number;
+      origVx: number;
+      origVy: number;
     }
 
     const nodes: Node[] = [];
     for (let i = 0; i < NODE_COUNT; i++) {
+      const vx = (Math.random() - 0.5) * 0.25;
+      const vy = (Math.random() - 0.5) * 0.22;
       nodes.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.22,
+        vx,
+        vy,
+        origVx: vx,
+        origVy: vy,
         size: Math.random() * 1.5 + 0.8,
         baseAlpha: Math.random() * 0.25 + 0.15,
         pulseSpeed: Math.random() * 0.02 + 0.01,
@@ -77,11 +133,71 @@ export default function AmbientBackground() {
 
     const render = () => {
       time += 0.015;
+
+      // Smoothly interpolate mouse position for fluid responsive lag
+      mouse.x += (mouse.targetX - mouse.x) * 0.1;
+      mouse.y += (mouse.targetY - mouse.y) * 0.1;
+
       ctx.clearRect(0, 0, width, height);
 
-      // Render subtle node constellation
+      // Render smooth cursor-following energy spotlight field
+      if (!prefersReducedMotion && mouse.active && mouse.x > 0) {
+        const spotlightRadius = 280;
+        const spotlightGrad = ctx.createRadialGradient(
+          mouse.x, mouse.y, 0,
+          mouse.x, mouse.y, spotlightRadius
+        );
+        spotlightGrad.addColorStop(0, 'rgba(6, 182, 212, 0.14)');
+        spotlightGrad.addColorStop(0.5, 'rgba(34, 211, 238, 0.05)');
+        spotlightGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
+
+        ctx.fillStyle = spotlightGrad;
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, spotlightRadius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Render click ripples
+      for (let r = ripples.length - 1; r >= 0; r--) {
+        const ripple = ripples[r];
+        ripple.radius += 2.5;
+        ripple.alpha *= 0.95;
+
+        if (ripple.alpha < 0.01 || ripple.radius >= ripple.maxRadius) {
+          ripples.splice(r, 1);
+          continue;
+        }
+
+        ctx.strokeStyle = `rgba(6, 182, 212, ${ripple.alpha})`;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // Render subtle node constellation & cursor interaction
       for (let i = 0; i < nodes.length; i++) {
         const node = nodes[i];
+        
+        // Cursor proximity influence (gentle repulsion / energy field)
+        if (!prefersReducedMotion && mouse.active && mouse.x > 0) {
+          const dxm = node.x - mouse.x;
+          const dym = node.y - mouse.y;
+          const distToMouseSq = dxm * dxm + dym * dym;
+          const maxDist = 160;
+
+          if (distToMouseSq < maxDist * maxDist && distToMouseSq > 1) {
+            const distToMouse = Math.sqrt(distToMouseSq);
+            const force = (1 - distToMouse / maxDist) * 0.35;
+            node.vx += (dxm / distToMouse) * force * 0.05;
+            node.vy += (dym / distToMouse) * force * 0.05;
+          }
+        }
+
+        // Dampen velocity back to original drift
+        node.vx += (node.origVx - node.vx) * 0.05;
+        node.vy += (node.origVy - node.vy) * 0.05;
+
         node.x += node.vx;
         node.y += node.vy;
 
@@ -113,6 +229,23 @@ export default function AmbientBackground() {
             ctx.beginPath();
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(other.x, other.y);
+            ctx.stroke();
+          }
+        }
+
+        // Connect nodes to cursor if close
+        if (!prefersReducedMotion && mouse.active && mouse.x > 0) {
+          const dxC = node.x - mouse.x;
+          const dyC = node.y - mouse.y;
+          const distCSq = dxC * dxC + dyC * dyC;
+          if (distCSq < 140 * 140) {
+            const distC = Math.sqrt(distCSq);
+            const cursorLineAlpha = (1 - distC / 140) * 0.22;
+            ctx.strokeStyle = `rgba(34, 211, 238, ${cursorLineAlpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(node.x, node.y);
+            ctx.lineTo(mouse.x, mouse.y);
             ctx.stroke();
           }
         }
@@ -153,6 +286,9 @@ export default function AmbientBackground() {
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('click', handleClick);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
@@ -198,3 +334,4 @@ export default function AmbientBackground() {
     </div>
   );
 }
+
