@@ -42,7 +42,7 @@ export function getIntelligentReply(query: string, history: ChatHistoryItem[] = 
       };
     }
     return {
-      text: "Propello receives client payments via Citibank through ACH or domestic U.S. wire (Fedwire) exclusively from business accounts. The beneficiary name is Auisha Jubeen (Checking Account), Bank: Citibank, Routing Number: 031100209, Account Number: 70580410002685339, SWIFT: CITIUS33, Bank Address: 111 Wall Street, New York, NY 10043, USA.\n\nYou can access our dedicated Payment Details page or call founder Mo Radford directly at +1 (409) 965-5019 if you'd like verbal verification.",
+      text: "Propello receives client payments via Citibank through ACH or domestic U.S. wire (Fedwire) exclusively from business accounts. The beneficiary name is Auisha Jubeen (Checking Account), Bank: Citibank, Routing Number: 031100209, Account Number: 70580410002685339, SWIFT: CITIUS33, Bank Address: 111 Wall Street, New York, NY 10043, USA.\n\nYou can access our dedicated Payment Details page or call founder Mo Radford directly at +1 (409) 797-6986 if you'd like verbal verification.",
       nextSuggestions: ["How long does a wire take?", "Are personal accounts accepted?", "Call Mo Radford"]
     };
   }
@@ -66,12 +66,12 @@ export function getIntelligentReply(query: string, history: ChatHistoryItem[] = 
   ) {
     if (q.includes("how do i get started") || q.includes("how to get started") || q.includes("ready to start")) {
       return {
-        text: "Getting started takes about 5 minutes. You jump on a quick call with founder Mo Radford to go over what your business does and what you need on the site. From there, we build an interactive prototype and send it to your phone in 48 hours.\n\nYou can reach Mo directly at +1 (409) 965-5019 or email mo.radford@propellonline.com whenever you're ready.",
+        text: "Getting started takes about 5 minutes. You jump on a quick call with founder Mo Radford to go over what your business does and what you need on the site. From there, we build an interactive prototype and send it to your phone in 48 hours.\n\nYou can reach Mo directly at +1 (409) 797-6986 or email mo.radford@propellonline.com whenever you're ready.",
         nextSuggestions: ["What info do you need on the call?", "How much does it cost?", "Can you redesign my existing site?"]
       };
     }
     return {
-      text: "You can reach founder Mo Radford directly at +1 (409) 965-5019, or email mo.radford@propellonline.com. Mo handles every project personally from the first call through launch, so you won't be bounced between account managers.",
+      text: "You can reach founder Mo Radford directly at +1 (409) 797-6986, or email mo.radford@propellonline.com. Mo handles every project personally from the first call through launch, so you won't be bounced between account managers.",
       nextSuggestions: ["How fast can you build it?", "How much is the build fee?", "What's the process?"]
     };
   }
@@ -279,7 +279,7 @@ export function getIntelligentReply(query: string, history: ChatHistoryItem[] = 
   // 12. EXAMPLES / PORTFOLIO / CASE STUDIES
   if (q.includes("example") || q.includes("portfolio") || q.includes("sample") || q.includes("case study") || q.includes("proof") || q.includes("work")) {
     return {
-      text: "We’ve built platforms across dental practices (like Aura Dental), roofing and exterior contractors (Horizon Roofing), automotive styling shops (Apex Auto), legal practices (Mercer & Hayes), and hospitality venues. If you’d like to see live demos tailored to your specific field, give Mo Radford a quick call at +1 (409) 965-5019 and he can text you direct live preview links.",
+      text: "We’ve built platforms across dental practices (like Aura Dental), roofing and exterior contractors (Horizon Roofing), automotive styling shops (Apex Auto), legal practices (Mercer & Hayes), and hospitality venues. If you’d like to see live demos tailored to your specific field, give Mo Radford a quick call at +1 (409) 797-6986 and he can text you direct live preview links.",
       nextSuggestions: ["Can you build for my industry?", "How much does it cost?", "Call Mo Radford"]
     };
   }

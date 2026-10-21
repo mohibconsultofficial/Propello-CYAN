@@ -162,12 +162,12 @@ export default function PaymentDetails({ onNavigateHome, onNavigateToProfile }: 
               </a>
 
               <a
-                href="tel:+14099655019"
+                href="tel:+14097976986"
                 className="btn-call-glowing text-xs font-display font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 cursor-pointer shadow-[0_0_25px_rgba(6,182,212,0.6)]"
               >
                 <Phone className="w-3.5 h-3.5 fill-slate-950 text-slate-950" />
                 <span className="hidden sm:inline">Call Propello:</span>
-                <span>+1 (409) 965-5019</span>
+                <span>+1 (409) 797-6986</span>
               </a>
             </div>
 
@@ -440,11 +440,11 @@ export default function PaymentDetails({ onNavigateHome, onNavigateToProfile }: 
             </p>
             <div className="mt-5">
               <a
-                href="tel:+14099655019"
+                href="tel:+14097976986"
                 className="btn-call-glowing inline-flex items-center gap-2.5 px-6 py-3 rounded-xl text-slate-950 font-display font-bold text-xs sm:text-sm transition-all shadow-[0_0_30px_rgba(6,182,212,0.6)] cursor-pointer group"
               >
                 <Phone className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:rotate-12 transition-transform" />
-                <span>Call Propello: +1 (409) 965-5019</span>
+                <span>Call Propello: +1 (409) 797-6986</span>
               </a>
             </div>
           </div>
@@ -484,27 +484,14 @@ export default function PaymentDetails({ onNavigateHome, onNavigateToProfile }: 
             </a>
             <span className="text-zinc-700">•</span>
             <a 
-              href="tel:+14099655019" 
+              href="tel:+14097976986" 
               className="hover:text-cyan-400 transition-colors"
             >
-              +1 (409) 965-5019
+              +1 (409) 797-6986
             </a>
           </div>
 
         </div>
-
-        {/* Barely visible small text heading for Account Profile */}
-        {onNavigateToProfile && (
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 text-center sm:text-left">
-            <h4
-              onClick={onNavigateToProfile}
-              className="text-[9px] font-mono uppercase tracking-widest text-zinc-800/60 hover:text-zinc-600 transition-colors cursor-pointer inline-block select-none"
-              title="Account Profile"
-            >
-              Account Profile
-            </h4>
-          </div>
-        )}
       </footer>
 
     </div>

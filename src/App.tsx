@@ -208,20 +208,12 @@ export default function App() {
               >
                 About
               </button>
-              <button
-                onClick={() => navigateTo('/payment-details')}
-                className="text-cyan-400 hover:text-cyan-300 font-medium transition-colors cursor-pointer"
-              >
-                Payment Details
-              </button>
             </nav>
 
             {/* Prominent Glowing Call Action */}
             <div className="hidden sm:flex items-center gap-3">
               <a
-                href="tel:+14099655019"
-                target="_top"
-                rel="noopener noreferrer"
+                href="tel:+14097976986"
                 className="btn-call-glowing text-xs font-display font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 cursor-pointer shadow-[0_0_25px_rgba(6,182,212,0.6)]"
               >
                 <span className="relative flex h-2 w-2">
@@ -229,15 +221,15 @@ export default function App() {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-slate-950"></span>
                 </span>
                 <Phone className="w-3.5 h-3.5 fill-slate-950 text-slate-950" />
-                <span>Call: +1 (409) 965-5019</span>
+                <span>Call: +1 (409) 797-6986</span>
               </a>
             </div>
 
             {/* Mobile Menu Toggle Button */}
             <div className="flex md:hidden items-center gap-2">
               <a
-                href="tel:+14099655019"
-                className="p-2.5 rounded-lg btn-call-glowing text-slate-950 shadow-[0_0_20px_rgba(6,182,212,0.6)] flex items-center justify-center"
+                href="tel:+14097976986"
+                className="p-2.5 rounded-lg btn-call-glowing text-slate-950 shadow-[0_0_20px_rgba(6,182,212,0.6)] flex items-center justify-center cursor-pointer"
                 aria-label="Call Propello"
               >
                 <Phone className="w-4 h-4 fill-slate-950 text-slate-950" />
@@ -281,19 +273,13 @@ export default function App() {
             >
               About
             </button>
-            <button
-              onClick={() => navigateTo('/payment-details')}
-              className="block w-full text-left py-2 text-cyan-400 hover:text-cyan-300 font-medium"
-            >
-              Payment Details
-            </button>
             <div className="pt-3 border-t border-white/[0.08]">
               <a
-                href="tel:+14099655019"
-                className="btn-call-glowing w-full py-3.5 rounded-lg font-display font-bold text-center flex items-center justify-center gap-2.5 shadow-[0_0_30px_rgba(6,182,212,0.6)] text-sm"
+                href="tel:+14097976986"
+                className="btn-call-glowing w-full py-3.5 rounded-lg font-display font-bold text-center flex items-center justify-center gap-2.5 shadow-[0_0_30px_rgba(6,182,212,0.6)] text-sm cursor-pointer"
               >
                 <Phone className="w-4 h-4 fill-slate-950 text-slate-950" />
-                <span>Call +1 (409) 965-5019</span>
+                <span>Call +1 (409) 797-6986</span>
               </a>
             </div>
           </div>
@@ -325,8 +311,6 @@ export default function App() {
       <div className="scroll-reveal">
         <Footer 
           onScrollToSection={handleScrollTo} 
-          onNavigateToPayment={() => navigateTo('/payment-details')}
-          onNavigateToProfile={() => navigateTo('/account/profile')}
         />
       </div>
 

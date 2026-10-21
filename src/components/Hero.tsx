@@ -79,16 +79,14 @@ export default function Hero({ onScrollToOffer }: HeroProps) {
             className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 w-full sm:w-auto mb-14"
           >
             <a
-              href="tel:+14099655019"
-              target="_top"
-              rel="noopener noreferrer"
+              href="tel:+14097976986"
               id="hero-call-cta"
               className="btn-call-glowing font-display font-bold text-sm sm:text-base rounded-xl px-8 py-4 flex items-center justify-center gap-3 cursor-pointer shadow-[0_0_35px_rgba(6,182,212,0.65)] group"
             >
               <div className="w-6 h-6 rounded-full bg-slate-950/20 flex items-center justify-center">
                 <Phone className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:rotate-12 transition-transform" />
               </div>
-              <span>Call Propello: +1 (409) 965-5019</span>
+              <span>Call Propello: +1 (409) 797-6986</span>
             </a>
 
             <button

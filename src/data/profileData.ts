@@ -13,7 +13,7 @@ export const INITIAL_BUSINESS_PROFILE: BusinessProfile = {
   fullName: 'Auisha Jubeen',
   email: 'payments@propellonline.com',
   industry: 'IT services / Software, platform, and app development',
-  phone: '+92 3014286334',
+  phone: '+1 (409) 797-6986',
   businessName: 'Propello',
   website: 'https://propello.online',
   accountHolder: 'Auisha Jubeen',

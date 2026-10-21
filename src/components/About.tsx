@@ -65,13 +65,11 @@ export default function About() {
               {/* Direct Founder Access Links */}
               <div className="space-y-3 pt-2">
                 <a
-                  href="tel:+14099655019"
-                  target="_top"
-                  rel="noopener noreferrer"
+                  href="tel:+14097976986"
                   className="btn-call-glowing w-full py-3.5 px-4 rounded-xl flex items-center justify-center gap-2.5 font-display font-bold text-xs sm:text-sm cursor-pointer shadow-[0_0_30px_rgba(6,182,212,0.6)] group"
                 >
                   <Phone className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:rotate-12 transition-transform" />
-                  <span>Call Direct: +1 (409) 965-5019</span>
+                  <span>Call Direct: +1 (409) 797-6986</span>
                 </a>
 
                 <a

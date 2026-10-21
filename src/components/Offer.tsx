@@ -93,15 +93,13 @@ export default function Offer() {
             {/* Bottom Call CTA Bar */}
             <div className="pt-8 border-t border-white/[0.08] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
               <a
-                href="tel:+14099655019"
-                target="_top"
-                rel="noopener noreferrer"
+                href="tel:+14097976986"
                 className="btn-call-glowing font-display font-bold text-sm rounded-xl px-8 py-4 flex items-center justify-center gap-3 cursor-pointer shadow-[0_0_35px_rgba(6,182,212,0.65)] group"
               >
                 <div className="w-6 h-6 rounded-full bg-slate-950/20 flex items-center justify-center">
                   <Phone className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:rotate-12 transition-transform" />
                 </div>
-                <span>Call to Get Started: +1 (409) 965-5019</span>
+                <span>Call to Get Started: +1 (409) 797-6986</span>
               </a>
 
               <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 justify-center sm:justify-end">

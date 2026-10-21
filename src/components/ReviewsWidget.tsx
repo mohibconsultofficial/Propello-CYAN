@@ -135,13 +135,11 @@ export default function ReviewsWidget() {
         {/* Natural Call CTA after Testimonials */}
         <div className="text-center">
           <a
-            href="tel:+14099655019"
-            target="_top"
-            rel="noopener noreferrer"
+            href="tel:+14097976986"
             className="btn-call-glowing inline-flex items-center gap-2.5 px-8 py-3.5 rounded-xl text-xs sm:text-sm font-display font-bold text-slate-950 transition-all cursor-pointer shadow-[0_0_35px_rgba(6,182,212,0.65)] group"
           >
             <Phone className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:rotate-12 transition-transform" />
-            <span>Speak with Founder Mo Radford: +1 (409) 965-5019</span>
+            <span>Speak with Founder Mo Radford: +1 (409) 797-6986</span>
           </a>
         </div>
 

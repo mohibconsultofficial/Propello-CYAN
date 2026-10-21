@@ -49,25 +49,21 @@ export default function Contact() {
 
             {/* Direct Dial Number Display */}
             <a
-              href="tel:+14099655019"
-              target="_top"
-              rel="noopener noreferrer"
-              className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight hover:text-cyan-300 transition-colors mb-6 block drop-shadow-[0_0_25px_rgba(6,182,212,0.4)]"
+              href="tel:+14097976986"
+              className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight hover:text-cyan-300 transition-colors mb-6 block drop-shadow-[0_0_25px_rgba(6,182,212,0.4)] cursor-pointer"
             >
-              +1 (409) 965-5019
+              +1 (409) 797-6986
             </a>
 
             {/* Primary Tap-to-Call Button */}
             <a
-              href="tel:+14099655019"
-              target="_top"
-              rel="noopener noreferrer"
+              href="tel:+14097976986"
               className="btn-call-glowing w-full sm:w-auto font-display font-bold text-base sm:text-xl rounded-2xl px-12 py-5 flex items-center justify-center gap-3.5 cursor-pointer shadow-[0_0_50px_rgba(6,182,212,0.75)] mb-8 group"
             >
               <div className="w-8 h-8 rounded-full bg-slate-950/20 flex items-center justify-center">
                 <Phone className="w-5 h-5 fill-slate-950 text-slate-950 group-hover:rotate-12 transition-transform" />
               </div>
-              <span>Call Propello Now: +1 (409) 965-5019</span>
+              <span>Call Propello Now: +1 (409) 797-6986</span>
             </a>
 
             {/* Key Reassurance Points */}

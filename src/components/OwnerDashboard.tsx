@@ -107,13 +107,11 @@ export default function OwnerDashboard() {
               {/* Bottom CTA dialer */}
               <div className="pt-6 border-t border-white/[0.06]">
                 <a 
-                  href="tel:+16414065667"
-                  target="_top"
-                  rel="noopener noreferrer"
+                  href="tel:+14097976986"
                   className="w-full bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-800 text-white font-bold py-4.5 rounded-2xl flex items-center justify-center gap-2.5 transition duration-300 shadow-xl shadow-purple-500/20 hover:duration-100 font-display text-sm tracking-wide shrink-0 cursor-pointer transform hover:-translate-y-0.5 uppercase"
                 >
                   <PhoneCall className="w-4.5 h-4.5 text-purple-200" />
-                  <span>Call +1 (641) 406-5667</span>
+                  <span>Call +1 (409) 797-6986</span>
                 </a>
               </div>
             </div>

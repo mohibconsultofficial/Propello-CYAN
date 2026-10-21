@@ -105,13 +105,11 @@ export default function HowItWorks() {
           </div>
 
           <a
-            href="tel:+14099655019"
-            target="_top"
-            rel="noopener noreferrer"
+            href="tel:+14097976986"
             className="btn-call-glowing font-display font-bold text-xs sm:text-sm rounded-xl px-7 py-3.5 flex items-center gap-2.5 shrink-0 cursor-pointer shadow-[0_0_30px_rgba(6,182,212,0.6)] group"
           >
             <Phone className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:rotate-12 transition-transform" />
-            <span>Call Now: +1 (409) 965-5019</span>
+            <span>Call Now: +1 (409) 797-6986</span>
           </a>
         </div>
 

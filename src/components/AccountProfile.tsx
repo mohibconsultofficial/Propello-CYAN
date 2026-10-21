@@ -141,12 +141,12 @@ export default function AccountProfile({ onNavigateHome, onNavigateToPayment }: 
               </a>
 
               <a
-                href="tel:+14099655019"
+                href="tel:+14097976986"
                 className="btn-call-glowing text-xs font-display font-bold px-3.5 py-2 rounded-lg flex items-center gap-1.5 cursor-pointer shadow-[0_0_20px_rgba(6,182,212,0.6)]"
               >
                 <Phone className="w-3.5 h-3.5 fill-slate-950 text-slate-950" />
                 <span className="hidden sm:inline">Call:</span>
-                <span>+1 (409) 965-5019</span>
+                <span>+1 (409) 797-6986</span>
               </a>
             </div>
 

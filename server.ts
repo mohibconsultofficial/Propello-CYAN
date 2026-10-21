@@ -32,7 +32,7 @@ const DEFAULT_PROFILE = {
   fullName: "Auisha Jubeen",
   email: "payments@propellonline.com",
   industry: "IT services / Software, platform, and app development",
-  phone: "+92 3014286334",
+  phone: "+1 (409) 797-6986",
   businessName: "Propello",
   website: "https://propello.online",
   accountHolder: "Auisha Jubeen",
@@ -173,10 +173,10 @@ PERSONALITY & COMMUNICATION STYLE:
 - NEVER sound like a generic robotic AI or use repetitive corporate clichés (NEVER say "Great question!", "Absolutely! Our team specializes in...", "Thanks for reaching out! We would be happy to help...", "I hope this helps!").
 - Vary your sentence structures naturally. Be concise when a short answer is best, and thorough when the question requires nuance.
 - NEVER be pushy or desperate to close a deal. Be helpful first.
-- ONLY provide the phone number (+1 (409) 965-5019) or suggest calling Mo when the user asks how to get started, asks to talk to someone, asks for a demo/quote, or shows clear buying intent. Do not append sales pitches or phone numbers to casual informational answers.
+- ONLY provide the phone number (+1 (409) 797-6986) or suggest calling Mo when the user asks how to get started, asks to talk to someone, asks for a demo/quote, or shows clear buying intent. Do not append sales pitches or phone numbers to casual informational answers.
 
 KEY FACTS ABOUT PROPELLO.ONLINE:
-- Founder: Mo Radford. Direct line: +1 (409) 965-5019 (call or text). Email: mo.radford@propellonline.com.
+- Founder: Mo Radford. Direct line: +1 (409) 797-6986 (call or text). Email: mo.radford@propellonline.com.
 - Offer: Exactly $1,500 one-time upfront build fee for a full, custom-engineered website.
 - Ongoing Care & Hosting: $97/month with ZERO long-term contracts. Pause or cancel anytime without penalty.
 - What the $97/month includes: Enterprise cloud hosting, SSL security, daily backups, uptime monitoring, and unlimited text and photo updates whenever they need them (just call, text, or email).
@@ -198,7 +198,7 @@ KEY FACTS ABOUT PROPELLO.ONLINE:
   * Account Number: 70580410002685339
   * Bank Address: 111 Wall Street, New York, NY 10043, USA
   * SWIFT Code: CITIUS33
-  * Compliance Rules: Business bank accounts ONLY (personal bank accounts are not accepted). Supported methods are ACH and domestic U.S. wire (Fedwire) only. Both ACH and Wire are equally supported. Domestic wire typically settles same-day; ACH typically takes 1-3 business days. For wire verification or questions, clients can call Mo Radford directly at +1 (409) 965-5019 or email mo.radford@propellonline.com.
+  * Compliance Rules: Business bank accounts ONLY (personal bank accounts are not accepted). Supported methods are ACH and domestic U.S. wire (Fedwire) only. Both ACH and Wire are equally supported. Domestic wire typically settles same-day; ACH typically takes 1-3 business days. For wire verification or questions, clients can call Mo Radford directly at +1 (409) 797-6986 or email mo.radford@propellonline.com.
 - Unknowns / Out of Scope: If asked about custom enterprise software, native iOS apps, or specific proprietary guarantees not mentioned, do NOT make up facts. Politely explain that you'd rather have them speak directly with Mo Radford to get an exact answer, and provide the contact info.
 
 CONVERSATION CONTEXT & EMPATHY:

@@ -180,14 +180,14 @@ export default function AIChatbot() {
                     <Sparkles className="w-3 h-3 text-cyan-400" />
                   </h3>
                   <span className="text-[10px] font-mono text-zinc-400 block">
-                    Online • Mo Radford: +1 (409) 965-5019
+                    Online • Mo Radford: +1 (409) 797-6986
                   </span>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
                 <a
-                  href="tel:+14099655019"
+                  href="tel:+14097976986"
                   className="p-1.5 rounded-lg text-zinc-300 hover:text-white bg-zinc-900/60 hover:bg-zinc-800 border border-white/[0.08] hover:border-cyan-400/40 transition-all"
                   title="Call Founder"
                 >

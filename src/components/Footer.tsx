@@ -3,11 +3,9 @@ import PropelloLogo from './PropelloLogo';
 
 interface FooterProps {
   onScrollToSection: (id: string) => void;
-  onNavigateToPayment?: () => void;
-  onNavigateToProfile?: () => void;
 }
 
-export default function Footer({ onScrollToSection, onNavigateToPayment, onNavigateToProfile }: FooterProps) {
+export default function Footer({ onScrollToSection }: FooterProps) {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -30,7 +28,7 @@ export default function Footer({ onScrollToSection, onNavigateToPayment, onNavig
               High-quality websites built for businesses of all kinds. Fast turnaround, transparent pricing, and zero agency runaround.
             </p>
             <div className="text-[11px] font-mono text-zinc-400">
-              Founder: Mo Radford • +1 (409) 965-5019
+              Founder: Mo Radford • +1 (409) 797-6986
             </div>
           </div>
 
@@ -72,17 +70,6 @@ export default function Footer({ onScrollToSection, onNavigateToPayment, onNavig
                   About Propello.online
                 </button>
               </li>
-              <li>
-                <button
-                  onClick={() => {
-                    if (onNavigateToPayment) onNavigateToPayment();
-                    else window.location.href = '/payment-details';
-                  }}
-                  className="text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer"
-                >
-                  Payment Details
-                </button>
-              </li>
             </ul>
           </div>
 
@@ -93,11 +80,11 @@ export default function Footer({ onScrollToSection, onNavigateToPayment, onNavig
             </span>
             <div className="space-y-2.5 text-xs">
               <a 
-                href="tel:+14099655019" 
-                className="flex items-center gap-2 hover:text-white transition-colors group"
+                href="tel:+14097976986" 
+                className="flex items-center gap-2 hover:text-white transition-colors group cursor-pointer"
               >
                 <Phone className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
-                <span className="font-mono">+1 (409) 965-5019</span>
+                <span className="font-mono">+1 (409) 797-6986</span>
               </a>
               <a 
                 href="mailto:mo.radford@propellonline.com" 
@@ -112,20 +99,6 @@ export default function Footer({ onScrollToSection, onNavigateToPayment, onNavig
             </div>
           </div>
 
-        </div>
-
-        {/* Barely visible small text heading for Account Profile */}
-        <div className="pt-6 pb-2 border-t border-white/[0.03]">
-          <h5
-            onClick={() => {
-              if (onNavigateToProfile) onNavigateToProfile();
-              else window.location.href = '/account/profile';
-            }}
-            className="text-[9px] font-mono uppercase tracking-widest text-zinc-800/60 hover:text-zinc-600 transition-colors cursor-pointer inline-block select-none"
-            title="Account Profile"
-          >
-            Account Profile
-          </h5>
         </div>
 
         {/* Bottom Bar */}
