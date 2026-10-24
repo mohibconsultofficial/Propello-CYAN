@@ -1,10 +1,10 @@
-import { Phone, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import PropelloLogo from './PropelloLogo';
 import NicheScroller from './NicheScroller';
 
 interface HeroProps {
-  onScrollToOffer: () => void;
+  onScrollToOffer?: () => void;
 }
 
 export default function Hero({ onScrollToOffer }: HeroProps) {
@@ -45,20 +45,49 @@ export default function Hero({ onScrollToOffer }: HeroProps) {
             <span className="text-cyan-300">Websites Engineered for Businesses</span>
           </motion.div>
 
-          {/* Primary Typography - Crystal Clear & Confident */}
+          {/* Primary Typography - "Your Business Deserves to Stand Out." */}
           <motion.h1 
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl sm:text-6xl lg:text-7xl font-display font-semibold tracking-tight text-white leading-[1.08] mb-6 text-center"
+            data-cursor="header-text"
+            className="text-4xl sm:text-6xl lg:text-7xl font-display font-semibold tracking-tight text-white leading-[1.08] mb-6 text-center select-none"
           >
-            High-quality websites <br className="hidden sm:inline" />
-            <span className="relative inline-block">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-cyan-300 drop-shadow-[0_0_30px_rgba(6,182,212,0.35)]">
-                built for your business.
+            <span className="inline-block">
+              {['Your', 'Business', 'Deserves', 'to'].map((word, idx) => (
+                <motion.span
+                  key={idx}
+                  whileHover={{ 
+                    y: -4, 
+                    scale: 1.04, 
+                    color: '#a5f3fc',
+                    textShadow: '0 0 25px rgba(34, 211, 238, 0.6)' 
+                  }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                  className="inline-block mr-2.5 sm:mr-3.5 cursor-default transition-colors duration-200"
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </span>{' '}
+            <br className="hidden sm:inline" />
+            <motion.span 
+              className="relative inline-block group cursor-default mt-1 sm:mt-0"
+              whileHover={{ 
+                scale: 1.05, 
+                y: -3,
+                transition: { type: 'spring', stiffness: 350, damping: 15 }
+              }}
+            >
+              {/* Distinctive prominent luminous typography */}
+              <span className="relative z-10 font-bold sm:font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-100 via-white to-cyan-300 drop-shadow-[0_0_35px_rgba(34,211,238,0.7)] sm:drop-shadow-[0_0_55px_rgba(6,182,212,0.85)] tracking-tight">
+                Stand Out.
               </span>
-              <span className="absolute -bottom-1 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent" />
-            </span>
+              {/* Prominent Underline & Ambient Glow Aura */}
+              <span className="absolute -bottom-1 left-0 right-0 h-[2.5px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_#22d3ee] group-hover:h-[3.5px] group-hover:shadow-[0_0_20px_#22d3ee] transition-all duration-300" />
+              {/* Backlight focal glow behind Stand Out */}
+              <span className="absolute inset-0 bg-cyan-400/20 blur-xl -z-10 opacity-70 group-hover:opacity-100 group-hover:blur-2xl transition-all duration-300" />
+            </motion.span>
           </motion.h1>
 
           {/* Concise Subtext: Clear, No Filler */}
@@ -68,70 +97,47 @@ export default function Hero({ onScrollToOffer }: HeroProps) {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-zinc-300 text-base sm:text-lg lg:text-xl font-normal leading-relaxed mb-10 max-w-2xl text-center"
           >
-            We design, build, and maintain high-performing websites for companies across every industry. Delivered in 48 hours with transparent pricing and zero agency runaround.
+            We design, build, and maintain high-performing websites for companies across every industry. Delivered with transparent pricing, rapid turnaround, and zero agency runaround.
           </motion.p>
-
-          {/* Primary Action CTAs */}
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 w-full sm:w-auto mb-14"
-          >
-            <a
-              href="tel:+14097976986"
-              id="hero-call-cta"
-              className="btn-call-glowing font-display font-bold text-sm sm:text-base rounded-xl px-8 py-4 flex items-center justify-center gap-3 cursor-pointer shadow-[0_0_35px_rgba(6,182,212,0.65)] group"
-            >
-              <div className="w-6 h-6 rounded-full bg-slate-950/20 flex items-center justify-center">
-                <Phone className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:rotate-12 transition-transform" />
-              </div>
-              <span>Call Propello: +1 (409) 797-6986</span>
-            </a>
-
-            <button
-              onClick={onScrollToOffer}
-              className="border border-white/[0.14] hover:border-cyan-500/50 bg-zinc-900/80 hover:bg-zinc-800/90 text-zinc-200 hover:text-white font-display font-medium text-sm transition-all duration-200 rounded-lg px-7 py-4 flex items-center justify-center gap-2 cursor-pointer shadow-lg backdrop-blur-sm"
-            >
-              <span>View The Offer</span>
-              <ArrowRight className="w-4 h-4 text-cyan-400" />
-            </button>
-          </motion.div>
 
           {/* Key Value Points Micro-Strip */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs font-mono text-zinc-400 mb-12"
           >
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-cyan-400" />
-              <span>48-Hour Turnaround</span>
+              <span>Rapid Turnaround</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-cyan-400" />
-              <span>$1,500 Complete Build</span>
+              <span>$1,500 Complete Package</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-cyan-400" />
-              <span>No Contracts or Lock-In</span>
+              <span>1st Month Hosting Included</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-cyan-400" />
+              <span>Zero Contracts or Lock-In</span>
             </div>
           </motion.div>
 
         </div>
-
-        {/* ELEGANT INFINITE HORIZONTAL NICHE SCROLLER */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.5 }}
-          className="mt-4"
-        >
-          <NicheScroller />
-        </motion.div>
-
       </div>
+
+      {/* ELEGANT INFINITE HORIZONTAL NICHE SCROLLER (Completely edge-to-edge from left to right border) */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.5 }}
+        className="w-full relative z-10 mt-6 sm:mt-10"
+      >
+        <NicheScroller />
+      </motion.div>
+
     </section>
   );
 }

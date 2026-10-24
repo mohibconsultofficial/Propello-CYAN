@@ -1,247 +1,223 @@
 import { useEffect, useRef } from 'react';
 
+type CursorMode = 'default' | 'button' | 'card' | 'text' | 'link';
+
+/**
+ * CustomCursor:
+ * - Desktop-only high-precision interactive cursor tracker.
+ * - Retains the tiny glowing orb aesthetic requested by the user.
+ * - Dynamically & uniquely morphs when hovering over:
+ *   1. Buttons: expands into energetic magnetic aura ring with radiant core.
+ *   2. Cards: opens into wide soft holographic radar lens.
+ *   3. Text / Headers: morphs into a sleek vertical high-precision beam.
+ *   4. Links: agile cyan snap ring.
+ * - Completely inactive on mobile & touch devices to guarantee zero Safari/iOS lag.
+ */
 export default function CustomCursor() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const sparkRef = useRef<HTMLDivElement | null>(null);
+  const ringRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Disable on touch devices
-    if (window.matchMedia('(pointer: coarse)').matches) return;
+    if (typeof window === 'undefined') return;
 
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    // Completely disable on mobile and touch devices to prevent any Safari/iOS lag
+    const isTouchDevice =
+      window.matchMedia('(pointer: coarse)').matches ||
+      window.matchMedia('(hover: none)').matches ||
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0;
 
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    if (isTouchDevice) return;
 
-    const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize);
+    const spark = sparkRef.current;
+    const ring = ringRef.current;
+    if (!spark || !ring) return;
 
-    const mouse = {
-      x: -500,
-      y: -500,
-      targetX: -500,
-      targetY: -500,
-      active: false,
-      isClicking: false
-    };
+    let targetX = -100;
+    let targetY = -100;
+    let ringX = -100;
+    let ringY = -100;
+    let isVisible = false;
+    let currentMode: CursorMode = 'default';
+    let animId: number;
 
-    interface ExpandingShockCurrent {
-      originX: number;
-      originY: number;
-      angle: number;
-      maxDist: number;
-      currentDist: number;
-      speed: number;
-      alpha: number;
-    }
+    const applyModeStyles = (mode: CursorMode) => {
+      if (!spark || !ring) return;
 
-    const expandingCurrents: ExpandingShockCurrent[] = [];
+      if (mode === 'button') {
+        // Button: magnetic energy ring expansion & vibrant glowing core
+        spark.style.width = '10px';
+        spark.style.height = '10px';
+        spark.style.borderRadius = '9999px';
+        spark.style.boxShadow = '0 0 14px #22d3ee, 0 0 28px #06b6d4, 0 0 42px rgba(6,182,212,0.8)';
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mouse.targetX = e.clientX;
-      mouse.targetY = e.clientY;
-      mouse.active = true;
-    };
+        ring.style.width = '38px';
+        ring.style.height = '38px';
+        ring.style.borderColor = 'rgba(34, 211, 238, 0.95)';
+        ring.style.backgroundColor = 'rgba(6, 182, 212, 0.12)';
+        ring.style.boxShadow = '0 0 22px rgba(6, 182, 212, 0.5)';
+      } else if (mode === 'card') {
+        // Card: soft diffused luminous radar disc / tech lens
+        spark.style.width = '6px';
+        spark.style.height = '6px';
+        spark.style.borderRadius = '9999px';
+        spark.style.boxShadow = '0 0 8px #22d3ee, 0 0 16px rgba(6,182,212,0.6)';
 
-    const handleMouseDown = () => { 
-      mouse.isClicking = true; 
-      const count = 10;
-      for (let i = 0; i < count; i++) {
-        const angle = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.3;
-        expandingCurrents.push({
-          originX: mouse.x,
-          originY: mouse.y,
-          angle,
-          maxDist: 70 + Math.random() * 40,
-          currentDist: 5,
-          speed: 7 + Math.random() * 3,
-          alpha: 1.0
-        });
+        ring.style.width = '48px';
+        ring.style.height = '48px';
+        ring.style.borderColor = 'rgba(6, 182, 212, 0.45)';
+        ring.style.backgroundColor = 'rgba(6, 182, 212, 0.05)';
+        ring.style.boxShadow = '0 0 26px rgba(6, 182, 212, 0.25)';
+      } else if (mode === 'text') {
+        // Text: sleek vertical precision beam / reading focus
+        spark.style.width = '2.5px';
+        spark.style.height = '18px';
+        spark.style.borderRadius = '9999px';
+        spark.style.boxShadow = '0 0 10px #22d3ee, 0 0 20px rgba(6,182,212,0.7)';
+
+        ring.style.width = '16px';
+        ring.style.height = '16px';
+        ring.style.borderColor = 'rgba(6, 182, 212, 0.3)';
+        ring.style.backgroundColor = 'transparent';
+        ring.style.boxShadow = 'none';
+      } else if (mode === 'link') {
+        // Link: agile cyan ring snap
+        spark.style.width = '8px';
+        spark.style.height = '8px';
+        spark.style.borderRadius = '9999px';
+        spark.style.boxShadow = '0 0 10px #22d3ee, 0 0 20px #06b6d4';
+
+        ring.style.width = '28px';
+        ring.style.height = '28px';
+        ring.style.borderColor = 'rgba(34, 211, 238, 0.85)';
+        ring.style.backgroundColor = 'rgba(6, 182, 212, 0.08)';
+        ring.style.boxShadow = '0 0 14px rgba(6, 182, 212, 0.35)';
+      } else {
+        // Default: tiny glowing orb + micro trailing aura
+        spark.style.width = '8px';
+        spark.style.height = '8px';
+        spark.style.borderRadius = '9999px';
+        spark.style.boxShadow = '0 0 8px #22d3ee, 0 0 16px #06b6d4, 0 0 24px rgba(6,182,212,0.8)';
+
+        ring.style.width = '20px';
+        ring.style.height = '20px';
+        ring.style.borderColor = 'rgba(6, 182, 212, 0.35)';
+        ring.style.backgroundColor = 'rgba(6, 182, 212, 0.04)';
+        ring.style.boxShadow = '0 0 12px rgba(6, 182, 212, 0.25)';
       }
     };
 
-    const handleMouseUp = () => { mouse.isClicking = false; };
-    const handleMouseLeave = () => { mouse.active = false; };
-    const handleMouseEnter = () => { mouse.active = true; };
+    const onMouseMove = (e: MouseEvent) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
 
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('mouseenter', handleMouseEnter);
+      if (!isVisible) {
+        isVisible = true;
+        spark.style.opacity = '1';
+        ring.style.opacity = '1';
+      }
 
-    let animationFrameId: number;
+      // Check element under cursor
+      const target = e.target as HTMLElement | null;
+      let newMode: CursorMode = 'default';
 
-    // Helper to draw jagged fractal lightning between two points
-    const drawJaggedSegment = (
-      context: CanvasRenderingContext2D,
-      x1: number,
-      y1: number,
-      x2: number,
-      y2: number,
-      displacement: number,
-      detail: number,
-      alpha: number,
-      widthMultiplier: number,
-      isCallSuperCharged: boolean
-    ) => {
-      const points: { x: number; y: number }[] = [{ x: x1, y: y1 }, { x: x2, y: y2 }];
-      for (let step = 0; step < detail; step++) {
-        const newPoints: { x: number; y: number }[] = [];
-        for (let i = 0; i < points.length - 1; i++) {
-          const p1 = points[i];
-          const p2 = points[i + 1];
-          const midX = (p1.x + p2.x) / 2 + (Math.random() - 0.5) * displacement;
-          const midY = (p1.y + p2.y) / 2 + (Math.random() - 0.5) * displacement;
-          newPoints.push(p1, { x: midX, y: midY });
+      if (target) {
+        if (
+          target.closest('button, [role="button"], .btn-call-glowing, .btn-cta-illuminated, [data-cursor="button"]')
+        ) {
+          newMode = 'button';
+        } else if (
+          target.closest('[data-cursor="card"], .glass-panel-deep, .glass-panel-interactive, [class*="glass-panel"], article')
+        ) {
+          newMode = 'card';
+        } else if (
+          target.closest('h1, h2, h3, h4, p, [data-cursor="header-text"], [data-cursor="text"]')
+        ) {
+          newMode = 'text';
+        } else if (
+          target.tagName === 'A' ||
+          target.closest('a') !== null ||
+          target.tagName === 'INPUT' ||
+          target.tagName === 'SELECT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.classList.contains('cursor-pointer') ||
+          target.closest('[data-cursor="pointer"]') !== null
+        ) {
+          newMode = 'link';
         }
-        newPoints.push(points[points.length - 1]);
-        points.splice(0, points.length, ...newPoints);
-        displacement *= 0.5;
       }
 
-      if (points.length < 2) return;
-
-      // Outer glow pass
-      context.strokeStyle = isCallSuperCharged ? `rgba(34, 211, 238, ${alpha})` : `rgba(6, 182, 212, ${alpha * 0.7})`;
-      context.lineWidth = (isCallSuperCharged ? 3.5 : 2) * widthMultiplier;
-      context.shadowColor = isCallSuperCharged ? '#ffffff' : '#06b6d4';
-      context.shadowBlur = isCallSuperCharged ? 25 : 12;
-      context.beginPath();
-      context.moveTo(points[0].x, points[0].y);
-      for (let i = 1; i < points.length; i++) {
-        context.lineTo(points[i].x, points[i].y);
+      if (newMode !== currentMode) {
+        currentMode = newMode;
+        applyModeStyles(currentMode);
       }
-      context.stroke();
 
-      // Inner core pass
-      context.strokeStyle = isCallSuperCharged ? '#ffffff' : `rgba(34, 211, 238, ${alpha})`;
-      context.lineWidth = (isCallSuperCharged ? 1.8 : 1) * widthMultiplier;
-      context.shadowColor = '#22d3ee';
-      context.shadowBlur = isCallSuperCharged ? 15 : 6;
-      context.beginPath();
-      context.moveTo(points[0].x, points[0].y);
-      for (let i = 1; i < points.length; i++) {
-        context.lineTo(points[i].x, points[i].y);
-      }
-      context.stroke();
+      // Immediately place spark at pointer coordinates
+      spark.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%)`;
     };
 
-    const render = () => {
-      mouse.x += (mouse.targetX - mouse.x) * 0.85;
-      mouse.y += (mouse.targetY - mouse.y) * 0.85;
-
-      ctx.clearRect(0, 0, width, height);
-
-      if (mouse.active && mouse.x > 0) {
-        // Render shooting outward expanding shock currents
-        for (let i = expandingCurrents.length - 1; i >= 0; i--) {
-          const ec = expandingCurrents[i];
-          ec.currentDist += ec.speed;
-          ec.alpha = Math.max(0, 1 - ec.currentDist / ec.maxDist);
-
-          if (ec.alpha <= 0 || ec.currentDist >= ec.maxDist) {
-            expandingCurrents.splice(i, 1);
-            continue;
-          }
-
-          const startX = ec.originX + Math.cos(ec.angle) * (ec.currentDist - ec.speed * 2);
-          const startY = ec.originY + Math.sin(ec.angle) * (ec.currentDist - ec.speed * 2);
-          const endX = ec.originX + Math.cos(ec.angle) * ec.currentDist;
-          const endY = ec.originY + Math.sin(ec.angle) * ec.currentDist;
-
-          ctx.save();
-          drawJaggedSegment(ctx, startX, startY, endX, endY, 15, 3, ec.alpha, 1.2, false);
-          ctx.restore();
-        }
-
-        // Target UI elements for Tesla arcing
-        const elements = document.querySelectorAll('button, a, input, textarea, [role="button"], .card, .glass-panel, h1, h2, h3, h4, .btn-call-glowing');
-        const targets: { x: number; y: number; isCall: boolean }[] = [];
-        const range = 130;
-
-        elements.forEach((el) => {
-          const rect = el.getBoundingClientRect();
-          if (rect.width > 5 && rect.height > 5) {
-            const cx = Math.max(rect.left, Math.min(mouse.x, rect.right));
-            const cy = Math.max(rect.top, Math.min(mouse.y, rect.bottom));
-            const dx = mouse.x - cx;
-            const dy = mouse.y - cy;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist < range) {
-              const isCall = 
-                el.classList.contains('btn-call-glowing') ||
-                el.closest('.btn-call-glowing') !== null ||
-                (el as HTMLAnchorElement).href?.includes('tel:') ||
-                el.closest('a[href^="tel:"]') !== null;
-              targets.push({ x: cx, y: cy, isCall: !!isCall });
-            }
-          }
-        });
-
-        ctx.save();
-
-        targets.sort((a, b) => {
-          const da = Math.hypot(a.x - mouse.x, a.y - mouse.y);
-          const db = Math.hypot(b.x - mouse.x, b.y - mouse.y);
-          return da - db;
-        });
-
-        // Only supercharge glow when an electric shock bolt is ACTIVELY ATTACHED to a call button
-        if (targets.length > 0) {
-          const t = targets[0];
-          drawJaggedSegment(ctx, mouse.x, mouse.y, t.x, t.y, t.isCall ? 28 : 20, 3, 0.85, t.isCall ? 1.8 : 0.9, t.isCall);
-
-          ctx.fillStyle = t.isCall ? '#ffffff' : '#22d3ee';
-          ctx.shadowColor = t.isCall ? '#ffffff' : '#06b6d4';
-          ctx.shadowBlur = t.isCall ? 20 : 8;
-          ctx.beginPath();
-          ctx.arc(t.x, t.y, t.isCall ? 3.5 : 1.8, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        // Ambient corona sparks (subtle)
-        const coronaCount = 2;
-        for (let i = 0; i < coronaCount; i++) {
-          const angle = Math.random() * Math.PI * 2;
-          const dist = 6 + Math.random() * 12;
-          const endX = mouse.x + Math.cos(angle) * dist;
-          const endY = mouse.y + Math.sin(angle) * dist;
-          drawJaggedSegment(ctx, mouse.x, mouse.y, endX, endY, 8, 2, 0.4, 0.5, false);
-        }
-
-        // NO CENTRAL CIRCLE/BLOB AT ALL: ONLY SHOCKS AND ARCING BOLTS REMAINING
-
-        ctx.restore();
-      }
-
-      animationFrameId = requestAnimationFrame(render);
+    const onMouseLeave = () => {
+      isVisible = false;
+      spark.style.opacity = '0';
+      ring.style.opacity = '0';
     };
 
-    render();
+    const onMouseEnter = () => {
+      isVisible = true;
+      spark.style.opacity = '1';
+      ring.style.opacity = '1';
+    };
+
+    // Smooth lerp loop for the trailing micro-aura / lens
+    const updateRing = () => {
+      ringX += (targetX - ringX) * 0.22;
+      ringY += (targetY - ringY) * 0.22;
+
+      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+      animId = requestAnimationFrame(updateRing);
+    };
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    document.addEventListener('mouseleave', onMouseLeave);
+    document.addEventListener('mouseenter', onMouseEnter);
+    animId = requestAnimationFrame(updateRing);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      document.removeEventListener('mouseenter', handleMouseEnter);
-      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseleave', onMouseLeave);
+      document.removeEventListener('mouseenter', onMouseEnter);
+      cancelAnimationFrame(animId);
     };
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-[9999] w-full h-full"
-    />
+    <div
+      className="hidden lg:block fixed inset-0 pointer-events-none z-[9999] overflow-hidden select-none"
+      aria-hidden="true"
+    >
+      {/* Tiny Glowing Orb (Direct contact point with unique morphing capability) */}
+      <div
+        ref={sparkRef}
+        style={{
+          width: '8px',
+          height: '8px',
+          boxShadow: '0 0 8px #22d3ee, 0 0 16px #06b6d4, 0 0 24px rgba(6,182,212,0.8)'
+        }}
+        className="fixed top-0 left-0 rounded-full bg-gradient-to-tr from-cyan-300 via-white to-cyan-100 opacity-0 transition-[width,height,border-radius,box-shadow,opacity] duration-200 ease-out pointer-events-none will-change-transform"
+      />
+
+      {/* Trailing Micro-Aura / Radar Lens Ring */}
+      <div
+        ref={ringRef}
+        style={{
+          width: '20px',
+          height: '20px',
+          borderColor: 'rgba(6, 182, 212, 0.35)',
+          backgroundColor: 'rgba(6, 182, 212, 0.04)',
+          boxShadow: '0 0 12px rgba(6, 182, 212, 0.25)'
+        }}
+        className="fixed top-0 left-0 rounded-full border opacity-0 transition-[width,height,border-color,background-color,box-shadow,opacity] duration-250 ease-out pointer-events-none will-change-transform"
+      />
+    </div>
   );
 }

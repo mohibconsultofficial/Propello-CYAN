@@ -2,12 +2,12 @@ import { Phone, Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import AmbientBackground from './components/AmbientBackground';
 import CustomCursor from './components/CustomCursor';
+import ElectricScrollChains from './components/ElectricScrollChains';
 import ScrollRevealProvider from './components/ScrollRevealProvider';
 import PropelloLogo from './components/PropelloLogo';
 import Hero from './components/Hero';
 import Offer from './components/Offer';
 import HowItWorks from './components/HowItWorks';
-import ReviewsWidget from './components/ReviewsWidget';
 import About from './components/About';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
@@ -167,6 +167,7 @@ export default function App() {
       {/* Continuous Atmospheric Background (Hardware-accelerated cyan lighting & depth) */}
       <AmbientBackground />
       <CustomCursor />
+      <ElectricScrollChains />
       <ScrollRevealProvider />
 
       {/* Simplified High-End Navigation */}
@@ -197,12 +198,6 @@ export default function App() {
                 How It Works
               </button>
               <button
-                onClick={() => handleScrollTo('reviews')}
-                className="hover:text-white transition-colors cursor-pointer"
-              >
-                Reviews
-              </button>
-              <button
                 onClick={() => handleScrollTo('about')}
                 className="hover:text-white transition-colors cursor-pointer"
               >
@@ -214,7 +209,7 @@ export default function App() {
             <div className="hidden sm:flex items-center gap-3">
               <a
                 href="tel:+14097976986"
-                className="btn-call-glowing text-xs font-display font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 cursor-pointer shadow-[0_0_25px_rgba(6,182,212,0.6)]"
+                className="btn-call-glowing text-xs font-display font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 cursor-pointer"
               >
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-950 opacity-75"></span>
@@ -229,7 +224,7 @@ export default function App() {
             <div className="flex md:hidden items-center gap-2">
               <a
                 href="tel:+14097976986"
-                className="p-2.5 rounded-lg btn-call-glowing text-slate-950 shadow-[0_0_20px_rgba(6,182,212,0.6)] flex items-center justify-center cursor-pointer"
+                className="p-2.5 rounded-lg btn-call-glowing text-slate-950 flex items-center justify-center cursor-pointer"
                 aria-label="Call Propello"
               >
                 <Phone className="w-4 h-4 fill-slate-950 text-slate-950" />
@@ -262,12 +257,6 @@ export default function App() {
               How It Works
             </button>
             <button
-              onClick={() => handleScrollTo('reviews')}
-              className="block w-full text-left py-2 text-zinc-300 hover:text-cyan-300"
-            >
-              Reviews
-            </button>
-            <button
               onClick={() => handleScrollTo('about')}
               className="block w-full text-left py-2 text-zinc-300 hover:text-cyan-300"
             >
@@ -276,7 +265,7 @@ export default function App() {
             <div className="pt-3 border-t border-white/[0.08]">
               <a
                 href="tel:+14097976986"
-                className="btn-call-glowing w-full py-3.5 rounded-lg font-display font-bold text-center flex items-center justify-center gap-2.5 shadow-[0_0_30px_rgba(6,182,212,0.6)] text-sm cursor-pointer"
+                className="btn-call-glowing w-full py-3.5 rounded-lg font-display font-bold text-center flex items-center justify-center gap-2.5 text-sm cursor-pointer"
               >
                 <Phone className="w-4 h-4 fill-slate-950 text-slate-950" />
                 <span>Call +1 (409) 797-6986</span>
@@ -286,10 +275,10 @@ export default function App() {
         )}
       </header>
 
-      {/* Clean 7-Section Architecture */}
+      {/* Clean Streamlined Architecture */}
       <main className="relative z-10">
         {/* 1. HERO (with Infinite Niche Scroller) */}
-        <div className="scroll-reveal"><Hero onScrollToOffer={() => handleScrollTo('offer')} /></div>
+        <div className="scroll-reveal"><Hero /></div>
 
         {/* 2. WHAT WE OFFER */}
         <div className="scroll-reveal"><Offer /></div>
@@ -297,13 +286,10 @@ export default function App() {
         {/* 3. HOW IT WORKS */}
         <div className="scroll-reveal"><HowItWorks /></div>
 
-        {/* 4. TESTIMONIALS / PROOF */}
-        <div className="scroll-reveal"><ReviewsWidget /></div>
-
-        {/* 5. ABOUT PROPELLO.ONLINE */}
+        {/* 4. ABOUT PROPELLO.ONLINE */}
         <div className="scroll-reveal"><About /></div>
 
-        {/* 6. CONTACT / CALL CTA */}
+        {/* 5. CONTACT / CALL CTA */}
         <div className="scroll-reveal"><Contact /></div>
       </main>
 

@@ -78,7 +78,7 @@ export const VERIFIED_REGISTRY: VerifiedMarketEntry[] = [
     marketVerdict: 'saturated',
     verdictHeadline: 'Intense Metro Competition: Heavy Civil Operators Heavily Marketed in DFW',
     verdictMessage: 'The Dallas–Fort Worth civil and excavation sector is contested by established contractors featuring full commercial capability portfolios and instant bidding funnels. General contractors vet partners online before issuing RFPs.',
-    actionCallout: 'Stop losing GC bids to legacy contractors. Deploy your contractor-grade Propello website in 48 hours.',
+    actionCallout: 'Stop losing GC bids to legacy competitors. Deploy your contractor-grade Propello website with full prototype review before launch.',
     places: [
       {
         name: 'Dallas Demolition & Excavation',
@@ -381,7 +381,7 @@ export const VERIFIED_REGISTRY: VerifiedMarketEntry[] = [
     marketVerdict: 'saturated',
     verdictHeadline: 'High Digital Saturation: Arizona Contractors Investing Heavily Online',
     verdictMessage: 'Commercial property managers and homeowners in the Greater Phoenix Valley rely heavily on digital reviews, instant bidding requests, and mobile proof. Established contractors dominate incoming quote inquiries.',
-    actionCallout: 'Lock down your high-margin territory with our contractor-grade 48-hour live prototype.',
+    actionCallout: 'Lock down your high-margin territory with our contractor-grade working prototype review.',
     places: [
       {
         name: 'Canyon State Roofing & Consulting',
@@ -491,9 +491,9 @@ export function generateUniqueMarketScore(niche: string, location: string): Comp
   ];
 
   const actions = [
-    `Deploy your $1,500 turnkey Propello platform in 48 hours to capture ${cleanLoc}'s highest-value ${cleanNiche} contracts.`,
+    `Deploy your $1,500 turnkey Propello platform with prototype review to capture ${cleanLoc}'s highest-value ${cleanNiche} contracts.`,
     `Counter regional competitors in ${cleanLoc} with a mobile-first, conversion-engineered digital platform.`,
-    `Claim your #1 market position in ${cleanLoc} with an interactive 48-hour prototype tested directly on your phone.`,
+    `Claim your #1 market position in ${cleanLoc} with an interactive prototype tested directly on your phone.`,
     `Stop surrendering high-margin ${cleanNiche} jobs in ${cleanLoc}. Launch your contractor-grade infrastructure today.`
   ];
 

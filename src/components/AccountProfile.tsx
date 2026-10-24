@@ -142,7 +142,7 @@ export default function AccountProfile({ onNavigateHome, onNavigateToPayment }: 
 
               <a
                 href="tel:+14097976986"
-                className="btn-call-glowing text-xs font-display font-bold px-3.5 py-2 rounded-lg flex items-center gap-1.5 cursor-pointer shadow-[0_0_20px_rgba(6,182,212,0.6)]"
+                className="btn-call-glowing text-xs font-display font-bold px-3.5 py-2 rounded-lg flex items-center gap-1.5 cursor-pointer"
               >
                 <Phone className="w-3.5 h-3.5 fill-slate-950 text-slate-950" />
                 <span className="hidden sm:inline">Call:</span>
@@ -298,8 +298,8 @@ export default function AccountProfile({ onNavigateHome, onNavigateToPayment }: 
                     Email Address
                   </span>
                   <a 
-                    href={`mailto:${profile.email}`}
-                    className="text-sm sm:text-base font-semibold text-cyan-400 hover:text-cyan-300 underline underline-offset-4 transition-colors break-all inline-flex items-center gap-1.5"
+                    href={`mailto:${profile.email}?subject=Propello%20Account%20Inquiry`}
+                    className="text-sm sm:text-base font-semibold text-cyan-400 hover:text-cyan-300 underline underline-offset-4 transition-colors break-all inline-flex items-center gap-1.5 cursor-pointer"
                     title={`Send email to ${profile.email}`}
                   >
                     <span>{profile.email}</span>

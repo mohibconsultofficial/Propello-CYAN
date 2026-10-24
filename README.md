@@ -1,20 +1,39 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Propello.Online — Contractor Website Platform
 
-# Run and deploy your AI Studio app
+Official website for Propello.Online, specializing in custom digital platforms, Google SEO infrastructure, and lead capture for contractors and trade specialists.
 
-This contains everything you need to run your app locally.
+## Technical Stack
+- **Frontend**: React 19 SPA, Tailwind CSS v4, Motion, Lucide Icons, Vite
+- **Assistant**: Propello AI with serverless Google GenAI SDK integration (`@google/genai`)
+- **Backend / Deployment**: Netlify Functions (`netlify/functions/chat.ts`, `netlify/functions/booking.ts`) + Local Express fullstack development server (`server.ts`)
 
-View your app in AI Studio: https://ai.studio/apps/7049fb7d-fba0-4c39-ba7d-c339c82bd15e
+---
 
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
+## Local Development
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+   ```bash
+   npm install
+   ```
+2. Configure `.env`:
+   ```bash
+   GEMINI_API_KEY="your-google-gemini-api-key"
+   ```
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+   Open `http://localhost:3000`.
+
+---
+
+## Netlify Production Deployment
+This repository is pre-configured for instant zero-configuration deployment to Netlify via `netlify.toml`:
+1. Push this repository to GitHub.
+2. In Netlify, click **Add new site** > **Import an existing project** and select your GitHub repository.
+3. Build Settings are automatically populated from `netlify.toml`:
+   - **Build command**: `npm run build`
+   - **Publish directory**: `dist`
+   - **Functions directory**: `netlify/functions`
+4. Under **Site configuration > Environment variables**, add:
+   - `GEMINI_API_KEY`: Your Gemini API key from Google AI Studio.
+5. Click **Deploy site**. Both the website and the Propello AI serverless endpoints will be live.

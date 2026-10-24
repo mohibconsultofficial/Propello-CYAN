@@ -11,7 +11,7 @@ export default function Credibility() {
     {
       icon: <Link2 className="w-5 h-5 text-purple-400" />,
       title: 'Step 2: You Review The Demo',
-      desc: 'Within 48 hours, we send you a live link to interact with your new site. You test the buttons, read the copy, and see exactly what it looks like on your phone.'
+      desc: 'We send you a live link to interact with your new site. You test the buttons, read the copy, and see exactly what it looks like on your phone.'
     },
     {
       icon: <Rocket className="w-5 h-5 text-purple-400" />,
@@ -34,7 +34,7 @@ export default function Credibility() {
             The Pre-Built System
           </span>
           <h2 className="text-3xl sm:text-5xl font-display font-black text-white tracking-tight mt-5 leading-[1.1] uppercase">
-            Invisible to <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-500">Credible Contractor</span> <br className="hidden sm:inline" /> in 48 Hours.
+            Invisible to <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-500">Credible Contractor</span> <br className="hidden sm:inline" /> Fast &amp; Frictionless.
           </h2>
           <p className="text-slate-300 text-sm sm:text-base font-medium font-sans mt-4 leading-relaxed max-w-2xl mx-auto">
             Forget 6-month agency contracts and confusing software builders. We build your entire digital footprint and send you the draft to approve. It's already done before you commit.

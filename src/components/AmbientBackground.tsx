@@ -1,337 +1,234 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-/**
- * Living Digital Infrastructure Ambient Background
- * Multi-layer continuous depth environment with global cursor responsiveness:
- * - Architectural technical grid matrix with slow continuous drift
- * - Soft cyan luxury showroom lighting fields reacting gently to cursor movement
- * - Dynamic HTML5 canvas micro-constellation & interactive data-stream telemetry reacting to cursor
- * - Click ripple disturbance effect
- * Infinite, seamless, hardware-accelerated.
- */
+interface Particle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  size: number;
+  baseAlpha: number;
+  axis: 'x' | 'y';
+  pulseSpeed: number;
+  pulsePhase: number;
+  trailLength: number;
+}
+
 export default function AmbientBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let animId: number;
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let isMobile = false;
 
-    let animationFrameId: number;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    // Grid spacing for straight lines & matrix nodes
+    const gridSize = 56;
 
-    const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+    const resize = () => {
+      isMobile = window.innerWidth < 768;
+      // Cap DPR to 1 on mobile to prevent GPU fillrate exhaustion on Retina iOS screens
+      dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.scale(dpr, dpr);
     };
 
-    window.addEventListener('resize', handleResize);
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
 
-    // Mouse tracking state
-    const mouse = {
-      x: -1000,
-      y: -1000,
-      targetX: -1000,
-      targetY: -1000,
-      active: false,
-      lastMoveTime: 0
-    };
+    // Mobile-optimized particle count (18 on phones vs 48 on desktop)
+    const particleCount = isMobile ? 18 : Math.min(Math.floor((width * height) / 22000), 48);
+    const particles: Particle[] = [];
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mouse.targetX = e.clientX;
-      mouse.targetY = e.clientY;
-      mouse.active = true;
-      mouse.lastMoveTime = Date.now();
-    };
+    for (let i = 0; i < particleCount; i++) {
+      const axis: 'x' | 'y' = Math.random() > 0.5 ? 'x' : 'y';
+      const snapX = Math.round((Math.random() * width) / gridSize) * gridSize;
+      const snapY = Math.round((Math.random() * height) / gridSize) * gridSize;
+      const speed = 0.35 + Math.random() * 0.45;
 
-    const handleMouseLeave = () => {
-      mouse.targetX = -1000;
-      mouse.targetY = -1000;
-      mouse.active = false;
-    };
-
-    interface Ripple {
-      x: number;
-      y: number;
-      radius: number;
-      maxRadius: number;
-      alpha: number;
-    }
-
-    const ripples: Ripple[] = [];
-
-    const handleClick = (e: MouseEvent) => {
-      if (prefersReducedMotion) return;
-      ripples.push({
-        x: e.clientX,
-        y: e.clientY,
-        radius: 5,
-        maxRadius: 180,
-        alpha: 0.35
-      });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    window.addEventListener('mouseleave', handleMouseLeave);
-    window.addEventListener('click', handleClick, { passive: true });
-
-    // Micro-nodes constellation & subtle technical data streaks
-    const NODE_COUNT = Math.min(42, Math.floor(width / 35));
-    interface Node {
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      size: number;
-      baseAlpha: number;
-      pulseSpeed: number;
-      pulseOffset: number;
-      origVx: number;
-      origVy: number;
-    }
-
-    const nodes: Node[] = [];
-    for (let i = 0; i < NODE_COUNT; i++) {
-      const vx = (Math.random() - 0.5) * 0.25;
-      const vy = (Math.random() - 0.5) * 0.22;
-      nodes.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx,
-        vy,
-        origVx: vx,
-        origVy: vy,
-        size: Math.random() * 1.5 + 0.8,
-        baseAlpha: Math.random() * 0.25 + 0.15,
-        pulseSpeed: Math.random() * 0.02 + 0.01,
-        pulseOffset: Math.random() * Math.PI * 2
+      particles.push({
+        x: snapX,
+        y: snapY,
+        vx: axis === 'x' ? (Math.random() > 0.5 ? speed : -speed) : 0,
+        vy: axis === 'y' ? (Math.random() > 0.5 ? speed : -speed) : 0,
+        size: 1.2 + Math.random() * 1.3,
+        baseAlpha: 0.22 + Math.random() * 0.28,
+        axis,
+        pulseSpeed: 0.02 + Math.random() * 0.025,
+        pulsePhase: Math.random() * Math.PI * 2,
+        trailLength: 20 + Math.random() * 30
       });
     }
 
-    // Occasional subtle horizontal data streaks
-    interface DataStreak {
-      x: number;
-      y: number;
-      length: number;
-      speed: number;
-      alpha: number;
-    }
-
-    const streaks: DataStreak[] = [
-      { x: -200, y: height * 0.22, length: 180, speed: 1.1, alpha: 0.18 },
-      { x: -350, y: height * 0.58, length: 240, speed: 0.85, alpha: 0.14 },
-      { x: -500, y: height * 0.84, length: 160, speed: 1.3, alpha: 0.16 }
-    ];
-
-    let time = 0;
+    const maxDist = 135;
 
     const render = () => {
-      time += 0.015;
-
-      // Smoothly interpolate mouse position for fluid responsive lag
-      mouse.x += (mouse.targetX - mouse.x) * 0.1;
-      mouse.y += (mouse.targetY - mouse.y) * 0.1;
-
       ctx.clearRect(0, 0, width, height);
 
-      // Render smooth cursor-following energy spotlight field
-      if (!prefersReducedMotion && mouse.active && mouse.x > 0) {
-        const spotlightRadius = 280;
-        const spotlightGrad = ctx.createRadialGradient(
-          mouse.x, mouse.y, 0,
-          mouse.x, mouse.y, spotlightRadius
-        );
-        spotlightGrad.addColorStop(0, 'rgba(6, 182, 212, 0.14)');
-        spotlightGrad.addColorStop(0.5, 'rgba(34, 211, 238, 0.05)');
-        spotlightGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
+      // 1. Draw subtle technical grid
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'rgba(6, 182, 212, 0.035)';
 
-        ctx.fillStyle = spotlightGrad;
-        ctx.beginPath();
-        ctx.arc(mouse.x, mouse.y, spotlightRadius, 0, Math.PI * 2);
-        ctx.fill();
+      ctx.beginPath();
+      for (let x = 0; x <= width; x += gridSize) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+      }
+      for (let y = 0; y <= height; y += gridSize) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+      }
+      ctx.stroke();
+
+      // 2. Draw subtle grid intersection dots
+      ctx.fillStyle = 'rgba(6, 182, 212, 0.09)';
+      for (let x = 0; x <= width; x += gridSize * 2) {
+        for (let y = 0; y <= height; y += gridSize * 2) {
+          ctx.beginPath();
+          ctx.arc(x, y, 1, 0, Math.PI * 2);
+          ctx.fill();
+        }
       }
 
-      // Render click ripples
-      for (let r = ripples.length - 1; r >= 0; r--) {
-        const ripple = ripples[r];
-        ripple.radius += 2.5;
-        ripple.alpha *= 0.95;
+      // 3. Update & render particles with straight-line motion & subtle trails
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
 
-        if (ripple.alpha < 0.01 || ripple.radius >= ripple.maxRadius) {
-          ripples.splice(r, 1);
-          continue;
-        }
+        // Move in straight lines along grid axes
+        p.x += p.vx;
+        p.y += p.vy;
 
-        ctx.strokeStyle = `rgba(6, 182, 212, ${ripple.alpha})`;
-        ctx.lineWidth = 1.2;
+        // Wrap around viewport edges seamlessly
+        if (p.x < -50) p.x = width + 50;
+        if (p.x > width + 50) p.x = -50;
+        if (p.y < -50) p.y = height + 50;
+        if (p.y > height + 50) p.y = -50;
+
+        // Subtle pulsing brightness
+        p.pulsePhase += p.pulseSpeed;
+        const currentAlpha = p.baseAlpha * (0.7 + 0.3 * Math.sin(p.pulsePhase));
+
+        // Draw straight-line light trail behind particle
         ctx.beginPath();
-        ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
+        if (p.axis === 'x') {
+          const trailX = p.vx > 0 ? p.x - p.trailLength : p.x + p.trailLength;
+          const grad = ctx.createLinearGradient(trailX, p.y, p.x, p.y);
+          grad.addColorStop(0, 'rgba(6, 182, 212, 0)');
+          grad.addColorStop(1, `rgba(34, 211, 238, ${currentAlpha * 0.75})`);
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 1;
+          ctx.moveTo(trailX, p.y);
+          ctx.lineTo(p.x, p.y);
+        } else {
+          const trailY = p.vy > 0 ? p.y - p.trailLength : p.y + p.trailLength;
+          const grad = ctx.createLinearGradient(p.x, trailY, p.x, p.y);
+          grad.addColorStop(0, 'rgba(6, 182, 212, 0)');
+          grad.addColorStop(1, `rgba(34, 211, 238, ${currentAlpha * 0.75})`);
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 1;
+          ctx.moveTo(p.x, trailY);
+          ctx.lineTo(p.x, p.y);
+        }
         ctx.stroke();
+
+        // Draw particle head
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(165, 243, 252, ${currentAlpha})`;
+        if (!isMobile) {
+          ctx.shadowColor = 'rgba(6, 182, 212, 0.75)';
+          ctx.shadowBlur = 4;
+        }
+        ctx.fill();
+        if (!isMobile) {
+          ctx.shadowBlur = 0;
+        }
       }
 
-      // Render subtle node constellation & cursor interaction
-      for (let i = 0; i < nodes.length; i++) {
-        const node = nodes[i];
-        
-        // Cursor proximity influence (gentle repulsion / energy field)
-        if (!prefersReducedMotion && mouse.active && mouse.x > 0) {
-          const dxm = node.x - mouse.x;
-          const dym = node.y - mouse.y;
-          const distToMouseSq = dxm * dxm + dym * dym;
-          const maxDist = 160;
+      // 4. Draw connecting straight lines between close particles
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (distToMouseSq < maxDist * maxDist && distToMouseSq > 1) {
-            const distToMouse = Math.sqrt(distToMouseSq);
-            const force = (1 - distToMouse / maxDist) * 0.35;
-            node.vx += (dxm / distToMouse) * force * 0.05;
-            node.vy += (dym / distToMouse) * force * 0.05;
-          }
-        }
-
-        // Dampen velocity back to original drift
-        node.vx += (node.origVx - node.vx) * 0.05;
-        node.vy += (node.origVy - node.vy) * 0.05;
-
-        node.x += node.vx;
-        node.y += node.vy;
-
-        // Seamless wrap-around
-        if (node.x < 0) node.x = width;
-        if (node.x > width) node.x = 0;
-        if (node.y < 0) node.y = height;
-        if (node.y > height) node.y = 0;
-
-        const currentAlpha = node.baseAlpha + Math.sin(time * node.pulseSpeed * 60 + node.pulseOffset) * 0.08;
-
-        ctx.fillStyle = `rgba(6, 182, 212, ${Math.max(0.05, currentAlpha)})`;
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Connect nearby nodes with hairline data links
-        for (let j = i + 1; j < nodes.length; j++) {
-          const other = nodes[j];
-          const dx = node.x - other.x;
-          const dy = node.y - other.y;
-          const distSq = dx * dx + dy * dy;
-
-          if (distSq < 130 * 130) {
-            const dist = Math.sqrt(distSq);
-            const lineAlpha = (1 - dist / 130) * 0.12;
+          if (dist < maxDist) {
+            const lineAlpha = (1 - dist / maxDist) * 0.12;
+            ctx.beginPath();
             ctx.strokeStyle = `rgba(6, 182, 212, ${lineAlpha})`;
-            ctx.lineWidth = 0.6;
-            ctx.beginPath();
-            ctx.moveTo(node.x, node.y);
-            ctx.lineTo(other.x, other.y);
-            ctx.stroke();
-          }
-        }
-
-        // Connect nodes to cursor if close
-        if (!prefersReducedMotion && mouse.active && mouse.x > 0) {
-          const dxC = node.x - mouse.x;
-          const dyC = node.y - mouse.y;
-          const distCSq = dxC * dxC + dyC * dyC;
-          if (distCSq < 140 * 140) {
-            const distC = Math.sqrt(distCSq);
-            const cursorLineAlpha = (1 - distC / 140) * 0.22;
-            ctx.strokeStyle = `rgba(34, 211, 238, ${cursorLineAlpha})`;
             ctx.lineWidth = 0.8;
-            ctx.beginPath();
-            ctx.moveTo(node.x, node.y);
-            ctx.lineTo(mouse.x, mouse.y);
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
             ctx.stroke();
           }
         }
       }
 
-      // Render slow ambient data streaks
-      for (let s = 0; s < streaks.length; s++) {
-        const streak = streaks[s];
-        streak.x += streak.speed;
-        if (streak.x - streak.length > width) {
-          streak.x = -streak.length - Math.random() * 300;
-          streak.y = Math.random() * height;
-        }
-
-        const grad = ctx.createLinearGradient(streak.x - streak.length, streak.y, streak.x, streak.y);
-        grad.addColorStop(0, 'rgba(6, 182, 212, 0)');
-        grad.addColorStop(0.8, `rgba(6, 182, 212, ${streak.alpha})`);
-        grad.addColorStop(1, `rgba(34, 211, 238, ${streak.alpha * 1.5})`);
-
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(streak.x - streak.length, streak.y);
-        ctx.lineTo(streak.x, streak.y);
-        ctx.stroke();
-
-        // Tiny leading photon dot
-        ctx.fillStyle = `rgba(255, 255, 255, ${streak.alpha * 2})`;
-        ctx.beginPath();
-        ctx.arc(streak.x, streak.y, 1.2, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      animationFrameId = requestAnimationFrame(render);
+      animId = requestAnimationFrame(render);
     };
 
+    const handleVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animId);
+      } else {
+        animId = requestAnimationFrame(render);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
     render();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseleave', handleMouseLeave);
-      window.removeEventListener('click', handleClick);
-      cancelAnimationFrame(animationFrameId);
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', resize);
+      document.removeEventListener('visibilitychange', handleVisibility);
     };
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none">
-      {/* 1. Deep carbon foundation */}
-      <div className="absolute inset-0 bg-[#030508]" />
-
-      {/* 2. Topographical geometric contour rings */}
-      <div className="absolute inset-0 contour-lines opacity-60 mix-blend-screen" />
-
-      {/* 3. Architectural drifting grid matrix */}
-      <div className="absolute inset-0 tech-grid-matrix opacity-70 mix-blend-screen" />
-
-      {/* 4. Fine telemetry micro-dot texture */}
-      <div className="absolute inset-0 tech-dot-matrix opacity-40 mix-blend-screen" />
-
-      {/* 5. Luxury Showroom Cyan Lighting Field 1 (Upper Left Ambient Glow) */}
-      <div 
-        className="absolute -top-[15%] -left-[10%] w-[950px] h-[950px] rounded-full bg-gradient-to-br from-cyan-500/20 via-cyan-800/10 to-transparent blur-[160px] animate-ambient-slow mix-blend-screen pointer-events-none"
-      />
-
-      {/* 6. Luxury Showroom Cyan Lighting Field 2 (Center Right Horizon Glow) */}
-      <div 
-        className="absolute top-[35%] -right-[15%] w-[900px] h-[900px] rounded-full bg-gradient-to-bl from-cyan-400/18 via-teal-700/10 to-transparent blur-[170px] animate-ambient-reverse mix-blend-screen pointer-events-none"
-      />
-
-      {/* 7. Luxury Showroom Cyan Lighting Field 3 (Lower Center Floor Glow) */}
-      <div 
-        className="absolute -bottom-[20%] left-[20%] w-[1100px] h-[850px] rounded-full bg-gradient-to-t from-cyan-500/15 via-cyan-950/10 to-transparent blur-[180px] animate-ambient-slow mix-blend-screen pointer-events-none"
-        style={{ animationDelay: '-14s' }}
-      />
-
-      {/* 8. Hardware-accelerated interactive canvas micro-data streams */}
+    <div 
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none"
+      aria-hidden="true"
+    >
+      {/* Live Canvas Background with Particles in Straight Lines & Technical Grid */}
       <canvas 
         ref={canvasRef} 
-        className="absolute inset-0 w-full h-full mix-blend-screen opacity-75"
+        className="absolute inset-0 pointer-events-none" 
       />
 
-      {/* 9. Subtle cinematic top and bottom edge vignettes to frame typography */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#030508]/60 via-transparent to-[#030508]/80 pointer-events-none" />
+      {/* Primary Hardware-Accelerated Ambient Glow Orb (Cyan) */}
+      <div 
+        className="absolute -top-32 left-1/4 w-[750px] h-[750px] rounded-full bg-gradient-to-br from-cyan-500/18 via-teal-500/10 to-transparent blur-[130px] animate-ambient-slow pointer-events-none" 
+      />
+
+      {/* Secondary Counter-Drifting Ambient Glow Orb (Teal / Deep Blue) */}
+      <div 
+        className="absolute top-1/2 -right-32 w-[650px] h-[650px] rounded-full bg-gradient-to-tl from-cyan-600/15 via-sky-500/8 to-transparent blur-[140px] animate-ambient-reverse pointer-events-none" 
+      />
+
+      {/* Center Deep Atmospheric Glow */}
+      <div 
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[850px] h-[600px] rounded-full bg-cyan-600/10 blur-[170px] pointer-events-none" 
+      />
+
+      {/* Bottom Subtle Grounding Glow */}
+      <div 
+        className="absolute -bottom-48 left-1/3 w-[750px] h-[550px] rounded-full bg-cyan-900/18 blur-[160px] pointer-events-none" 
+      />
     </div>
   );
 }
-

@@ -177,19 +177,18 @@ PERSONALITY & COMMUNICATION STYLE:
 
 KEY FACTS ABOUT PROPELLO.ONLINE:
 - Founder: Mo Radford. Direct line: +1 (409) 797-6986 (call or text). Email: mo.radford@propellonline.com.
-- Offer: Exactly $1,500 one-time upfront build fee for a full, custom-engineered website.
+- Offer: Exactly $1,500 one-time upfront build fee for a full, custom contractor website.
+- Inclusions: Custom mobile-friendly site with dedicated service pages, project portfolio gallery, quote/contact forms, click-to-call & text buttons, complete Google SEO setup (keyword research, titles, meta tags, sitemap, Search Console), Google Business Profile optimization, brand kit (logo treatment, typography, colors), and full launch testing.
 - Ongoing Care & Hosting: $97/month with ZERO long-term contracts. Pause or cancel anytime without penalty.
-- What the $97/month includes: Enterprise cloud hosting, SSL security, daily backups, uptime monitoring, and unlimited text and photo updates whenever they need them (just call, text, or email).
-- Turnaround: 48 hours for an interactive, live prototype delivered directly to their smartphone.
-- Industries Served: ANY business. Restaurants, dental practices, medical clinics, roofing, construction, contractors, law firms, automotive/tint/wraps, landscaping, HVAC, plumbing, trucking, cleaning, accounting, retail, professional services, etc. Industry is never a limitation.
-- Redesigns & Existing Sites: We frequently rebuild outdated, slow, or poorly converting websites. If they hate their current site or it looks bad on phones, we keep their domain and brand assets, then rebuild a clean, high-converting modern site.
-- Existing Domains: The client retains 100% ownership of their domain (GoDaddy, Namecheap, Google Domains, etc.). When launching, we simply point DNS records to our high-speed cloud infrastructure.
-- Why Propello over DIY (Wix, Squarespace, WordPress): DIY platforms take 40+ hours of frustrating trial-and-error and usually end up looking amateurish, sluggish on mobile, and failing to convert. Propello gives you an agency-grade, custom-engineered site in 48 hours with zero work on your part, plus ongoing maintenance for less than the cost of an hourly freelancer.
+- What the $97/month includes: Enterprise cloud hosting (99.9% uptime), SSL security, daily backups, uptime monitoring, and routine text/photo/phone updates whenever needed.
+- Prototype Review: Once scope and materials are confirmed, we deliver an interactive staging prototype directly to their smartphone for review before launch.
+- Focus: Contractors and trade specialists (commercial & residential roofing, HVAC, electrical, plumbing, general contracting, excavation, landscaping, concrete, remodeling, painting, etc.).
+- Redesigns & Existing Sites: We frequently rebuild outdated, slow, or poorly converting contractor websites. Client retains 100% ownership of their domain at all times.
+- Why Propello over DIY (Wix, Squarespace, WordPress): DIY platforms take 40+ hours of trial-and-error and usually look cookie-cutter on mobile. Propello gives you an agency-grade, custom-engineered contractor site with zero work on your part, plus ongoing maintenance for less than the cost of an hourly freelancer.
 - The 3-Step Process:
-  1. Call: 5-minute quick call with Mo Radford to understand your business, services, and goals.
-  2. Build: Within 48 hours, we send an interactive staging prototype to your phone to test.
+  1. Call: 5-minute quick call with Mo Radford to understand your trade, services, and goals.
+  2. Prototype: We deliver a working prototype to your phone to test speed, layout, and quote forms.
   3. Launch: Upon feedback and approval, we point your domain, enable secure cloud hosting, and handle all updates moving forward.
-- Logos & Assets: If they already have a logo and photos, we incorporate them. If they need a clean logo or visual assets refreshed, we help them get it looking sharp for the new site.
 - Official Payment & Bank Transfer Details:
   * Beneficiary Name: Auisha Jubeen
   * Account Type: CHECKING
@@ -199,7 +198,7 @@ KEY FACTS ABOUT PROPELLO.ONLINE:
   * Bank Address: 111 Wall Street, New York, NY 10043, USA
   * SWIFT Code: CITIUS33
   * Compliance Rules: Business bank accounts ONLY (personal bank accounts are not accepted). Supported methods are ACH and domestic U.S. wire (Fedwire) only. Both ACH and Wire are equally supported. Domestic wire typically settles same-day; ACH typically takes 1-3 business days. For wire verification or questions, clients can call Mo Radford directly at +1 (409) 797-6986 or email mo.radford@propellonline.com.
-- Unknowns / Out of Scope: If asked about custom enterprise software, native iOS apps, or specific proprietary guarantees not mentioned, do NOT make up facts. Politely explain that you'd rather have them speak directly with Mo Radford to get an exact answer, and provide the contact info.
+- Consultations: Visitors can request a 5-minute consultation directly in the Propello AI chat or call Mo Radford directly. Requests are reviewed and confirmed by Mo.
 
 CONVERSATION CONTEXT & EMPATHY:
 - Maintain context across the entire conversation. Refer back naturally to earlier points.
@@ -291,6 +290,33 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
+// Consultation Booking intake route (used by Propello AI and Contact form)
+app.post("/api/booking", (req, res) => {
+  const { name, phone, email, trade, preferredDate, notes } = req.body;
+
+  if (!name || !phone) {
+    return res.status(400).json({ error: "Name and phone are required for consultation requests." });
+  }
+
+  const timestamp = new Date().toISOString();
+  console.log("==========================================================================");
+  console.log(`📅 NEW CONTRACTOR CONSULTATION REQUEST AT ${timestamp}:`);
+  console.log(`👤 Name           : ${name}`);
+  console.log(`📞 Phone          : ${phone}`);
+  console.log(`📧 Email          : ${email || "Not provided"}`);
+  console.log(`🔨 Trade / Niche  : ${trade || "General Contracting"}`);
+  console.log(`⏰ Preferred Time : ${preferredDate || "Earliest available"}`);
+  console.log(`📝 Notes          : ${notes || "None"}`);
+  console.log(`✉️ Notification Route: mo.radford@propellonline.com`);
+  console.log("==========================================================================");
+
+  return res.json({
+    status: "success",
+    message: "Consultation request successfully logged. Mo Radford will reach out directly to confirm your appointment time.",
+    receivedAt: timestamp
+  });
+});
+
 // Proposal Lead submission route
 app.post("/api/proposal", (req, res) => {
   const { name, email, phone, businessType, message } = req.body;
@@ -335,7 +361,7 @@ CRITICAL MANDATES:
    - marketVerdict: "saturated" or "opportunity"
    - verdictHeadline: A punchy, authoritative enterprise headline (e.g. "${cleanLocation} Market Saturation: Top Tier ${cleanNiche} Providers Dominate Local Inbound")
    - verdictMessage: 2 to 3 detailed, sophisticated sentences analyzing local search competition, commercial GC/fleet vetting, and the cost of an outdated web presence in "${cleanLocation}".
-   - actionCallout: A concise 1-sentence action step referencing Mo Radford and Propello's 48-hour prototype.
+   - actionCallout: A concise 1-sentence action step referencing Mo Radford and Propello's working prototype review.
    - searchDensityIndex: number between 65 and 95
    - mobileGapIndex: number between 70 and 96
    - commercialVettingIndex: number between 70 and 98
@@ -378,7 +404,7 @@ Format strictly inside this JSON marker block:
           marketVerdict: parsedData.marketVerdict || (parsedData.opportunityScore >= 80 ? "saturated" : "opportunity"),
           verdictHeadline: parsedData.verdictHeadline,
           verdictMessage: parsedData.verdictMessage,
-          actionCallout: parsedData.actionCallout || `Deploy your $1,500 turnkey Propello platform in 48 hours to claim ${cleanLocation}'s highest-value jobs.`,
+          actionCallout: parsedData.actionCallout || `Deploy your $1,500 turnkey Propello platform with full prototype review to claim ${cleanLocation}'s highest-value jobs.`,
           searchDensityIndex: parsedData.searchDensityIndex || 82,
           mobileGapIndex: parsedData.mobileGapIndex || 78,
           commercialVettingIndex: parsedData.commercialVettingIndex || 91,

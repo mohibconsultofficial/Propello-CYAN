@@ -4,7 +4,13 @@ import { motion } from 'motion/react';
 export default function Offer() {
   const offerPoints = [
     'Custom website built specifically for your business and market',
-    'Interactive live prototype delivered to your phone in 48 hours',
+    'First month of hosting for free',
+    'Complete Google SEO setup and Search Console configuration',
+    'Google Business Profile optimization',
+    'Professional brand kit with logo, colors, and typography',
+    'Custom social media profile and cover graphics',
+    'Google Review Kit with QR code and review-request templates',
+    'Automated email notifications for website inquiries and leads',
     'Mobile-first performance engineered for fast customer calls',
     'Enterprise cloud hosting, SSL security, and automated daily backups',
     'Continuous updates: just call or text us when you need edits',
@@ -48,20 +54,25 @@ export default function Offer() {
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            whileHover={{ y: -5, transition: { duration: 0.25 } }}
             transition={{ duration: 0.5 }}
-            className="lg:col-span-8 glass-panel-deep border border-cyan-500/40 rounded-xl p-8 sm:p-12 flex flex-col justify-between shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(6,182,212,0.15)] relative overflow-hidden"
+            className="lg:col-span-8 glass-panel-deep border-2 border-cyan-400/50 hover:border-cyan-400/80 rounded-2xl p-8 sm:p-12 flex flex-col justify-between shadow-[0_24px_70px_rgba(0,0,0,0.85),0_0_50px_rgba(6,182,212,0.22)] hover:shadow-[0_28px_85px_rgba(0,0,0,0.9),0_0_65px_rgba(6,182,212,0.32)] ring-1 ring-cyan-400/20 relative overflow-hidden transition-all duration-300"
           >
             {/* Top illuminated cyan highlight */}
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_rgba(6,182,212,0.8)]" />
 
-            <div>
+            {/* Subtle inner ambient glow */}
+            <div className="absolute -top-24 -right-24 w-80 h-80 bg-cyan-500/10 rounded-full blur-[90px] pointer-events-none" />
+
+            <div className="relative z-10">
               {/* Pricing & Tagline Banner */}
               <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-8 mb-8 border-b border-white/[0.08]">
                 <div>
-                  <span className="text-xs font-mono text-cyan-300 uppercase tracking-wider block mb-1">
-                    The Complete Package
-                  </span>
-                  <h3 className="text-2xl sm:text-3xl font-display font-semibold text-white">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-cyan-400/40 bg-cyan-950/60 text-cyan-300 text-xs font-mono font-semibold tracking-wider uppercase mb-2.5 shadow-[0_0_15px_rgba(6,182,212,0.25)]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                    <span>The Complete Package</span>
+                  </div>
+                  <h3 className="text-3xl sm:text-4xl font-display font-bold text-white tracking-tight drop-shadow-[0_2px_12px_rgba(255,255,255,0.08)]">
                     Full Custom Website
                   </h3>
                 </div>
@@ -80,11 +91,14 @@ export default function Offer() {
               </div>
 
               {/* Offer Core Deliverables */}
-              <div className="space-y-4 mb-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5 mb-10">
                 {offerPoints.map((point, idx) => (
-                  <div key={idx} className="flex items-start gap-3.5 text-sm text-zinc-200">
-                    <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5 drop-shadow-[0_0_6px_rgba(6,182,212,0.5)]" />
-                    <span className="leading-snug">{point}</span>
+                  <div
+                    key={idx}
+                    className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.025] border border-white/[0.08] hover:border-cyan-400/50 hover:bg-cyan-950/35 hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(6,182,212,0.18)] transition-all duration-200 cursor-default group/pill"
+                  >
+                    <CheckCircle2 className="w-4.5 h-4.5 text-cyan-400 shrink-0 mt-0.5 drop-shadow-[0_0_8px_rgba(6,182,212,0.6)] group-hover/pill:scale-110 group-hover/pill:text-cyan-300 transition-transform" />
+                    <span className="leading-snug text-xs sm:text-sm font-medium text-zinc-100">{point}</span>
                   </div>
                 ))}
               </div>
@@ -94,7 +108,7 @@ export default function Offer() {
             <div className="pt-8 border-t border-white/[0.08] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
               <a
                 href="tel:+14097976986"
-                className="btn-call-glowing font-display font-bold text-sm rounded-xl px-8 py-4 flex items-center justify-center gap-3 cursor-pointer shadow-[0_0_35px_rgba(6,182,212,0.65)] group"
+                className="btn-call-glowing font-display font-bold text-sm rounded-xl px-8 py-4 flex items-center justify-center gap-3 cursor-pointer group"
               >
                 <div className="w-6 h-6 rounded-full bg-slate-950/20 flex items-center justify-center">
                   <Phone className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:rotate-12 transition-transform" />
@@ -114,8 +128,9 @@ export default function Offer() {
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            whileHover={{ y: -5, transition: { duration: 0.25 } }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="lg:col-span-4 glass-panel-deep rounded-xl p-8 flex flex-col justify-between border border-white/[0.08]"
+            className="lg:col-span-4 glass-panel-deep rounded-2xl p-8 flex flex-col justify-between border border-white/[0.08] hover:border-white/[0.2] hover:shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_25px_rgba(255,255,255,0.06)] transition-all duration-300 relative overflow-hidden"
           >
             <div>
               <span className="text-xs font-mono text-zinc-400 uppercase tracking-wider block mb-1">
@@ -138,9 +153,9 @@ export default function Offer() {
               </div>
             </div>
 
-            <div className="p-4 rounded-lg bg-zinc-900/80 border border-cyan-500/20 text-xs text-zinc-300">
+            <div className="p-4 rounded-xl bg-zinc-900/80 border border-cyan-500/20 text-xs text-zinc-300">
               <span className="text-cyan-300 font-medium block mb-1">The Propello Way:</span>
-              Your website is live as a testable prototype on your smartphone in 48 hours. No meetings. No bloated retainers.
+              Your website is live as a testable prototype on your smartphone rapidly. No meetings. No bloated retainers.
             </div>
           </motion.div>
 

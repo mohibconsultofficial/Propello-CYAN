@@ -9,7 +9,7 @@ const DEFAULT_SUGGESTIONS = [
   "I already have a website. Can you redesign it?",
   "How much does it cost and what's included?",
   "Why should I choose Propello over Wix?",
-  "How does the 48-hour prototype work?"
+  "How does the mobile prototype review work?"
 ];
 
 export default function AIChatbot() {
@@ -20,7 +20,7 @@ export default function AIChatbot() {
     {
       id: 'welcome',
       sender: 'bot',
-      text: "Hey there! I’m here to help with anything regarding Propello — whether that’s our $1,500 turnkey build, our 48-hour mobile prototype, keeping your existing domain, or how we'd handle your specific industry.\n\nWhat’s on your mind?",
+      text: "Hey there! I’m here to help with anything regarding Propello — whether that’s our $1,500 turnkey build, our mobile prototype review, keeping your existing domain, or how we'd handle your specific industry.\n\nWhat’s on your mind?",
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       suggestedReplies: DEFAULT_SUGGESTIONS
     }

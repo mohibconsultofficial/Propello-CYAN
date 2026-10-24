@@ -1,5 +1,5 @@
-import { Phone, Mail, ArrowUp } from 'lucide-react';
 import PropelloLogo from './PropelloLogo';
+import { ShieldCheck } from 'lucide-react';
 
 interface FooterProps {
   onScrollToSection: (id: string) => void;
@@ -25,10 +25,10 @@ export default function Footer({ onScrollToSection }: FooterProps) {
               <PropelloLogo size="md" />
             </div>
             <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed max-w-sm font-sans">
-              High-quality websites built for businesses of all kinds. Fast turnaround, transparent pricing, and zero agency runaround.
+              High-performance websites, brand assets, and digital visibility engineered specifically for contractors and specialty trade professionals.
             </p>
-            <div className="text-[11px] font-mono text-zinc-400">
-              Founder: Mo Radford • +1 (409) 797-6986
+            <div className="text-[11px] font-mono text-zinc-500">
+              Founder: Mo Radford • PROPELLO.ONLINE
             </div>
           </div>
 
@@ -56,10 +56,10 @@ export default function Footer({ onScrollToSection }: FooterProps) {
               </li>
               <li>
                 <button
-                  onClick={() => onScrollToSection('reviews')}
+                  onClick={() => onScrollToSection('work')}
                   className="hover:text-cyan-300 transition-colors cursor-pointer"
                 >
-                  Client Reviews
+                  Built With Purpose
                 </button>
               </li>
               <li>
@@ -67,52 +67,57 @@ export default function Footer({ onScrollToSection }: FooterProps) {
                   onClick={() => onScrollToSection('about')}
                   className="hover:text-cyan-300 transition-colors cursor-pointer"
                 >
-                  About Propello.online
+                  About PROPELLO.ONLINE
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onScrollToSection('contact')}
+                  className="hover:text-cyan-300 transition-colors cursor-pointer"
+                >
+                  Start Your Project
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Direct Support Column */}
+          {/* Standards & Transparency Column */}
           <div className="md:col-span-3 space-y-3">
             <span className="text-[11px] font-mono uppercase tracking-wider text-white block">
-              Direct Contact
+              Platform Standards
             </span>
-            <div className="space-y-2.5 text-xs">
-              <a 
-                href="tel:+14097976986" 
-                className="flex items-center gap-2 hover:text-white transition-colors group cursor-pointer"
-              >
-                <Phone className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
-                <span className="font-mono">+1 (409) 797-6986</span>
-              </a>
-              <a 
-                href="mailto:mo.radford@propellonline.com" 
-                className="flex items-center gap-2 hover:text-white transition-colors"
-              >
-                <Mail className="w-3.5 h-3.5 text-zinc-400" />
-                <span>mo.radford@propellonline.com</span>
-              </a>
-              <div className="pt-2 text-[11px] font-mono text-zinc-400">
-                48-Hour Live Mobile Delivery
-              </div>
-            </div>
+            <ul className="space-y-2 text-xs font-mono text-zinc-400">
+              <li className="flex items-center gap-2">
+                <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+                <span>$1,500 Setup + $97/mo Service</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Working Prototype Review</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+                <span>100% Client Domain Ownership</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Zero Long-Term Contracts</span>
+              </li>
+            </ul>
           </div>
 
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-zinc-400">
+        {/* Bottom Metadata & Legal Bar */}
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-zinc-500">
           <div>
-            © {new Date().getFullYear()} Propello.online. All rights reserved.
+            &copy; {new Date().getFullYear()} PROPELLO.ONLINE. All rights reserved.
           </div>
-          <button
-            onClick={scrollToTop}
-            className="flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors cursor-pointer"
-          >
-            <span>Back to top</span>
-            <ArrowUp className="w-3.5 h-3.5" />
-          </button>
+          <div className="flex items-center gap-6">
+            <span>Enterprise Cloud Architecture</span>
+            <span>•</span>
+            <span>SSL Secured</span>
+          </div>
         </div>
 
       </div>

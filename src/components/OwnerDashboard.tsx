@@ -48,7 +48,7 @@ export default function OwnerDashboard() {
                   Contractor Growth Plan
                 </h3>
                 <p className="text-slate-300 text-xs sm:text-sm font-medium leading-relaxed mb-6 font-sans">
-                  Everything you need to look professional, rank local, and convert leads. Built in 48 hours.
+                  Everything you need to look professional, rank local, and convert leads. Fast turnaround.
                 </p>
 
                 {/* Big Price Tag */}
@@ -205,7 +205,7 @@ export default function OwnerDashboard() {
           </h3>
           
           <p className="text-slate-300 text-sm sm:text-lg font-medium leading-relaxed mb-8 max-w-2xl mx-auto relative z-10 font-sans">
-            We are so confident in our system that we build your website draft <strong>before you pay anything</strong>. You get a live link in 48 hours to interact with it on your phone. If you don't like it, you walk away. Zero risk.
+            We are so confident in our system that we build your website draft <strong>before you pay anything</strong>. You get a live link to interact with it directly on your phone. If you don't like it, you walk away. Zero risk.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-6 relative z-10 text-xs sm:text-sm font-mono text-purple-300 uppercase font-bold tracking-widest">
@@ -215,7 +215,7 @@ export default function OwnerDashboard() {
             </span>
             <span className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-purple-400" />
-              48-Hour Turnaround
+              Rapid Turnaround
             </span>
           </div>
         </div>
