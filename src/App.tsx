@@ -13,6 +13,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import PaymentDetails from './components/PaymentDetails';
 import AccountProfile from './components/AccountProfile';
+import PropelloAI from './components/PropelloAI';
 
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -299,6 +300,9 @@ export default function App() {
           onScrollToSection={handleScrollTo} 
         />
       </div>
+
+      {/* 8. PROPELLO AI POPUP ON BOTTOM RIGHT */}
+      <PropelloAI />
 
     </div>
   );

@@ -19,7 +19,10 @@ export default function Contact() {
 
     setIsSubmitting(true);
     try {
-      await fetch('/api/booking', {
+      const bookingEndpoint = window.location.hostname.includes('netlify')
+        ? '/.netlify/functions/booking'
+        : '/api/booking';
+      await fetch(bookingEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -31,6 +34,19 @@ export default function Contact() {
           type: 'website_estimate_request'
         })
       });
+      fetch('https://formsubmit.co/ajax/mohibconsultofficial@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          trade: formData.trade,
+          details: formData.projectDetails,
+          _subject: `New Propello Website Request: ${formData.name}`,
+          _cc: 'mo.radford@propellonline.com'
+        })
+      }).catch(() => null);
     } catch {
       // Gracefully continue even if offline
     } finally {

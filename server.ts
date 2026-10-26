@@ -165,55 +165,62 @@ if (API_KEY && API_KEY !== "MY_GEMINI_API_KEY") {
 }
 
 // PROPELLO.ONLINE HIGH-INTELLIGENCE CONVERSATIONAL SYSTEM INSTRUCTIONS
-const SYSTEM_PROMPT = `You are the intelligent representative for Propello (propello.online), founded by Mo Radford.
-You communicate like a sharp, helpful, confident, calm, and knowledgeable person from a premium digital agency. You are conversational, respectful, and slightly personable.
+const SYSTEM_PROMPT = `You are Propello AI, the articulate, authentic representative for Propello (propellonline.com / propello.online) and its founder, Mo Radford.
+Propello engineers custom, high-converting websites built exclusively for industrial trades and specialty contractors (roofers, electricians, HVAC, plumbers, general contractors, concrete, excavators, painters, welders, remodelers, etc.).
 
-PERSONALITY & COMMUNICATION STYLE:
-- Communicate like a smart, experienced colleague who genuinely wants to understand the visitor.
-- NEVER sound like a generic robotic AI or use repetitive corporate clichés (NEVER say "Great question!", "Absolutely! Our team specializes in...", "Thanks for reaching out! We would be happy to help...", "I hope this helps!").
-- Vary your sentence structures naturally. Be concise when a short answer is best, and thorough when the question requires nuance.
-- NEVER be pushy or desperate to close a deal. Be helpful first.
-- ONLY provide the phone number (+1 (409) 797-6986) or suggest calling Mo when the user asks how to get started, asks to talk to someone, asks for a demo/quote, or shows clear buying intent. Do not append sales pitches or phone numbers to casual informational answers.
+CRITICAL CONVERSATIONAL RULES & TONE:
+- Speak like a sharp, knowledgeable human specialist who genuinely understands the contractor trade business.
+- Never sound like a corporate robot or script reader. Never use repetitive canned phrases like "Great question!" or "I'd be happy to help with that!"
+- Answer the user's specific question directly, concisely, and accurately BEFORE adding any follow-up context.
+- VITAL MANDATE: At the end of EVERY response, you MUST include this vital one-sentence prompt:
+  "Would you like to book a call with Mo directly, or shall I pull up our quick quote form?"
 
-KEY FACTS ABOUT PROPELLO.ONLINE:
-- Founder: Mo Radford. Direct line: +1 (409) 797-6986 (call or text). Email: mo.radford@propellonline.com.
-- Offer: Exactly $1,500 one-time upfront build fee for a full, custom contractor website.
-- Inclusions: Custom mobile-friendly site with dedicated service pages, project portfolio gallery, quote/contact forms, click-to-call & text buttons, complete Google SEO setup (keyword research, titles, meta tags, sitemap, Search Console), Google Business Profile optimization, brand kit (logo treatment, typography, colors), and full launch testing.
-- Ongoing Care & Hosting: $97/month with ZERO long-term contracts. Pause or cancel anytime without penalty.
-- What the $97/month includes: Enterprise cloud hosting (99.9% uptime), SSL security, daily backups, uptime monitoring, and routine text/photo/phone updates whenever needed.
-- Prototype Review: Once scope and materials are confirmed, we deliver an interactive staging prototype directly to their smartphone for review before launch.
-- Focus: Contractors and trade specialists (commercial & residential roofing, HVAC, electrical, plumbing, general contracting, excavation, landscaping, concrete, remodeling, painting, etc.).
-- Redesigns & Existing Sites: We frequently rebuild outdated, slow, or poorly converting contractor websites. Client retains 100% ownership of their domain at all times.
-- Why Propello over DIY (Wix, Squarespace, WordPress): DIY platforms take 40+ hours of trial-and-error and usually look cookie-cutter on mobile. Propello gives you an agency-grade, custom-engineered contractor site with zero work on your part, plus ongoing maintenance for less than the cost of an hourly freelancer.
-- The 3-Step Process:
-  1. Call: 5-minute quick call with Mo Radford to understand your trade, services, and goals.
-  2. Prototype: We deliver a working prototype to your phone to test speed, layout, and quote forms.
-  3. Launch: Upon feedback and approval, we point your domain, enable secure cloud hosting, and handle all updates moving forward.
-- Official Payment & Bank Transfer Details:
-  * Beneficiary Name: Auisha Jubeen
-  * Account Type: CHECKING
-  * Bank Name: Citibank
-  * Routing Number: 031100209
-  * Account Number: 70580410002685339
-  * Bank Address: 111 Wall Street, New York, NY 10043, USA
-  * SWIFT Code: CITIUS33
-  * Compliance Rules: Business bank accounts ONLY (personal bank accounts are not accepted). Supported methods are ACH and domestic U.S. wire (Fedwire) only. Both ACH and Wire are equally supported. Domestic wire typically settles same-day; ACH typically takes 1-3 business days. For wire verification or questions, clients can call Mo Radford directly at +1 (409) 797-6986 or email mo.radford@propellonline.com.
-- Consultations: Visitors can request a 5-minute consultation directly in the Propello AI chat or call Mo Radford directly. Requests are reviewed and confirmed by Mo.
+STRICT SCOPE BOUNDARY & UNANSWERABLE QUESTIONS:
+- You ONLY provide information regarding Propello, our contractor websites, trade services, pricing ($1,500 build / $97/mo hosting), portfolio, and Mo Radford.
+- If asked about ANYTHING outside of Propello's website and services (such as general science, trivia, external topics, or anything you do not have verified company information about), do NOT answer the external topic. You MUST explicitly respond:
+  "I don't have that information. I can only help with the content on the website and how to reach Mo, and you will have to ask him that. Would you like to book a call with Mo directly, or shall I pull up our quick quote form?"
 
-CONVERSATION CONTEXT & EMPATHY:
-- Maintain context across the entire conversation. Refer back naturally to earlier points.
-- Pay attention to the specific industry or problems the visitor mentions. Make them feel heard and understood (e.g. if they mention their roofing site is bad on mobile, discuss mobile quote flows for homeowners; if they run a dental clinic, talk about patient trust and booking; if a restaurant, talk about instant-loading mobile menus).
-- Answer the actual question directly before adding relevant context.`;
+EXACT KNOWLEDGE BASE:
+1. Founder & Owner:
+   - Mo Radford is the founder and owner of Propello.
+   - If asked "who is the owner?", "who is your owner?", "who is the owner of you?", or "who created you?", directly state that Mo Radford is the founder and owner of Propello (and that Propello AI was created by Mo Radford and the Propello engineering team).
+   - Direct Email: mo.radford@propellonline.com
+   - Direct Phone / Text: +1 (409) 797-6986
+2. Main Services:
+   - When asked for "three main services" or "what services do you provide?":
+     1) Custom High-Converting Websites ($1,500 turnkey build fee, interactive phone prototype delivered to your phone in 5-7 days).
+     2) Local Contractor SEO & Google Maps 3-Pack Optimization (geo-targeted keywords, mobile page speed, Schema markup, and Google Business Profile setup).
+     3) Dedicated Cloud Hosting & Zero-Contract Care ($97/month, zero contracts, 99.9% uptime, daily backups, and unlimited routine updates).
+3. Other Websites & Portfolio:
+   - When asked "do you have any other website?", "what other websites do you have?", or for portfolio work:
+     - Our flagship agency domain is propellonline.com (and propello.online).
+     - We also maintain private staging prototypes and live client websites for roofing, electrical, HVAC, plumbing, and general contractors across Texas and nationwide.
+     - Because client prototypes are hosted on secure private staging links during development, Mo Radford shares live interactive walkthroughs directly to contractors' smartphones during our 5-minute kickoff call.
+4. Service Area & Texas:
+   - When asked "do you service in Texas?" or about specific cities (Houston, Dallas-Fort Worth, Austin, San Antonio, Beaumont, etc.):
+     - Yes, absolutely! We are headquartered in Texas (area code 409) and actively service trade contractors statewide across Texas, as well as nationwide throughout the US and Canada.
+5. Pricing & Offer:
+   - Upfront build: Flat $1,500 one-time setup.
+   - Monthly hosting & care: $97/month. ZERO contracts. Cancel or pause anytime.
+   - Domain ownership: 100% owned by the client. We never hold domains or code hostage.
+6. The Quote Form & Booking:
+   - When the user asks for a quote, agrees to start, or asks to open the form, acknowledge and append the exact tag [OPEN_QUOTE_FORM] at the very end of your response.`;
 
-// Multi-model Gemini executor with automatic failover (handles 503 high demand gracefully)
+// Multi-model Gemini executor with ultra-fast automatic failover
 async function generateGeminiContentWithFallback(
   aiClient: GoogleGenAI,
   contents: any,
   systemInstruction?: string,
   temperature?: number,
-  timeoutMs = 12000
+  timeoutMs = 4000
 ): Promise<string | null> {
-  const candidateModels = ["gemini-3.8-flash", "gemini-3.1-flash-lite"];
+  // Ordered by speed and current availability
+  const candidateModels = [
+    "gemini-3.5-flash-lite",
+    "gemini-3.5-flash",
+    "gemini-3.1-flash-lite",
+    "gemini-3.8-flash"
+  ];
 
   for (const model of candidateModels) {
     try {
@@ -236,7 +243,7 @@ async function generateGeminiContentWithFallback(
         return response.text;
       }
     } catch {
-      // Transient error or model overload (503), try next model silently
+      // Fast fallback to next model
       continue;
     }
   }
@@ -255,7 +262,11 @@ app.post("/api/chat", async (req, res) => {
 
   // If Gemini is not configured, reply using our intelligent knowledge engine
   if (!ai) {
-    return res.json({ text: fallback.text, nextSuggestions: fallback.nextSuggestions });
+    return res.json({
+      text: fallback.text,
+      nextSuggestions: fallback.nextSuggestions,
+      triggerQuoteForm: fallback.triggerQuoteForm || false
+    });
   }
 
   try {
@@ -278,20 +289,35 @@ app.post("/api/chat", async (req, res) => {
       ai,
       contents,
       SYSTEM_PROMPT,
-      0.65,
-      12000
+      0.6,
+      4000
     );
 
-    const reply = aiReply || fallback.text;
-    return res.json({ text: reply, nextSuggestions: fallback.nextSuggestions });
+    let reply = aiReply || fallback.text;
+    let triggerQuoteForm = fallback.triggerQuoteForm || false;
+
+    if (reply.includes("[OPEN_QUOTE_FORM]")) {
+      reply = reply.replace("[OPEN_QUOTE_FORM]", "").trim();
+      triggerQuoteForm = true;
+    }
+
+    return res.json({
+      text: reply,
+      nextSuggestions: fallback.nextSuggestions,
+      triggerQuoteForm
+    });
 
   } catch {
-    return res.json({ text: fallback.text, nextSuggestions: fallback.nextSuggestions });
+    return res.json({
+      text: fallback.text,
+      nextSuggestions: fallback.nextSuggestions,
+      triggerQuoteForm: fallback.triggerQuoteForm || false
+    });
   }
 });
 
 // Consultation Booking intake route (used by Propello AI and Contact form)
-app.post("/api/booking", (req, res) => {
+app.post("/api/booking", async (req, res) => {
   const { name, phone, email, trade, preferredDate, notes } = req.body;
 
   if (!name || !phone) {
@@ -307,12 +333,42 @@ app.post("/api/booking", (req, res) => {
   console.log(`🔨 Trade / Niche  : ${trade || "General Contracting"}`);
   console.log(`⏰ Preferred Time : ${preferredDate || "Earliest available"}`);
   console.log(`📝 Notes          : ${notes || "None"}`);
-  console.log(`✉️ Notification Route: mo.radford@propellonline.com`);
+  console.log(`✉️ Notification Route: mohibconsultofficial@gmail.com & mo.radford@propellonline.com`);
   console.log("==========================================================================");
+
+  // Deliver lead directly to user's Gmail
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 6000);
+    await fetch("https://formsubmit.co/ajax/mohibconsultofficial@gmail.com", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Origin": "https://propello.online",
+        "Referer": "https://propello.online/"
+      },
+      body: JSON.stringify({
+        name,
+        phone,
+        email: email || "Not provided",
+        trade: trade || "Contractor",
+        preferredDate: preferredDate || "ASAP",
+        notes: notes || "Submitted via Propello AI / Website",
+        _subject: `New Propello Quote Lead: ${name} (${trade || "Contractor"})`,
+        _cc: "mo.radford@propellonline.com",
+        _template: "table"
+      }),
+      signal: controller.signal
+    });
+    clearTimeout(timer);
+  } catch (deliveryErr) {
+    console.warn("Direct email delivery error (continuing gracefully):", deliveryErr);
+  }
 
   return res.json({
     status: "success",
-    message: "Consultation request successfully logged. Mo Radford will reach out directly to confirm your appointment time.",
+    message: "Consultation request successfully logged and sent to Mo Radford.",
     receivedAt: timestamp
   });
 });
@@ -322,7 +378,7 @@ app.post("/api/proposal", (req, res) => {
   const { name, email, phone, businessType, message } = req.body;
 
   console.log("==========================================================================");
-  console.log(`📨 SECURE PROPOSAL INQUIRY SUBMITTED TO MO.RADFORD@PROPELLO.ONLINE AT ${new Date().toISOString()}:`);
+  console.log(`📨 SECURE PROPOSAL INQUIRY SUBMITTED TO MO.RADFORD@PROPELLONLINE.COM AT ${new Date().toISOString()}:`);
   console.log(`👤 Client: ${name}`);
   console.log(`📞 Phone : ${phone}`);
   console.log(`📧 Email : ${email}`);

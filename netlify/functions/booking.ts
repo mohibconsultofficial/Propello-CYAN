@@ -48,15 +48,44 @@ export async function handler(event: any) {
   console.log(`🔨 Trade / Niche  : ${trade || "General Contracting"}`);
   console.log(`⏰ Preferred Time : ${preferredDate || "Earliest available"}`);
   console.log(`📝 Notes          : ${notes || "None"}`);
-  console.log(`✉️ Notification Route: mo.radford@propellonline.com`);
+  console.log(`✉️ Notification Route: mohibconsultofficial@gmail.com & mo.radford@propellonline.com`);
   console.log("==========================================================================");
+
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 6000);
+    await fetch("https://formsubmit.co/ajax/mohibconsultofficial@gmail.com", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Origin": "https://propello.online",
+        "Referer": "https://propello.online/"
+      },
+      body: JSON.stringify({
+        name,
+        phone,
+        email: email || "Not provided",
+        trade: trade || "Contractor",
+        preferredDate: preferredDate || "ASAP",
+        notes: notes || "Submitted via Propello AI / Netlify",
+        _subject: `New Propello Quote Lead: ${name} (${trade || "Contractor"})`,
+        _cc: "mo.radford@propellonline.com",
+        _template: "table"
+      }),
+      signal: controller.signal
+    });
+    clearTimeout(timer);
+  } catch (deliveryErr) {
+    console.warn("Netlify function direct email delivery error:", deliveryErr);
+  }
 
   return {
     statusCode: 200,
     headers,
     body: JSON.stringify({
       status: "success",
-      message: "Consultation request successfully logged. Mo Radford will reach out directly to confirm your appointment time.",
+      message: "Consultation request successfully logged and sent to Mo Radford.",
       receivedAt: timestamp
     })
   };
