@@ -107,12 +107,17 @@ export async function handler(event: any) {
       parts: [{ text: message }]
     });
 
-    const candidateModels = ["gemini-3.8-flash", "gemini-3.1-flash-lite"];
+    const candidateModels = [
+      "gemini-3.5-flash-lite",
+      "gemini-3.5-flash",
+      "gemini-3.1-flash-lite",
+      "gemini-3.8-flash"
+    ];
     let aiText: string | null = null;
 
     for (const model of candidateModels) {
       try {
-        const response: any = await ai.models.generateContent({
+        const generatePromise = ai.models.generateContent({
           model,
           contents,
           config: {
@@ -120,6 +125,12 @@ export async function handler(event: any) {
             temperature: 0.65
           }
         });
+
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error("Timeout")), 4000)
+        );
+
+        const response: any = await Promise.race([generatePromise, timeoutPromise]);
 
         if (response && response.text) {
           aiText = response.text;

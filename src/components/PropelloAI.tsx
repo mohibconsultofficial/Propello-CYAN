@@ -117,6 +117,11 @@ export default function PropelloAI() {
         throw new Error('API response error');
       }
 
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        throw new Error('Non-JSON response');
+      }
+
       const data = await response.json();
       setIsTyping(false);
 
