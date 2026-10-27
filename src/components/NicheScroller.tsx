@@ -39,20 +39,27 @@ export default function NicheScroller({
   badgeTitle = 'Tailored specifically for industrial trades & specialty contractors'
 }: NicheScrollerProps) {
   return (
-    <div className={`w-full overflow-hidden ${className}`}>
-      {/* Subheader Badge */}
-      {badgeTitle && (
-        <div className="w-full px-4 sm:px-6 mb-4 text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-white/[0.08] bg-zinc-950/70 text-[11px] font-mono tracking-wider uppercase text-zinc-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_#22d3ee]" />
-            <span>{badgeTitle}</span>
-          </div>
-        </div>
-      )}
-
-      {/* Full-Viewport Edge-to-Edge Marquee Bar (Spans 100% of screen width from border to border) */}
-      <div className="w-full overflow-hidden py-3.5 border-y border-white/[0.08] bg-zinc-950/80 backdrop-blur-md select-none relative">
+    <div className={`w-full relative z-10 select-none ${className}`}>
+      {/* Unified Industrial Niche Ticker Chassis */}
+      <div className="w-full border-y border-white/[0.08] bg-zinc-950/85 backdrop-blur-md relative overflow-hidden py-3 sm:py-3.5">
         
+        {/* Subtle Ambient Backlight Glow inside chassis */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-8 bg-cyan-500/5 blur-2xl pointer-events-none" />
+
+        {/* Small, Elegant Heading Bar - Unified Directly Above the Marquee */}
+        {badgeTitle && (
+          <div className="w-full max-w-2xl mx-auto px-4 mb-2.5 sm:mb-3 flex items-center justify-center gap-2.5 sm:gap-4 relative z-10">
+            <div className="h-[1px] flex-1 max-w-[36px] sm:max-w-[70px] bg-gradient-to-r from-transparent via-cyan-500/30 to-cyan-400/60" />
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee] animate-pulse" />
+              <span className="text-[10px] sm:text-[11px] font-mono tracking-[0.16em] uppercase text-zinc-300">
+                {badgeTitle}
+              </span>
+            </div>
+            <div className="h-[1px] flex-1 max-w-[36px] sm:max-w-[70px] bg-gradient-to-l from-transparent via-cyan-500/30 to-cyan-400/60" />
+          </div>
+        )}
+
         {/* Left & Right Edge Gradient Shields for Seamless Visual Fade */}
         <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-36 bg-gradient-to-r from-[#030508] via-[#030508]/90 to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-36 bg-gradient-to-l from-[#030508] via-[#030508]/90 to-transparent z-10 pointer-events-none" />
@@ -120,6 +127,8 @@ export default function NicheScroller({
         .animate-twin-loop {
           animation: twinScrollLeft 40s linear infinite !important;
           will-change: transform;
+          transform: translateZ(0);
+          backface-visibility: hidden;
         }
       `}</style>
     </div>

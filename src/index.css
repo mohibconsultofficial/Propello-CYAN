@@ -456,21 +456,29 @@ html {
 }
 
 body {
-  /* Enhanced inertia feel */
-  scroll-behavior: smooth;
+  /* Native touch momentum */
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Scroll reveal utility classes for interactive in/out animations */
 .scroll-reveal {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
+}
+
+@media (max-width: 640px) {
+  .scroll-reveal {
+    transform: translateY(8px);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  }
 }
 
 .scroll-reveal.revealed {
   opacity: 1;
   transform: translateY(0);
+  will-change: auto;
 }
 
 .scroll-reveal-left {

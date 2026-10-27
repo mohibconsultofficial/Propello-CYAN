@@ -2,7 +2,6 @@ import { Phone, Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import AmbientBackground from './components/AmbientBackground';
 import CustomCursor from './components/CustomCursor';
-import ElectricScrollChains from './components/ElectricScrollChains';
 import ScrollRevealProvider from './components/ScrollRevealProvider';
 import PropelloLogo from './components/PropelloLogo';
 import Hero from './components/Hero';
@@ -168,7 +167,6 @@ export default function App() {
       {/* Continuous Atmospheric Background (Hardware-accelerated cyan lighting & depth) */}
       <AmbientBackground />
       <CustomCursor />
-      <ElectricScrollChains />
       <ScrollRevealProvider />
 
       {/* Simplified High-End Navigation */}

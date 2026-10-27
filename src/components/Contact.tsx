@@ -1,8 +1,10 @@
 import { useState, type FormEvent } from 'react';
 import { Phone, Mail, Clock, CheckCircle2, ShieldCheck, Zap, Send } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useHoverSupported } from '../utils/useHoverSupported';
 
 export default function Contact() {
+  const hasHover = useHoverSupported();
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -82,10 +84,10 @@ export default function Contact() {
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          whileHover={{ y: -5, transition: { duration: 0.25 } }}
-          transition={{ duration: 0.5 }}
-          className="glass-panel-deep border border-cyan-500/50 hover:border-cyan-400/80 rounded-2xl p-8 sm:p-14 max-w-3xl mx-auto shadow-[0_20px_70px_rgba(0,0,0,0.9),0_0_50px_rgba(6,182,212,0.2)] hover:shadow-[0_28px_85px_rgba(0,0,0,0.95),0_0_65px_rgba(6,182,212,0.28)] relative overflow-hidden mb-12 transition-all duration-300"
+          viewport={{ once: true, amount: 0.05 }}
+          whileHover={hasHover ? { y: -5, transition: { duration: 0.25 } } : undefined}
+          transition={{ duration: 0.4 }}
+          className="glass-panel-deep border border-cyan-500/50 hover:border-cyan-400/80 rounded-2xl p-8 sm:p-14 max-w-3xl mx-auto shadow-[0_20px_70px_rgba(0,0,0,0.9),0_0_50px_rgba(6,182,212,0.2)] hover:shadow-[0_28px_85px_rgba(0,0,0,0.95),0_0_65px_rgba(6,182,212,0.28)] relative overflow-hidden mb-12 transition-all duration-300 transform-gpu"
         >
           {/* Top illuminated cyan highlight */}
           <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />

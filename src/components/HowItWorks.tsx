@@ -1,7 +1,9 @@
 import { Phone, Code2, Rocket } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useHoverSupported } from '../utils/useHoverSupported';
 
 export default function HowItWorks() {
+  const hasHover = useHoverSupported();
   const steps = [
     {
       num: '01',

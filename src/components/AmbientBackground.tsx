@@ -34,6 +34,42 @@ export default function AmbientBackground() {
     // Grid spacing for straight lines & matrix nodes
     const gridSize = 56;
 
+    // Offscreen canvas to pre-render static grid once on resize (huge CPU/GPU savings)
+    let gridCanvas: HTMLCanvasElement | null = null;
+
+    const buildGridCanvas = () => {
+      gridCanvas = document.createElement('canvas');
+      gridCanvas.width = Math.floor(width * dpr);
+      gridCanvas.height = Math.floor(height * dpr);
+      const gctx = gridCanvas.getContext('2d');
+      if (!gctx) return;
+      gctx.scale(dpr, dpr);
+
+      // 1. Draw technical grid
+      gctx.lineWidth = 1;
+      gctx.strokeStyle = 'rgba(6, 182, 212, 0.035)';
+      gctx.beginPath();
+      for (let x = 0; x <= width; x += gridSize) {
+        gctx.moveTo(x, 0);
+        gctx.lineTo(x, height);
+      }
+      for (let y = 0; y <= height; y += gridSize) {
+        gctx.moveTo(0, y);
+        gctx.lineTo(width, y);
+      }
+      gctx.stroke();
+
+      // 2. Draw grid intersection dots
+      gctx.fillStyle = 'rgba(6, 182, 212, 0.09)';
+      for (let x = 0; x <= width; x += gridSize * 2) {
+        for (let y = 0; y <= height; y += gridSize * 2) {
+          gctx.beginPath();
+          gctx.arc(x, y, 1, 0, Math.PI * 2);
+          gctx.fill();
+        }
+      }
+    };
+
     const resize = () => {
       isMobile = window.innerWidth < 768;
       // Cap DPR to 1 on mobile to prevent GPU fillrate exhaustion on Retina iOS screens
@@ -45,13 +81,14 @@ export default function AmbientBackground() {
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       ctx.scale(dpr, dpr);
+      buildGridCanvas();
     };
 
     resize();
     window.addEventListener('resize', resize, { passive: true });
 
-    // Mobile-optimized particle count (18 on phones vs 48 on desktop)
-    const particleCount = isMobile ? 18 : Math.min(Math.floor((width * height) / 22000), 48);
+    // Mobile-optimized particle count (12 on phones vs 40 on desktop)
+    const particleCount = isMobile ? 12 : Math.min(Math.floor((width * height) / 24000), 40);
     const particles: Particle[] = [];
 
     for (let i = 0; i < particleCount; i++) {
@@ -74,34 +111,15 @@ export default function AmbientBackground() {
       });
     }
 
-    const maxDist = 135;
+    const maxDist = 120;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // 1. Draw subtle technical grid
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(6, 182, 212, 0.035)';
-
-      ctx.beginPath();
-      for (let x = 0; x <= width; x += gridSize) {
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
-      }
-      for (let y = 0; y <= height; y += gridSize) {
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-      }
-      ctx.stroke();
-
-      // 2. Draw subtle grid intersection dots
-      ctx.fillStyle = 'rgba(6, 182, 212, 0.09)';
-      for (let x = 0; x <= width; x += gridSize * 2) {
-        for (let y = 0; y <= height; y += gridSize * 2) {
-          ctx.beginPath();
-          ctx.arc(x, y, 1, 0, Math.PI * 2);
-          ctx.fill();
-        }
+      // 1. Blit cached static grid (fast single GPU operation)
+      if (gridCanvas) {
+        ctx.drawImage(gridCanvas, 0, 0, width, height);
       }
 
       // 3. Update & render particles with straight-line motion & subtle trails
@@ -212,22 +230,22 @@ export default function AmbientBackground() {
 
       {/* Primary Hardware-Accelerated Ambient Glow Orb (Cyan) */}
       <div 
-        className="absolute -top-32 left-1/4 w-[750px] h-[750px] rounded-full bg-gradient-to-br from-cyan-500/18 via-teal-500/10 to-transparent blur-[130px] animate-ambient-slow pointer-events-none" 
+        className="absolute -top-32 left-1/4 w-[450px] sm:w-[750px] h-[450px] sm:h-[750px] rounded-full bg-gradient-to-br from-cyan-500/18 via-teal-500/10 to-transparent blur-[60px] sm:blur-[130px] animate-ambient-slow pointer-events-none transform-gpu" 
       />
 
       {/* Secondary Counter-Drifting Ambient Glow Orb (Teal / Deep Blue) */}
       <div 
-        className="absolute top-1/2 -right-32 w-[650px] h-[650px] rounded-full bg-gradient-to-tl from-cyan-600/15 via-sky-500/8 to-transparent blur-[140px] animate-ambient-reverse pointer-events-none" 
+        className="absolute top-1/2 -right-32 w-[400px] sm:w-[650px] h-[400px] sm:h-[650px] rounded-full bg-gradient-to-tl from-cyan-600/15 via-sky-500/8 to-transparent blur-[60px] sm:blur-[140px] animate-ambient-reverse pointer-events-none transform-gpu" 
       />
 
       {/* Center Deep Atmospheric Glow */}
       <div 
-        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[850px] h-[600px] rounded-full bg-cyan-600/10 blur-[170px] pointer-events-none" 
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] sm:w-[850px] h-[350px] sm:h-[600px] rounded-full bg-cyan-600/10 blur-[60px] sm:blur-[170px] pointer-events-none transform-gpu" 
       />
 
       {/* Bottom Subtle Grounding Glow */}
       <div 
-        className="absolute -bottom-48 left-1/3 w-[750px] h-[550px] rounded-full bg-cyan-900/18 blur-[160px] pointer-events-none" 
+        className="absolute -bottom-48 left-1/3 w-[450px] sm:w-[750px] h-[350px] sm:h-[550px] rounded-full bg-cyan-900/18 blur-[60px] sm:blur-[160px] pointer-events-none transform-gpu" 
       />
     </div>
   );
