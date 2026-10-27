@@ -215,7 +215,7 @@ export default function App() {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-slate-950"></span>
                 </span>
                 <Phone className="w-3.5 h-3.5 fill-slate-950 text-slate-950" />
-                <span>Call: +1 (409) 797-6986</span>
+                <span>Talk to the owner</span>
               </a>
             </div>
 
@@ -267,7 +267,7 @@ export default function App() {
                 className="btn-call-glowing w-full py-3.5 rounded-lg font-display font-bold text-center flex items-center justify-center gap-2.5 text-sm cursor-pointer"
               >
                 <Phone className="w-4 h-4 fill-slate-950 text-slate-950" />
-                <span>Call +1 (409) 797-6986</span>
+                <span>Talk to the owner</span>
               </a>
             </div>
           </div>
@@ -277,7 +277,7 @@ export default function App() {
       {/* Clean Streamlined Architecture */}
       <main className="relative z-10">
         {/* 1. HERO (with Infinite Niche Scroller) */}
-        <div className="scroll-reveal"><Hero /></div>
+        <div><Hero /></div>
 
         {/* 2. WHAT WE OFFER */}
         <div className="scroll-reveal"><Offer /></div>

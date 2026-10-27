@@ -178,13 +178,15 @@ export default function AmbientBackground() {
       }
 
       // 4. Draw connecting straight lines between close particles
+      const maxDistSq = maxDist * maxDist;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+          const distSq = dx * dx + dy * dy;
 
-          if (dist < maxDist) {
+          if (distSq < maxDistSq) {
+            const dist = Math.sqrt(distSq);
             const lineAlpha = (1 - dist / maxDist) * 0.12;
             ctx.beginPath();
             ctx.strokeStyle = `rgba(6, 182, 212, ${lineAlpha})`;
@@ -230,22 +232,22 @@ export default function AmbientBackground() {
 
       {/* Primary Hardware-Accelerated Ambient Glow Orb (Cyan) */}
       <div 
-        className="absolute -top-32 left-1/4 w-[450px] sm:w-[750px] h-[450px] sm:h-[750px] rounded-full bg-gradient-to-br from-cyan-500/18 via-teal-500/10 to-transparent blur-[60px] sm:blur-[130px] animate-ambient-slow pointer-events-none transform-gpu" 
+        className="absolute -top-32 left-1/4 w-[450px] sm:w-[750px] h-[450px] sm:h-[750px] rounded-full bg-gradient-to-br from-cyan-500/18 via-teal-500/10 to-transparent blur-[60px] sm:blur-[130px] animate-ambient-slow pointer-events-none" 
       />
 
       {/* Secondary Counter-Drifting Ambient Glow Orb (Teal / Deep Blue) */}
       <div 
-        className="absolute top-1/2 -right-32 w-[400px] sm:w-[650px] h-[400px] sm:h-[650px] rounded-full bg-gradient-to-tl from-cyan-600/15 via-sky-500/8 to-transparent blur-[60px] sm:blur-[140px] animate-ambient-reverse pointer-events-none transform-gpu" 
+        className="absolute top-1/2 -right-32 w-[400px] sm:w-[650px] h-[400px] sm:h-[650px] rounded-full bg-gradient-to-tl from-cyan-600/15 via-sky-500/8 to-transparent blur-[60px] sm:blur-[140px] animate-ambient-reverse pointer-events-none" 
       />
 
       {/* Center Deep Atmospheric Glow */}
       <div 
-        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] sm:w-[850px] h-[350px] sm:h-[600px] rounded-full bg-cyan-600/10 blur-[60px] sm:blur-[170px] pointer-events-none transform-gpu" 
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] sm:w-[850px] h-[350px] sm:h-[600px] rounded-full bg-cyan-600/10 blur-[60px] sm:blur-[170px] pointer-events-none" 
       />
 
       {/* Bottom Subtle Grounding Glow */}
       <div 
-        className="absolute -bottom-48 left-1/3 w-[450px] sm:w-[750px] h-[350px] sm:h-[550px] rounded-full bg-cyan-900/18 blur-[60px] sm:blur-[160px] pointer-events-none transform-gpu" 
+        className="absolute -bottom-48 left-1/3 w-[450px] sm:w-[750px] h-[350px] sm:h-[550px] rounded-full bg-cyan-900/18 blur-[60px] sm:blur-[160px] pointer-events-none" 
       />
     </div>
   );

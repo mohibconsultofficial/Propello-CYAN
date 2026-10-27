@@ -58,7 +58,7 @@ export default function Offer() {
             viewport={{ once: true, amount: 0.05 }}
             whileHover={hasHover ? { y: -5, transition: { duration: 0.25 } } : undefined}
             transition={{ duration: 0.4 }}
-            className="lg:col-span-8 glass-panel-deep border-2 border-cyan-400/50 hover:border-cyan-400/80 rounded-2xl p-8 sm:p-12 flex flex-col justify-between shadow-[0_24px_70px_rgba(0,0,0,0.85),0_0_50px_rgba(6,182,212,0.22)] hover:shadow-[0_28px_85px_rgba(0,0,0,0.9),0_0_65px_rgba(6,182,212,0.32)] ring-1 ring-cyan-400/20 relative overflow-hidden transition-all duration-300 transform-gpu"
+            className="lg:col-span-8 glass-panel-deep border-2 border-cyan-400/50 hover:border-cyan-400/80 rounded-2xl p-8 sm:p-12 flex flex-col justify-between shadow-[0_24px_70px_rgba(0,0,0,0.85),0_0_50px_rgba(6,182,212,0.22)] hover:shadow-[0_28px_85px_rgba(0,0,0,0.9),0_0_65px_rgba(6,182,212,0.32)] ring-1 ring-cyan-400/20 relative overflow-hidden transition-all duration-300"
           >
             {/* Top illuminated cyan highlight */}
             <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_rgba(6,182,212,0.8)]" />
@@ -115,7 +115,7 @@ export default function Offer() {
                 <div className="w-6 h-6 rounded-full bg-slate-950/20 flex items-center justify-center">
                   <Phone className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:rotate-12 transition-transform" />
                 </div>
-                <span>Call to Get Started: +1 (409) 797-6986</span>
+                <span>Call the owner directly.</span>
               </a>
 
               <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 justify-center sm:justify-end">
@@ -132,7 +132,7 @@ export default function Offer() {
             viewport={{ once: true, amount: 0.05 }}
             whileHover={hasHover ? { y: -5, transition: { duration: 0.25 } } : undefined}
             transition={{ duration: 0.4, delay: 0.1 }}
-            className="lg:col-span-4 glass-panel-deep rounded-2xl p-8 flex flex-col justify-between border border-white/[0.08] hover:border-white/[0.2] hover:shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_25px_rgba(255,255,255,0.06)] transition-all duration-300 relative overflow-hidden transform-gpu"
+            className="lg:col-span-4 glass-panel-deep rounded-2xl p-8 flex flex-col justify-between border border-white/[0.08] hover:border-white/[0.2] hover:shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_25px_rgba(255,255,255,0.06)] transition-all duration-300 relative overflow-hidden"
           >
             <div>
               <span className="text-xs font-mono text-zinc-400 uppercase tracking-wider block mb-1">

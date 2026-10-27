@@ -57,8 +57,8 @@ export default function HowItWorks() {
               key={idx}
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -7, transition: { duration: 0.25, ease: 'easeOut' } }}
+              viewport={{ once: true, amount: 0.05 }}
+              whileHover={hasHover ? { y: -7, transition: { duration: 0.25, ease: 'easeOut' } } : undefined}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
               className="glass-panel-deep rounded-2xl p-8 sm:p-9 flex flex-col justify-between relative group overflow-hidden border border-white/[0.08] hover:border-cyan-400/50 hover:shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_35px_rgba(6,182,212,0.22)] hover:bg-zinc-950/90 transition-all duration-300 cursor-default"
             >

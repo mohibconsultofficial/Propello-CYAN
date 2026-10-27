@@ -69,7 +69,7 @@ export default function About() {
               viewport={{ once: true, amount: 0.05 }}
               whileHover={hasHover ? { y: -6, transition: { duration: 0.25 } } : undefined}
               transition={{ duration: 0.4, delay: 0.1 }}
-              className="glass-panel-deep rounded-2xl p-8 sm:p-10 border border-cyan-500/30 hover:border-cyan-400/60 shadow-[0_0_35px_rgba(6,182,212,0.12)] hover:shadow-[0_24px_60px_rgba(0,0,0,0.85),0_0_45px_rgba(6,182,212,0.28)] transition-all duration-300 relative overflow-hidden group cursor-default transform-gpu"
+              className="glass-panel-deep rounded-2xl p-8 sm:p-10 border border-cyan-500/30 hover:border-cyan-400/60 shadow-[0_0_35px_rgba(6,182,212,0.12)] hover:shadow-[0_24px_60px_rgba(0,0,0,0.85),0_0_45px_rgba(6,182,212,0.28)] transition-all duration-300 relative overflow-hidden group cursor-default"
             >
               {/* Immersive ambient inner sheen on hover */}
               <div className="absolute -inset-px rounded-2xl bg-gradient-to-b from-cyan-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />

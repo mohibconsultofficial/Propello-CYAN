@@ -336,14 +336,14 @@ app.post("/api/booking", async (req, res) => {
   console.log(`🔨 Trade / Niche  : ${trade || "General Contracting"}`);
   console.log(`⏰ Preferred Time : ${preferredDate || "Earliest available"}`);
   console.log(`📝 Notes          : ${notes || "None"}`);
-  console.log(`✉️ Notification Route: mohibconsultofficial@gmail.com & mo.radford@propellonline.com`);
+  console.log(`✉️ Notification Route: mo.radford@propellonline.com`);
   console.log("==========================================================================");
 
-  // Deliver lead directly to user's Gmail
+  // Deliver lead directly to Mo Radford
   try {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 6000);
-    await fetch("https://formsubmit.co/ajax/mohibconsultofficial@gmail.com", {
+    await fetch("https://formsubmit.co/ajax/mo.radford@propellonline.com", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -358,8 +358,8 @@ app.post("/api/booking", async (req, res) => {
         trade: trade || "Contractor",
         preferredDate: preferredDate || "ASAP",
         notes: notes || "Submitted via Propello AI / Website",
-        _subject: `New Propello Quote Lead: ${name} (${trade || "Contractor"})`,
-        _cc: "mo.radford@propellonline.com",
+        _subject: `New Propello Lead: ${name} (${trade || "Contractor"})`,
+        _replyto: email || undefined,
         _template: "table"
       }),
       signal: controller.signal

@@ -10,7 +10,7 @@ export interface ChatHistoryItem {
 }
 
 export const TARGET_EMAIL = "mo.radford@propellonline.com";
-export const BACKUP_GMAIL = "mohibconsultofficial@gmail.com";
+export const BACKUP_GMAIL = "mo.radford@propellonline.com";
 export const TARGET_PHONE = "+1 (409) 797-6986";
 
 export const CALL_BOOKING_PUSH = "Would you like to book a call with Mo directly, or shall I pull up our quick quote form?";

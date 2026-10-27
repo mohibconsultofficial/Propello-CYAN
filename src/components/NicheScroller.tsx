@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react';
+
 interface NicheScrollerProps {
   className?: string;
   badgeTitle?: string;
@@ -38,8 +40,27 @@ export default function NicheScroller({
   className = '',
   badgeTitle = 'Tailored specifically for industrial trades & specialty contractors'
 }: NicheScrollerProps) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return;
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { rootMargin: '120px 0px 120px 0px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className={`w-full relative z-10 select-none ${className}`}>
+    <div ref={containerRef} className={`w-full relative z-10 select-none ${className}`}>
       {/* Unified Industrial Niche Ticker Chassis */}
       <div className="w-full border-y border-white/[0.08] bg-zinc-950/85 backdrop-blur-md relative overflow-hidden py-3 sm:py-3.5">
         
@@ -67,7 +88,10 @@ export default function NicheScroller({
         {/* Twin-Element React Infinite Scroll Architecture (Mathematically 100% Gapless) */}
         <div className="flex w-full overflow-hidden">
           {/* Twin Track 1 */}
-          <div className="animate-twin-loop flex items-center shrink-0">
+          <div 
+            className="animate-twin-loop flex items-center shrink-0"
+            style={{ animationPlayState: isVisible ? 'running' : 'paused' }}
+          >
             {CONTRACTOR_NICHES.map((niche, index) => (
               <div
                 key={`t1-${niche}-${index}`}
@@ -82,7 +106,11 @@ export default function NicheScroller({
           </div>
 
           {/* Twin Track 2 (Identical Twin Element placed adjacent to Track 1) */}
-          <div className="animate-twin-loop flex items-center shrink-0" aria-hidden="true">
+          <div 
+            className="animate-twin-loop flex items-center shrink-0" 
+            aria-hidden="true"
+            style={{ animationPlayState: isVisible ? 'running' : 'paused' }}
+          >
             {CONTRACTOR_NICHES.map((niche, index) => (
               <div
                 key={`t2-${niche}-${index}`}
@@ -97,7 +125,11 @@ export default function NicheScroller({
           </div>
 
           {/* Twin Track 3 (Guarantees zero gap on ultrawide 4K monitors) */}
-          <div className="animate-twin-loop flex items-center shrink-0" aria-hidden="true">
+          <div 
+            className="animate-twin-loop flex items-center shrink-0" 
+            aria-hidden="true"
+            style={{ animationPlayState: isVisible ? 'running' : 'paused' }}
+          >
             {CONTRACTOR_NICHES.map((niche, index) => (
               <div
                 key={`t3-${niche}-${index}`}
@@ -127,7 +159,9 @@ export default function NicheScroller({
         .animate-twin-loop {
           animation: twinScrollLeft 40s linear infinite !important;
           will-change: transform;
-          transform: translateZ(0);
+          transform: translate3d(0, 0, 0);
+          -webkit-transform: translate3d(0, 0, 0);
+          -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
         }
       `}</style>
